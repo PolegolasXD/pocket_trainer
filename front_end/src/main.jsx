@@ -1,10 +1,17 @@
-import React from 'react'
-import ReactDOM from 'react-dom/client'
-import App from './App.jsx'
-import './index.css'
+import React from 'react';
+import ReactDOM from 'react-dom';
+import CadastroHTML from './pages/cadastro/cadastro';
+import './index.css';
+import LoginHTML from './pages/login/login';
+import RoutesComponents from './routes';
+import { BrowserRouter } from 'react-router-dom';
 
-ReactDOM.createRoot(document.getElementById('root')).render(
+ReactDOM.render(
   <React.StrictMode>
-    <App />
+    <BrowserRouter>
+      <RoutesComponents />
+    </BrowserRouter>
   </React.StrictMode>,
-)
+
+  document.getElementById('root')
+);

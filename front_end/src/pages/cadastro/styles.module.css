@@ -1,0 +1,122 @@
+.container {
+  background-color: #111111;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
+
+.centerModal {
+  display: flex;
+  justify-content: center;
+  width: 60%;
+  background-color: #fff;
+  padding: 20px;
+  border-radius: 30px;
+  position: relative;
+}
+
+.line {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  top: 0;
+  bottom: 0;
+  width: 2px;
+  background-color: black;
+}
+
+.leftSection {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  margin-right: 20px;
+  flex-basis: 50%;
+  max-width: 50%;
+}
+
+.iconCadastroWrapper {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.iconCadastro {
+  width: 200px;
+  height: auto;
+}
+
+.iconCadastroTextTop,
+.iconCadastroTextBottom {
+  text-align: center;
+  margin-bottom: 10px;
+  color: #b89130;
+}
+
+.rightSection {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  flex-basis: 50%;
+  max-width: 50%;
+}
+
+.topRightSection {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 10px;
+}
+
+.loginText,
+.cadastroText {
+  font-size: 14px;
+  background-color: transparent;
+  border: none;
+  outline: none;
+  cursor: pointer;
+}
+
+.iconUserContainer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 50px;
+}
+
+.iconUser {
+  width: 50px;
+  height: 50px;
+}
+
+.inputsContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.inputContainer {
+  margin-bottom: 10px;
+}
+
+.input {
+  width: 100%;
+  max-width: 300px;
+  height: 30px;
+  padding: 10px;
+  border: none;
+  border-bottom: 1px solid #888;
+}
+
+.cadastrarButton {
+  width: 100%;
+  max-width: 200px;
+  height: 40px;
+  background-color: #111111;
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
