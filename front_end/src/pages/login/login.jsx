@@ -23,7 +23,7 @@ function LoginHTML() {
           <div className={styles.line}></div>
           <div className={styles.rightSection}>
             <div className={styles.topRightSection}>
-              <button className={styles.loginText}>Login</button>
+              <Link to="/login" className={styles.loginText}>login</Link>
               <Link to="/cadastro" className={styles.cadastrarText}>Cadastro</Link>
             </div>
             <div className={styles.iconUserContainer}>
@@ -37,9 +37,7 @@ function LoginHTML() {
                 <input className={styles.input} type="password" placeholder="Senha" />
               </div>
             </div>
-            <div className={styles.bottomRightSection}>
               <button className={styles.loginButton}>Logar</button>
-            </div>
             <div className={styles.bottomLeftSection}>
               <div className={styles.esqueciSenhaContainer}>
                 <button className={styles.esqueciSenhaText}>Esqueci minha senha</button>

@@ -7,7 +7,7 @@ function RoutesComponents() {
   return (<>
     <Routes>
       <Route path="/login" element={<LoginHTML />} />
-      <Route path="" element={<error />} />
+      <Route path="" element={<CadastroHTML />} />
       <Route path="/cadastro" element={<CadastroHTML />} />
       {/* <Route path="/dias_de_treino" element={<Dias_de_treinoHTML />} /> */}
       {/* <Route path="/ficha_pessoal" element={<Ficha_pessoalHTML />} /> */}

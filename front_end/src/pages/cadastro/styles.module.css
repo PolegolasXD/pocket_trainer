@@ -65,7 +65,7 @@
 .topRightSection {
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  justify-content: space-around;
   margin-bottom: 10px;
 }
 
@@ -74,6 +74,7 @@
   font-size: 14px;
   background-color: transparent;
   border: none;
+  text-decoration: none;
   outline: none;
   cursor: pointer;
 }

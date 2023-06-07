@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
 import styles from './styles.module.css';
 import iconCadastro from '../../assets/icons/IconesCadastro.png';
 import iconUser from '../../assets/icons/IconesUsuario.png';
@@ -43,8 +44,12 @@ function CadastroHTML() {
 
           <div className={styles.rightSection}>
             <div className={styles.topRightSection}>
-              <button className={styles.loginText}>Login</button>
-              <button className={styles.cadastroText}>Cadastro</button>
+              <div>
+                <Link to="/login" className={styles.loginText}>login</Link>
+              </div>
+              <div>
+                <Link to="/cadastro" className={styles.cadastroText}>Cadastro</Link>
+              </div>
             </div>
 
             <div className={styles.iconUserContainer}>
