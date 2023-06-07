@@ -9,7 +9,7 @@
 .centerModal {
   display: flex;
   justify-content: center;
-  width: 60%;
+  width: 900px;
   background-color: #fff;
   padding: 20px;
   border-radius: 30px;
@@ -23,7 +23,7 @@
   justify-content: center;
   margin-right: 20px;
   text-align: center;
-  max-width: 50%;
+  max-width: 50%; 
 }
 
 .iconCadastroWrapper {
@@ -79,6 +79,31 @@
   border: none;
   outline: none;
   cursor: pointer;
+  transition: color 0.3s;
+}
+
+.loginText:hover,
+.cadastrarText:hover {
+  color: #B89130;
+}
+
+.activeLink {
+  color: #B89130;
+}
+
+.loginButton {
+  width: 100%;
+  max-width: 200px;
+  height: 40px;
+  background-color: #111111;
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.loginButton:hover {
+  background-color: #B89130;
 }
 
 .iconUserContainer {
@@ -144,3 +169,9 @@
   outline: none;
   cursor: pointer;
 }
+
+.cadastrarText:hover {
+  color: #B89130;
+}
+
+

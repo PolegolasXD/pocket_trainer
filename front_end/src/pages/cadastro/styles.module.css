@@ -9,7 +9,7 @@
 .centerModal {
   display: flex;
   justify-content: center;
-  width: 60%;
+  width: 900px;
   background-color: #fff;
   padding: 20px;
   border-radius: 30px;
@@ -32,8 +32,8 @@
   align-items: center;
   justify-content: center;
   margin-right: 20px;
-  flex-basis: 50%;
-  max-width: 50%;
+  text-align: center;
+  max-width: 400px; /* Ajuste a largura máxima conforme necessário */
 }
 
 .iconCadastroWrapper {
@@ -48,9 +48,9 @@
 
 .iconCadastroTextTop,
 .iconCadastroTextBottom {
-  text-align: center;
   margin-bottom: 10px;
   color: #b89130;
+  text-align: center;
 }
 
 .rightSection {
@@ -58,6 +58,7 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
+  flex: 1;
   flex-basis: 50%;
   max-width: 50%;
 }
@@ -70,13 +71,39 @@
 }
 
 .loginText,
-.cadastroText {
+.cadastrarText {
   font-size: 14px;
+  color: #000;
   background-color: transparent;
-  border: none;
   text-decoration: none;
+  border: none;
   outline: none;
   cursor: pointer;
+  transition: color 0.3s;
+}
+
+.loginText:hover,
+.cadastrarText:hover {
+  color: #b89130;
+}
+
+.activeLink {
+  color: #b89130;
+}
+
+.loginButton {
+  width: 100%;
+  max-width: 200px;
+  height: 40px;
+  background-color: #111111;
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.loginButton:hover {
+  background-color: #b89130;
 }
 
 .iconUserContainer {
@@ -111,7 +138,7 @@
   border-bottom: 1px solid #888;
 }
 
-.cadastrarButton {
+.loginButton {
   width: 100%;
   max-width: 200px;
   height: 40px;
@@ -120,4 +147,27 @@
   border: none;
   border-radius: 4px;
   cursor: pointer;
+}
+
+.bottomLeftSection {
+  display: flex;
+  justify-content: flex-start;
+  margin-top: 10px;
+}
+
+.cadastrarContainer {
+  flex: 1;
+}
+
+.cadastrarText {
+  font-size: 14px;
+  color: #000;
+  background-color: transparent;
+  border: none;
+  outline: none;
+  cursor: pointer;
+}
+
+.activeLink.cadastrarText {
+  color: #B89130;
 }

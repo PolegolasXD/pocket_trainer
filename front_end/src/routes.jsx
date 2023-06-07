@@ -5,9 +5,10 @@ import LoginHTML from './pages/login/login';
 
 function RoutesComponents() {
   return (<>
+    {/* rotas pelo router ruan, aqui tem o elemento dentro ali e a / pra linkar, da uma olhada na documentaçao do routers dom */}
     <Routes>
       <Route path="/login" element={<LoginHTML />} />
-      <Route path="" element={<CadastroHTML />} />
+      <Route path="/*" element={<CadastroHTML />} />
       <Route path="/cadastro" element={<CadastroHTML />} />
       {/* <Route path="/dias_de_treino" element={<Dias_de_treinoHTML />} /> */}
       {/* <Route path="/ficha_pessoal" element={<Ficha_pessoalHTML />} /> */}
