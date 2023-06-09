@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Link, useLocation, useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import styles from './styles.module.css';
 import iconCadastro from '../../assets/icons/IconesCadastro.png';
 import iconUser from '../../assets/icons/IconesUsuario.png';
@@ -7,7 +7,6 @@ import iconUser from '../../assets/icons/IconesUsuario.png';
 function CadastroHTML() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const location = useLocation();
   const navigate = useNavigate();
 
   const handleEmailChange = (event) => {
@@ -19,11 +18,11 @@ function CadastroHTML() {
   };
 
   const handleCadastro = () => {
-    // Aqui você pode adicionar a lógica para salvar os dados do cadastro
-
-    // Redirecionar para a página de login com os valores preenchidos
-    navigate('/login', { state: { email, password } });
+    localStorage.setItem('cadastroEmail', email);
+    localStorage.setItem('cadastroPassword', password);
+    navigate('/login');
   };
+
 
   return (
     <>

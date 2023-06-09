@@ -1,3 +1,4 @@
+// LoginHTML.js
 import React, { useState, useEffect } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import styles from './styles.module.css';
@@ -10,14 +11,6 @@ function LoginHTML() {
   const location = useLocation();
   const navigate = useNavigate();
 
-  useEffect(() => {
-    const { state } = location;
-    if (state && state.email && state.password) {
-      setEmail(state.email);
-      setPassword(state.password);
-    }
-  }, [location]);
-
   const handleEmailChange = (event) => {
     setEmail(event.target.value);
   };
@@ -27,12 +20,13 @@ function LoginHTML() {
   };
 
   const handleLogin = () => {
-    console.log('Email:', email);
-    console.log('Password:', password);
+    const cadastroEmail = localStorage.getItem('cadastroEmail');
+    const cadastroPassword = localStorage.getItem('cadastroPassword');
 
-    // Aqui você pode adicionar a lógica de validação do login e redirecionar para /home se estiver correto
-    if (email === 'seu-email' && password === 'sua-senha') {
+    if (email === cadastroEmail && password === cadastroPassword) {
       navigate('/home');
+    } else {
+      alert('Credenciais inválidas');
     }
   };
 

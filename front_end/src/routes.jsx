@@ -13,6 +13,7 @@ function RoutesComponents() {
       {/* <Route path="/dias_de_treino" element={<Dias_de_treinoHTML />} /> */}
       {/* <Route path="/ficha_pessoal" element={<Ficha_pessoalHTML />} /> */}
       {/* <Route path="/home" element={<HomeHTML />} /> */}
+
       {/* <Route path="/treino_de_hoje" element={<Treino_de_hojeHTML />} /> */}
     </Routes>
   </>);

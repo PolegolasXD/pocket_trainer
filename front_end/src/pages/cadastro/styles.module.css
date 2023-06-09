@@ -1,9 +1,12 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500&display=swap');
+
 .container {
   background-color: #111111;
   display: flex;
   justify-content: center;
   align-items: center;
   height: 100vh;
+  font-family: 'Roboto', sans-serif;
 }
 
 .centerModal {
@@ -16,16 +19,6 @@
   position: relative;
 }
 
-.line {
-  position: absolute;
-  left: 50%;
-  transform: translateX(-50%);
-  top: 0;
-  bottom: 0;
-  width: 2px;
-  background-color: black;
-}
-
 .leftSection {
   display: flex;
   flex-direction: column;
@@ -33,7 +26,7 @@
   justify-content: center;
   margin-right: 20px;
   text-align: center;
-  max-width: 400px; /* Ajuste a largura máxima conforme necessário */
+  max-width: 50%; 
 }
 
 .iconCadastroWrapper {
@@ -49,8 +42,18 @@
 .iconCadastroTextTop,
 .iconCadastroTextBottom {
   margin-bottom: 10px;
-  color: #b89130;
+  color: #B89130;
   text-align: center;
+}
+
+.line {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  top: 0;
+  bottom: 0;
+  width: 2px;
+  background-color: black;
 }
 
 .rightSection {
@@ -84,11 +87,11 @@
 
 .loginText:hover,
 .cadastrarText:hover {
-  color: #b89130;
+  color: #B89130;
 }
 
 .activeLink {
-  color: #b89130;
+  color: #B89130;
 }
 
 .loginButton {
@@ -103,7 +106,7 @@
 }
 
 .loginButton:hover {
-  background-color: #b89130;
+  background-color: #B89130;
 }
 
 .iconUserContainer {
@@ -155,10 +158,12 @@
   margin-top: 10px;
 }
 
+.esqueciSenhaContainer,
 .cadastrarContainer {
   flex: 1;
 }
 
+.esqueciSenhaText,
 .cadastrarText {
   font-size: 14px;
   color: #000;
@@ -168,6 +173,8 @@
   cursor: pointer;
 }
 
-.activeLink.cadastrarText {
+.cadastrarText:hover {
   color: #B89130;
 }
+
+
