@@ -1,10 +1,97 @@
-@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500&display=swap');
-
 .container {
-  background-color: #111111;
+  position: relative; /* Adicionado */
   display: flex;
   justify-content: center;
   align-items: center;
+  background-color: #111111;
   height: 100vh;
-  font-family: 'Roboto', sans-serif;
+}
+
+.sizeBar {
+  width: 15%;
+  height: 100%;
+  background-color: #272626;
+  position: absolute;
+  left: 0;
+  top: 0;
+  z-index: 1;
+  transition: width 0.3s ease;
+}
+
+.contentContainer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+}
+
+.column {
+  width: 25%;
+}
+
+.iconContainer {
+  display: flex;
+  justify-content: center;
+}
+
+.iconUser {
+  width: 50px;
+  height: 50px;
+}
+
+.closeIconContainer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: fixed; /* Adicionado */
+  top: 10px;
+  right: 10px;
+  cursor: pointer;
+  z-index: 2; /* Adicionado */
+}
+
+.iconMenuBar {
+  width: 30px;
+  height: 30px;
+  color: red;
+}
+
+.center {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.squareIcon {
+  width: 50px;
+  height: 50px;
+  border: 2px solid #000000;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.innerIcon {
+  width: 30px;
+  height: 30px;
+}
+
+
+.menuIconsContainer {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.menuIcon {
+  margin-left: 10px;
+}
+
+.itemContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.itemDescription {
+  margin-top: 5px;
 }

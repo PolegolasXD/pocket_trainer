@@ -1,4 +1,3 @@
-// LoginHTML.js
 import React, { useState, useEffect } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import styles from './styles.module.css';
@@ -54,9 +53,10 @@ function LoginHTML() {
               >
                 Login
               </Link>
+              <div className={styles.spaceLink}></div>
               <Link
                 to="/cadastro"
-                className={`${styles.cadastrarText} ${location.pathname === '/cadastro' ? styles.activeLink : ''}`}
+                className={`${styles.cadastrarText} ${location.pathname === '/*' ? styles.activeLink : ''}`}
               >
                 Cadastro
               </Link>

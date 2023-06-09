@@ -55,7 +55,9 @@
   width: 2px;
   background-color: black;
 }
-
+.spaceLink {
+  margin-left: 20px;
+}
 .rightSection {
   display: flex;
   flex-direction: column;
@@ -85,10 +87,14 @@
   transition: color 0.3s;
 }
 
-.loginText:hover,
-.cadastrarText:hover {
+.loginText:hover {
   color: #B89130;
 }
+
+.cadastrarText:hover {
+  color: #b89130;
+}
+
 
 .activeLink {
   color: #B89130;
@@ -171,10 +177,6 @@
   border: none;
   outline: none;
   cursor: pointer;
-}
-
-.cadastrarText:hover {
-  color: #B89130;
 }
 
 
