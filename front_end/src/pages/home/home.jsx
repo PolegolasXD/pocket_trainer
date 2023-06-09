@@ -1,7 +1,12 @@
 import React, { useState } from 'react';
 import styles from './styles.module.css';
 import iconMenuBar from '../../assets/icons/Menu.png';
-import iconClose from '../../assets/icons/Menu.png';
+import iconClose from '../../assets/icons/Menu.png'; // Substitua pelo ícone de fechar desejado
+import iconSizeBar from '../../assets/icons/iconSizeBar.png';
+import iconCalendarioDiasDeTreino from '../../assets/icons/iconCalendarioDiasDeTreino.png';
+import iconCalendarioTreinoDeHoje from '../../assets/icons/iconCalendarioTreinoDeHoje.png';
+import iconFichaPessoal from '../../assets/icons/iconFichaPessoal.png';
+import iconExecucao from '../../assets/icons/iconExecucao.png';
 import iconUser from '../../assets/icons/IconesUsuario.png';
 
 function HomeHTML() {
@@ -17,45 +22,65 @@ function HomeHTML() {
 
   return (
     <div className={styles.container}>
-      {!isSizeBarOpen && (
-        <div className={styles.menuIconsContainer}>
-          <div className={`${styles.menuIcon} ${styles.openIcon}`} onClick={handleOpenSizeBar}>
-            <img className={styles.iconMenuBar} src={iconMenuBar} alt="iconMenuBar" />
+      <img className={styles.iconMenuBar} src={iconMenuBar} alt="iconMenuBar" onClick={handleOpenSizeBar} />
+      <div className={`${styles.sizeBar} ${isSizeBarOpen ? styles.open : ''}`}>
+        <div className={styles.sizeBarContent}>
+          <div className={styles.iconSizeBarContainer}>
+            <img className={styles.iconSizeBar} src={iconSizeBar} alt="iconSizeBar" />
           </div>
-        </div>
-      )}
-      {isSizeBarOpen && (
-        <div className={styles.sizeBar}>
+          <div className={styles.itemContainer}>
+            <div className={styles.squareIcon}>
+              <img className={styles.innerIcon} src={iconCalendarioDiasDeTreino} alt="iconCalendarioDiasDeTreino" />
+            </div>
+            <div className={styles.itemDescription}>Dias de treino</div>
+          </div>
+          <div className={styles.itemContainer}>
+            <div className={styles.squareIcon}>
+              <img className={styles.innerIcon} src={iconCalendarioTreinoDeHoje} alt="iconCalendarioTreinoDeHoje" />
+            </div>
+            <div className={styles.itemDescription}>Treino de hoje</div>
+          </div>
+          <div className={styles.itemContainer}>
+            <div className={styles.squareIcon}>
+              <img className={styles.innerIcon} src={iconFichaPessoal} alt="iconFichaPessoal" />
+            </div>
+            <div className={styles.itemDescription}>Ficha pessoal</div>
+          </div>
+          <div className={styles.itemContainer}>
+            <div className={styles.squareIcon}>
+              <img className={styles.innerIcon} src={iconExecucao} alt="iconExecucao" />
+            </div>
+            <div className={styles.itemDescription}>Execução</div>
+          </div>
           <div className={styles.closeIconContainer} onClick={handleCloseSizeBar}>
             <img className={styles.iconClose} src={iconClose} alt="iconClose" />
           </div>
-          {/* Conteúdo da size bar */}
         </div>
-      )}
+      </div>
       <div className={styles.contentContainer}>
-        <div className={`${styles.itemContainer} ${styles.column}`}>
+        <div className={styles.itemContainer}>
           <div className={styles.squareIcon}>
             <img className={styles.innerIcon} src={iconUser} alt="iconUser" />
           </div>
-          <p className={styles.itemDescription}>Icon1</p>
+          <div className={styles.itemDescription}>Icon1</div>
         </div>
-        <div className={`${styles.itemContainer} ${styles.column}`}>
+        <div className={styles.itemContainer}>
           <div className={styles.squareIcon}>
             <img className={styles.innerIcon} src={iconUser} alt="iconUser" />
           </div>
-          <p className={styles.itemDescription}>Icon2</p>
+          <div className={styles.itemDescription}>Icon2</div>
         </div>
-        <div className={`${styles.itemContainer} ${styles.column}`}>
+        <div className={styles.itemContainer}>
           <div className={styles.squareIcon}>
             <img className={styles.innerIcon} src={iconUser} alt="iconUser" />
           </div>
-          <p className={styles.itemDescription}>Icon3</p>
+          <div className={styles.itemDescription}>Icon3</div>
         </div>
-        <div className={`${styles.itemContainer} ${styles.column}`}>
+        <div className={styles.itemContainer}>
           <div className={styles.squareIcon}>
             <img className={styles.innerIcon} src={iconUser} alt="iconUser" />
           </div>
-          <p className={styles.itemDescription}>Icon4</p>
+          <div className={styles.itemDescription}>Icon4</div>
         </div>
       </div>
     </div>

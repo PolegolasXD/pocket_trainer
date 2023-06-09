@@ -1,14 +1,14 @@
 .container {
-  position: relative; /* Adicionado */
+  position: relative;
   display: flex;
-  justify-content: center;
+  justify-content: flex-start;
   align-items: center;
   background-color: #111111;
   height: 100vh;
 }
 
 .sizeBar {
-  width: 15%;
+  width: 0;
   height: 100%;
   background-color: #272626;
   position: absolute;
@@ -16,6 +16,56 @@
   top: 0;
   z-index: 1;
   transition: width 0.3s ease;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  overflow: hidden;
+}
+
+.open {
+  width: 250px;
+}
+
+.iconSizeBarContainer {
+  width: 150px;
+  height: 150px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.iconSizeBar {
+  width: 120px;
+  height: 120px;
+}
+
+.sizeBarContent {
+  padding: 20px;
+}
+
+.itemContainer {
+  display: flex;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.squareIcon {
+  width: 50px;
+  height: 50px;
+  border: 2px solid transparent; /* Removendo a borda preta */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transition: border-color 0.3s ease; /* Adicionando transição para o hover */
+}
+
+.squareIcon:hover {
+  border-color: #ffffff; /* Alterando a cor da borda no hover */
+}
+
+.itemDescription {
+  margin-left: 10px;
 }
 
 .contentContainer {
@@ -23,31 +73,27 @@
   justify-content: center;
   align-items: center;
   height: 100%;
+  position: relative;
 }
 
-.column {
-  width: 25%;
-}
-
-.iconContainer {
+.menuIconsContainer {
   display: flex;
-  justify-content: center;
+  justify-content: flex-start;
+  align-items: center;
 }
 
-.iconUser {
-  width: 50px;
-  height: 50px;
+.menuIcon {
+  margin-right: 10px;
+  cursor: pointer;
 }
 
 .closeIconContainer {
   display: flex;
-  justify-content: center;
-  align-items: center;
-  position: fixed; /* Adicionado */
-  top: 10px;
-  right: 10px;
+  justify-content: flex-end;
+  align-items: flex-end; /* Alinhado à direita em baixo */
+  margin-top: auto;
+  margin-left: auto; /* Alinhado à direita em cima */
   cursor: pointer;
-  z-index: 2; /* Adicionado */
 }
 
 .iconMenuBar {
@@ -56,42 +102,13 @@
   color: red;
 }
 
-.center {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
-.squareIcon {
-  width: 50px;
-  height: 50px;
-  border: 2px solid #000000;
-  display: flex;
-  justify-content: center;
-  align-items: center;
+.iconClose {
+  width: 30px;
+  height: 30px;
+  /* Adicione aqui o estilo ou ícone desejado para o botão de fechar */
 }
 
 .innerIcon {
   width: 30px;
   height: 30px;
-}
-
-
-.menuIconsContainer {
-  display: flex;
-  justify-content: flex-end;
-}
-
-.menuIcon {
-  margin-left: 10px;
-}
-
-.itemContainer {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
-
-.itemDescription {
-  margin-top: 5px;
 }
