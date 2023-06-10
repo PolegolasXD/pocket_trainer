@@ -3,6 +3,9 @@ import { Route, Routes } from 'react-router-dom';
 import CadastroHTML from './pages/cadastro/cadastro';
 import LoginHTML from './pages/login/login';
 import HomeHTML from './pages/home/home';
+import Dias_de_treinoHTML from './pages/dias_de_treino/dias_de_treino';
+import Ficha_pessoalHTML from './pages/ficha_pessoal/ficha_pessoal';
+import Treino_de_hojeHTML from './pages/treino_de_hoje/treino_de_hoje';
 
 function RoutesComponents() {
   return (<>
@@ -12,9 +15,9 @@ function RoutesComponents() {
       <Route path="/*" element={<CadastroHTML />} />
       <Route path="/cadastro" element={<CadastroHTML />} />
       <Route path="/home" element={<HomeHTML />} />
-      {/* <Route path="/dias_de_treino" element={<Dias_de_treinoHTML />} /> */}
-      {/* <Route path="/ficha_pessoal" element={<Ficha_pessoalHTML />} /> */}
-      {/* <Route path="/treino_de_hoje" element={<Treino_de_hojeHTML />} /> */}
+      <Route path="/dias_de_treino" element={<Dias_de_treinoHTML />} />
+      <Route path="/ficha_pessoal" element={<Ficha_pessoalHTML />} />
+      <Route path="/treino_de_hoje" element={<Treino_de_hojeHTML />} />
     </Routes>
   </>);
 }
