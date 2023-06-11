@@ -1,30 +1,36 @@
 .container {
   position: relative;
   display: flex;
-  justify-content: flex-start;
+  justify-content: center;
   align-items: center;
   background-color: #111111;
   height: 100vh;
-}
-
-.sizeBar {
-  width: 0;
-  height: 100%;
-  background-color: #272626;
-  position: absolute;
-  left: 0;
-  top: 0;
-  z-index: 1;
-  transition: width 0.3s ease;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
+  width: 100%;
   overflow: hidden;
-  padding: 20px 0;
 }
 
-.open {
-  width: 250px;
+.forceCenter {
+  display: flex !important;
+  justify-content: center !important;
+  align-items: center !important;
+  text-align: center !important;
+}
+
+
+
+.contentContainer {
+  flex: 1;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: flex-start;
+  height: 100%;
+  position: relative;
+  overflow-y: auto;
+  max-height: calc(100vh - 200px);
+  padding-right: 10px;
+  box-sizing: border-box;
+  overflow-y: scroll;
 }
 
 .iconSizeBarContainer {
@@ -33,51 +39,61 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  margin-bottom: 20px;
-}
-
-.iconSizeBar {
-  width: 120px;
-  height: 120px;
+  margin-bottom: 0;
 }
 
 .itemContainer {
   display: flex;
+  flex-direction: column;
   align-items: center;
-  width: 100%;
-  padding: 10px;
+  margin: 10px 10px 0;
+  width: 50%;
 }
 
 .squareIcon {
-  width: 50px;
-  height: 50px;
-  border: 2px solid red;
+  width: 400px;
+  height: 400px;
+  border: 2px solid rgb(173, 140, 30);
   display: flex;
   justify-content: center;
   align-items: center;
   transition: border-color 0.3s ease;
+  border-radius: 50px;
+  background-color: #b89130;
+}
+
+.descriptionContainer {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
 }
 
 .squareIcon:hover {
   border-color: #ffffff;
 }
 
-.itemDescription {
-  margin-left: 10px;
-}
-
 .itemDescriptionSizeBar {
   margin-left: 10px;
-  color: #B89130;
+  color: #b89130;
 }
 
-.contentContainer {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  height: 100%;
-  position: relative;
+.gifIcon {
+  width: 250px;
+  height: 250px;
+  border-radius: 15px;
+}
+
+.enlargedGif {
+  width: 250px;
+  height: 250px;
+  border-radius: 15px;
+}
+
+.separator {
+  height: 1px;
+  background-color: #ccc;
+  margin: 20px 0;
 }
 
 .itemContent {
@@ -97,12 +113,16 @@
   width: 100%;
 }
 
+.whiteBackground {
+  background-color: #333;
+}
+
 .closeIconContainer {
   display: flex;
   justify-content: flex-end;
   align-items: flex-end;
   margin-top: auto;
-  margin-left: auto;
+  margin-right: auto;
   cursor: pointer;
 }
 
@@ -111,11 +131,6 @@
   height: 30px;
   margin-right: 10px;
   cursor: pointer;
-}
-
-.iconClose {
-  width: 30px;
-  height: 30px;
 }
 
 .innerIcon {
@@ -143,6 +158,12 @@
   align-items: center;
 }
 
+.menuOpenSizeBar {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+}
+
 .bottomLeftItem {
   position: absolute;
   bottom: 0;
@@ -161,4 +182,27 @@
   flex-direction: column;
   justify-content: center;
   align-items: center;
+}
+
+.contentContainer::-webkit-scrollbar {
+  width: 8px;
+}
+
+.contentContainer::-webkit-scrollbar-track {
+  background-color: transparent;
+}
+
+.contentContainer::-webkit-scrollbar-thumb {
+  background-color: gold;
+  border-radius: 4px;
+}
+
+.expanded .description {
+  display: none;
+}
+
+.executionName{
+  margin-top: 15px;
+  margin-bottom: 15px;
+  color: white;
 }
