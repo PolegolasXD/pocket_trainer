@@ -1,16 +1,22 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import styles from './styles.module.css';
 import iconMenuBar from '../../assets/icons/Menu.png';
-import iconClose from '../../assets/icons/Menu.png'; // Substitua pelo ícone de fechar desejado
 import iconSizeBar from '../../assets/icons/iconSizeBar.png';
 import iconCalendarioDiasDeTreino from '../../assets/icons/iconCalendarioDiasDeTreino.png';
 import iconCalendarioTreinoDeHoje from '../../assets/icons/iconCalendarioTreinoDeHoje.png';
 import iconFichaPessoal from '../../assets/icons/iconFichaPessoal.png';
 import iconExecucao from '../../assets/icons/iconExecucao.png';
-import iconUser from '../../assets/icons/IconesUsuario.png';
+import iconClose from '../../assets/icons/iconClose.png';
+import sizeBarStyles from './sizeBarStyles.module.css';
+import gifBumbum from '../../assets/img/gifBumbum.gif';
+import gifBiceps from '../../assets/img/gifBiceps.gif';
+import gifCostas from '../../assets/img/gifCostas.gif';
+import gifPeito from '../../assets/img/gifPeito.gif';
 
 function Ficha_pessoalHTML() {
   const [isSizeBarOpen, setIsSizeBarOpen] = useState(false);
+  const navigate = useNavigate();
 
   const handleOpenSizeBar = () => {
     setIsSizeBarOpen(true);
@@ -20,96 +26,70 @@ function Ficha_pessoalHTML() {
     setIsSizeBarOpen(false);
   };
 
-  const handleItemClick = () => {
-    null;
+  const handleRedirect = (route) => {
+    navigate(route);
   };
 
   return (
     <div className={styles.container}>
-      <div className={styles.topLeftItem}>
-        <div className={styles.squareIcon}>
-          <img className={styles.innerIcon} src={iconUser} alt="iconUser" />
-        </div>
-        <div className={styles.itemDescription}>Top Left</div>
+      <div className={styles.menuOpenSizeBar} onClick={handleOpenSizeBar}>
+        <img className={styles.iconMenuBar} src={iconMenuBar} alt="iconMenuBar" />
       </div>
-      <div className={styles.topRightItem}>
-        <div className={styles.squareIcon}>
-          <img className={styles.innerIcon} src={iconUser} alt="iconUser" />
-        </div>
-        <div className={styles.itemDescription}>Top Right</div>
+      <div className={styles.descriptionContainer}>
+        {/* <div className={styles.forceCenter}>
+      <h1 className={styles.description} style={{ textAlign: 'center', marginTop: '50px' }}>
+        Sejam Bem-vindos ao pocketTrainer, o site que chegou para auxiliar os esportistas nas execuções dos treinos, fazendo com que não sofram lesões.
+      </h1>
+    </div> */}
       </div>
       <div className={styles.contentContainer}>
         <div className={styles.itemContainer}>
-          <div className={styles.squareIcon}>
-            <img className={styles.innerIcon} src={iconUser} alt="iconUser" />
+          <h2 className={styles.executionName}>Treino de Perna</h2>
+          <div className={`${styles.squareIcon} ${styles.whiteBackground}`}>
+            <img className={`${styles.gifIcon} ${styles.enlargedGif}`} src={gifBumbum} alt="gifBumbum" />
           </div>
-          <div className={styles.itemDescription}>Icon1</div>
         </div>
         <div className={styles.itemContainer}>
-          <div className={styles.squareIcon}>
-            <img className={styles.innerIcon} src={iconUser} alt="iconUser" />
+          <h2 className={styles.executionName}>Treino de Bíceps</h2>
+          <div className={`${styles.squareIcon} ${styles.whiteBackground}`}>
+            <img className={`${styles.gifIcon} ${styles.enlargedGif}`} src={gifBiceps} alt="gifBiceps" />
           </div>
-          <div className={styles.itemDescription}>Icon2</div>
         </div>
         <div className={styles.itemContainer}>
-          <div className={styles.squareIcon}>
-            <img className={styles.innerIcon} src={iconUser} alt="iconUser" />
+          <h2 className={styles.executionName}>Treino de Costas</h2>
+          <div className={`${styles.squareIcon} ${styles.whiteBackground}`}>
+            <img className={`${styles.gifIcon} ${styles.enlargedGif}`} src={gifCostas} alt="gifCostas" />
           </div>
-          <div className={styles.itemDescription}>Icon3</div>
         </div>
         <div className={styles.itemContainer}>
-          <div className={styles.squareIcon}>
-            <img className={styles.innerIcon} src={iconUser} alt="iconUser" />
+          <h2 className={styles.executionName}>Treino de Peito</h2>
+          <div className={`${styles.squareIcon} ${styles.whiteBackground}`}>
+            <img className={`${styles.gifIcon} ${styles.enlargedGif}`} src={gifPeito} alt="gifPeito" />
           </div>
-          <div className={styles.itemDescription}>Icon4</div>
         </div>
       </div>
-      <div className={styles.bottomLeftItem}>
-        <div className={styles.squareIcon}>
-          <img className={styles.innerIcon} src={iconUser} alt="iconUser" />
+      <div className={`${sizeBarStyles.sizeBar} ${isSizeBarOpen ? sizeBarStyles.open : ''}`}>
+        <div className={sizeBarStyles.iconSizeBarContainer} onClick={() => handleRedirect('/home')}>
+          <img className={`${sizeBarStyles.iconSizeBar} ${sizeBarStyles.largeIcon}`} src={iconSizeBar} alt="iconSizeBar" />
         </div>
-        <div className={styles.itemDescription}>Bottom Left</div>
-      </div>
-      <div className={styles.bottomRightItem}>
-        <div className={styles.squareIcon} onClick={handleOpenSizeBar}>
-          <img className={styles.innerIcon} src={iconMenuBar} alt="iconMenuBar" />
+        <div className={sizeBarStyles.iconContainer} onClick={() => handleRedirect('/dias_de_treino')}>
+          <img className={`${sizeBarStyles.icon} ${sizeBarStyles.goldIcon}`} src={iconCalendarioDiasDeTreino} alt="iconCalendarioDiasDeTreino" />
+          <span className={sizeBarStyles.itemDescriptionSizeBar}>Dias de treino</span>
         </div>
-        <div className={styles.itemDescription}>Bottom Right</div>
-      </div>
-      <div className={`${styles.sizeBar} ${isSizeBarOpen ? styles.open : ''}`}>
-        <div className={styles.sizeBarContent}>
-          <div className={styles.iconSizeBarContainer}>
-            <img className={styles.iconSizeBar} src={iconSizeBar} alt="iconSizeBar" />
-          </div>
-          <div className={styles.menuItemsContainer}>
-            <div className={styles.itemContainer}>
-              <div className={styles.itemContent}>
-                <img className={styles.innerIcon} src={iconCalendarioDiasDeTreino} alt="iconCalendarioDiasDeTreino" />
-                <div className={styles.itemDescriptionSizeBar}>Dias de treino</div>
-              </div>
-            </div>
-            <div className={styles.itemContainer}>
-              <div className={styles.itemContent}>
-                <img className={styles.innerIcon} src={iconCalendarioTreinoDeHoje} alt="iconCalendarioTreinoDeHoje" />
-                <div className={styles.itemDescriptionSizeBar}>Treino de hoje</div>
-              </div>
-            </div>
-            <div className={styles.itemContainer}>
-              <div className={styles.itemContent}>
-                <img className={styles.innerIcon} src={iconFichaPessoal} alt="iconFichaPessoal" />
-                <div className={styles.itemDescriptionSizeBar}>Ficha pessoal</div>
-              </div>
-            </div>
-            <div className={styles.itemContainer }>
-              <div className={styles.itemContent}>
-                <img className={styles.innerIcon} src={iconExecucao} alt="iconExecucao" />
-                <div className={styles.itemDescriptionSizeBar}>Execução</div>
-              </div>
-            </div>
-          </div>
-          <div className={styles.closeIconContainer} onClick={handleCloseSizeBar}>
-            <img className={styles.iconClose} src={iconClose} alt="iconClose" />
-          </div>
+        <div className={sizeBarStyles.iconContainer} onClick={() => handleRedirect('/treino_de_hoje')}>
+          <img className={`${sizeBarStyles.icon} ${sizeBarStyles.goldIcon}`} src={iconCalendarioTreinoDeHoje} alt="iconCalendarioTreinoDeHoje" />
+          <span className={sizeBarStyles.itemDescriptionSizeBar}>Treino de hoje</span>
+        </div>
+        <div className={sizeBarStyles.iconContainer} onClick={() => handleRedirect('/ficha_pessoal')}>
+          <img className={`${sizeBarStyles.icon} ${sizeBarStyles.goldIcon}`} src={iconFichaPessoal} alt="iconFichaPessoal" />
+          <span className={sizeBarStyles.itemDescriptionSizeBar}>Ficha pessoal</span>
+        </div>
+        <div className={sizeBarStyles.iconContainer} onClick={() => handleRedirect('/execucao')}>
+          <img className={`${sizeBarStyles.icon} ${sizeBarStyles.goldIcon}`} src={iconExecucao} alt="iconExecucao" />
+          <span className={sizeBarStyles.itemDescriptionSizeBar}>Execução</span>
+        </div>
+        <div className={sizeBarStyles.closeIconContainer} onClick={handleCloseSizeBar}>
+          <img className={`${sizeBarStyles.iconClose}`} src={iconClose} alt="iconClose" />
         </div>
       </div>
     </div>

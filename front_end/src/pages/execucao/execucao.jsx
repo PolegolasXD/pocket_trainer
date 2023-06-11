@@ -14,7 +14,7 @@ import gifBiceps from '../../assets/img/gifBiceps.gif';
 import gifCostas from '../../assets/img/gifCostas.gif';
 import gifPeito from '../../assets/img/gifPeito.gif';
 
-function HomeHTML() {
+function ExecucaoHTML() {
   const [isSizeBarOpen, setIsSizeBarOpen] = useState(false);
   const navigate = useNavigate();
 
@@ -37,10 +37,10 @@ function HomeHTML() {
       </div>
       <div className={styles.descriptionContainer}>
         {/* <div className={styles.forceCenter}>
-        <h1 className={styles.description} style={{ textAlign: 'center', marginTop: '50px' }}>
-          Sejam Bem-vindos ao pocketTrainer, o site que chegou para auxiliar os esportistas nas execuções dos treinos, fazendo com que não sofram lesões.
-        </h1>
-      </div> */}
+      <h1 className={styles.description} style={{ textAlign: 'center', marginTop: '50px' }}>
+        Sejam Bem-vindos ao pocketTrainer, o site que chegou para auxiliar os esportistas nas execuções dos treinos, fazendo com que não sofram lesões.
+      </h1>
+    </div> */}
       </div>
       <div className={styles.contentContainer}>
         <div className={styles.itemContainer}>
@@ -96,4 +96,4 @@ function HomeHTML() {
   );
 }
 
-export default HomeHTML;
+export default ExecucaoHTML;
