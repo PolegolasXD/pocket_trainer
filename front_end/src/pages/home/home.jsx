@@ -11,6 +11,7 @@ import iconCalendarioTreinoDeHoje from '../../assets/icons/iconCalendarioTreinoD
 import iconFichaPessoal from '../../assets/icons/iconFichaPessoal.png';
 import iconExecucao from '../../assets/icons/iconExecucao.png';
 import iconClose from '../../assets/icons/iconClose.png';
+import sizeBarStyles from './sizeBarStyles.module.css';
 
 function HomeHTML() {
   const [isSizeBarOpen, setIsSizeBarOpen] = useState(false);
@@ -26,79 +27,71 @@ function HomeHTML() {
   return (
     <div className={styles.container}>
       <div className={styles.topLeftItem}>
-        <div className={styles.squareIcon} onClick={handleOpenSizeBar}>
+        <div className={styles.menuOpenSizeBar} onClick={handleOpenSizeBar}>
           <img className={styles.iconMenuBar} src={iconMenuBar} alt="iconMenuBar" />
         </div>
-        <div className={styles.itemDescription}>Top Left</div>
+        <div className={styles.itemDescription}></div>
       </div>
       <div className={styles.contentContainer}>
         <div className={styles.itemContainer}>
-          <div className={styles.squareIcon}>
+          <div className={`${styles.squareIcon} ${styles.whiteBackground}`}>
             <img className={styles.innerIcon} src={imgBumbum} alt="imgBumbum" />
           </div>
-          <div className={styles.itemDescription}>Bumbum</div>
+          <div className={styles.itemDescription}>
+            <img className={styles.itemImage} src={imgBumbum} alt="imgBumbum" />
+            <span className={styles.itemText}>Bumbum</span>
+          </div>
         </div>
         <div className={styles.itemContainer}>
-          <div className={styles.squareIcon}>
+          <div className={`${styles.squareIcon} ${styles.whiteBackground}`}>
             <img className={styles.innerIcon} src={imgBiceps} alt="imgBiceps" />
           </div>
-          <div className={styles.itemDescription}>Bíceps</div>
+          <div className={styles.itemDescription}>
+            <img className={styles.itemImage} src={imgBiceps} alt="imgBiceps" />
+            <span className={styles.itemText}>Bíceps</span>
+          </div>
         </div>
         <div className={styles.itemContainer}>
-          <div className={styles.squareIcon}>
+          <div className={`${styles.squareIcon} ${styles.whiteBackground}`}>
             <img className={styles.innerIcon} src={imgPerna} alt="imgPerna" />
           </div>
-          <div className={styles.itemDescription}>Perna</div>
+          <div className={styles.itemDescription}>
+            <img className={styles.itemImage} src={imgPerna} alt="imgPerna" />
+            <span className={styles.itemText}>Perna</span>
+          </div>
         </div>
         <div className={styles.itemContainer}>
-          <div className={styles.squareIcon}>
+          <div className={`${styles.squareIcon} ${styles.whiteBackground}`}>
             <img className={styles.innerIcon} src={imgPeito} alt="imgPeito" />
           </div>
-          <div className={styles.itemDescription}>Peito</div>
+          <div className={styles.itemDescription}>
+            <img className={styles.itemImage} src={imgPeito} alt="imgPeito" />
+            <span className={styles.itemText}>Peito</span>
+          </div>
         </div>
       </div>
-      <div className={`${styles.sizeBar} ${isSizeBarOpen ? styles.open : ''}`}>
-        <div className={styles.sizeBarContent}>
-          <div className={styles.iconSizeBarContainer}>
-            <img className={styles.iconSizeBar} src={iconSizeBar} alt="iconSizeBar" />
-          </div>
-          <div className={styles.menuItemsContainer}>
-            <div className={styles.itemContainer}>
-              <div className={styles.itemContent}>
-                <img
-                  className={styles.innerIcon}
-                  src={iconCalendarioDiasDeTreino}
-                  alt="iconCalendarioDiasDeTreino"
-                />
-                <div className={styles.itemDescriptionSizeBar}>Dias de treino</div>
-              </div>
-            </div>
-            <div className={styles.itemContainer}>
-              <div className={styles.itemContent}>
-                <img
-                  className={styles.innerIcon}
-                  src={iconCalendarioTreinoDeHoje}
-                  alt="iconCalendarioTreinoDeHoje"
-                />
-                <div className={styles.itemDescriptionSizeBar}>Treino de hoje</div>
-              </div>
-            </div>
-            <div className={styles.itemContainer}>
-              <div className={styles.itemContent}>
-                <img className={styles.innerIcon} src={iconFichaPessoal} alt="iconFichaPessoal" />
-                <div className={styles.itemDescriptionSizeBar}>Ficha pessoal</div>
-              </div>
-            </div>
-            <div className={styles.itemContainer}>
-              <div className={styles.itemContent}>
-                <img className={styles.innerIcon} src={iconExecucao} alt="iconExecucao" />
-                <div className={styles.itemDescriptionSizeBar}>Execução</div>
-              </div>
-            </div>
-          </div>
-          <div className={styles.closeIconContainer} onClick={handleCloseSizeBar}>
-            <img className={styles.iconClose} src={iconClose} alt="iconClose" />
-          </div>
+      <div className={`${sizeBarStyles.sizeBar} ${isSizeBarOpen ? sizeBarStyles.open : ''}`}>
+        <div className={sizeBarStyles.iconSizeBarContainer}>
+          <img className={`${sizeBarStyles.iconSizeBar} ${sizeBarStyles.largeIcon}`} src={iconSizeBar} alt="iconSizeBar" />
+        </div>
+        <div className={sizeBarStyles.iconContainer}>
+          <img className={`${sizeBarStyles.icon} ${sizeBarStyles.goldIcon}`} src={iconCalendarioDiasDeTreino} alt="iconCalendarioDiasDeTreino" />
+          <span className={sizeBarStyles.iconDescription}>Descrição ao lado do item</span>
+        </div>
+        <div className={sizeBarStyles.iconContainer}>
+          <img className={`${sizeBarStyles.icon} ${sizeBarStyles.goldIcon}`} src={iconCalendarioTreinoDeHoje} alt="iconCalendarioTreinoDeHoje" />
+          <span className={sizeBarStyles.iconDescription}>Descrição ao lado do item</span>
+        </div>
+        <div className={sizeBarStyles.iconContainer}>
+          <img className={`${sizeBarStyles.icon} ${sizeBarStyles.goldIcon}`} src={iconFichaPessoal} alt="iconFichaPessoal" />
+          <span className={sizeBarStyles.iconDescription}>Descrição ao lado do item</span>
+        </div>
+        <div className={sizeBarStyles.iconContainer}>
+          <img className={`${sizeBarStyles.icon} ${sizeBarStyles.goldIcon}`} src={iconExecucao} alt="iconExecucao" />
+          <span className={sizeBarStyles.iconDescription}>Descrição ao lado do item</span>
+        </div>
+        <div className={sizeBarStyles.closeIconContainer} onClick={handleCloseSizeBar}>
+          <img className={`${sizeBarStyles.iconClose}`} src={iconClose} alt="iconClose" />
         </div>
       </div>
     </div>
