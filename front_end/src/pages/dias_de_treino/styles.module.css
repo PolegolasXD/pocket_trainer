@@ -4,6 +4,7 @@
   justify-content: center;
   align-items: center;
   background-color: #111111;
+  color: gold;
   height: 100vh;
   width: 100%;
   overflow: hidden;
@@ -15,8 +16,6 @@
   align-items: center !important;
   text-align: center !important;
 }
-
-
 
 .contentContainer {
   flex: 1;
@@ -33,13 +32,13 @@
   overflow-y: scroll;
 }
 
-.iconSizeBarContainer {
-  width: 150px;
-  height: 150px;
+.dayContainer,
+.monthContainer {
+  background-color: transparent;
   display: flex;
   justify-content: center;
   align-items: center;
-  margin-bottom: 0;
+  color: gold;
 }
 
 .itemContainer {
@@ -73,26 +72,9 @@
   border-color: #ffffff;
 }
 
-.itemDescriptionSizeBar {
-  margin-left: 10px;
-  color: #b89130;
-}
-
-.gifIcon {
-  width: 250px;
-  height: 250px;
-  border-radius: 15px;
-}
-
-.enlargedGif {
-  width: 250px;
-  height: 250px;
-  border-radius: 15px;
-}
-
 .separator {
   height: 1px;
-  background-color: #ccc;
+  background-color: gold;
   margin: 20px 0;
 }
 
@@ -201,8 +183,39 @@
   display: none;
 }
 
-.executionName{
+.executionName {
   margin-top: 15px;
   margin-bottom: 15px;
-  color: white;
+  color: gold;
+}
+
+
+/* Classe para estilizar o número do dia */
+.dayNumber {
+  color: gold;
+}
+
+/* Classe para estilizar os dias da semana */
+.weekday {
+  color: gold;
+}
+
+/* Classe para estilizar os dias do mês */
+.dayTile {
+  background-color: transparent;
+  border: none;
+  color: gold;
+}
+
+/* Classe para estilizar o dia selecionado */
+.selectedDay {
+  background-color: gold;
+  color: #111111;
+}
+
+/* Classe para estilizar o dia atual */
+.today {
+  background-color: transparent;
+  border: 2px solid gold;
+  color: gold;
 }

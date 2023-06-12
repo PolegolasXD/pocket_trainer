@@ -1,5 +1,6 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import Calendar from 'react-calendar';
 import styles from './styles.module.css';
 import iconMenuBar from '../../assets/icons/Menu.png';
 import iconSizeBar from '../../assets/icons/iconSizeBar.png';
@@ -9,10 +10,7 @@ import iconFichaPessoal from '../../assets/icons/iconFichaPessoal.png';
 import iconExecucao from '../../assets/icons/iconExecucao.png';
 import iconClose from '../../assets/icons/iconClose.png';
 import sizeBarStyles from './sizeBarStyles.module.css';
-import gifBumbum from '../../assets/img/gifBumbum.gif';
-import gifBiceps from '../../assets/img/gifBiceps.gif';
-import gifCostas from '../../assets/img/gifCostas.gif';
-import gifPeito from '../../assets/img/gifPeito.gif';
+import './styles.module.css';
 
 function Dias_de_treinoHTML() {
   const [isSizeBarOpen, setIsSizeBarOpen] = useState(false);
@@ -30,6 +28,11 @@ function Dias_de_treinoHTML() {
     navigate(route);
   };
 
+  const handleDateChange = (date) => {
+    // Lógica para lidar com a seleção de datas no calendário
+    console.log(date);
+  };
+
   return (
     <div className={styles.container}>
       <div className={styles.menuOpenSizeBar} onClick={handleOpenSizeBar}>
@@ -37,35 +40,23 @@ function Dias_de_treinoHTML() {
       </div>
       <div className={styles.descriptionContainer}>
         {/* <div className={styles.forceCenter}>
-      <h1 className={styles.description} style={{ textAlign: 'center', marginTop: '50px' }}>
-        Sejam Bem-vindos ao pocketTrainer, o site que chegou para auxiliar os esportistas nas execuções dos treinos, fazendo com que não sofram lesões.
-      </h1>
-    </div> */}
+          <h1 className={styles.description} style={{ textAlign: 'center', marginTop: '50px' }}>
+            Sejam Bem-vindos ao pocketTrainer, o site que chegou para auxiliar os esportistas nas execuções dos treinos,
+            fazendo com que não sofram lesões.
+          </h1>
+        </div> */}
       </div>
       <div className={styles.contentContainer}>
-        <div className={styles.itemContainer}>
-          <h2 className={styles.executionName}>Treino de Perna</h2>
-          <div className={`${styles.squareIcon} ${styles.whiteBackground}`}>
-            <img className={`${styles.gifIcon} ${styles.enlargedGif}`} src={gifBumbum} alt="gifBumbum" />
-          </div>
-        </div>
-        <div className={styles.itemContainer}>
-          <h2 className={styles.executionName}>Treino de Bíceps</h2>
-          <div className={`${styles.squareIcon} ${styles.whiteBackground}`}>
-            <img className={`${styles.gifIcon} ${styles.enlargedGif}`} src={gifBiceps} alt="gifBiceps" />
-          </div>
-        </div>
-        <div className={styles.itemContainer}>
-          <h2 className={styles.executionName}>Treino de Costas</h2>
-          <div className={`${styles.squareIcon} ${styles.whiteBackground}`}>
-            <img className={`${styles.gifIcon} ${styles.enlargedGif}`} src={gifCostas} alt="gifCostas" />
-          </div>
-        </div>
-        <div className={styles.itemContainer}>
-          <h2 className={styles.executionName}>Treino de Peito</h2>
-          <div className={`${styles.squareIcon} ${styles.whiteBackground}`}>
-            <img className={`${styles.gifIcon} ${styles.enlargedGif}`} src={gifPeito} alt="gifPeito" />
-          </div>
+        <div className={styles.calendarContainer}>
+          <Calendar
+            onChange={handleDateChange}
+            className={`${styles.customCalendar} custom-calendar`}
+            dayClassName={(date) => {
+              // Lógica para aplicar classes CSS aos dias do calendário
+              // Por exemplo, para destacar o dia atual
+              return date.toDateString() === new Date().toDateString() ? "today" : "";
+            }}
+          />
         </div>
       </div>
       <div className={`${sizeBarStyles.sizeBar} ${isSizeBarOpen ? sizeBarStyles.open : ''}`}>
