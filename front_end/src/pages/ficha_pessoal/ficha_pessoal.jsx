@@ -9,10 +9,7 @@ import iconFichaPessoal from '../../assets/icons/iconFichaPessoal.png';
 import iconExecucao from '../../assets/icons/iconExecucao.png';
 import iconClose from '../../assets/icons/iconClose.png';
 import sizeBarStyles from './sizeBarStyles.module.css';
-import gifBumbum from '../../assets/img/gifBumbum.gif';
-import gifBiceps from '../../assets/img/gifBiceps.gif';
-import gifCostas from '../../assets/img/gifCostas.gif';
-import gifPeito from '../../assets/img/gifPeito.gif';
+import iconUser from '../../assets/icons/IconesUsuario.png';
 
 function Ficha_pessoalHTML() {
   const [isSizeBarOpen, setIsSizeBarOpen] = useState(false);
@@ -30,43 +27,30 @@ function Ficha_pessoalHTML() {
     navigate(route);
   };
 
+  useEffect(() => {
+    // Obter o nome do usuário do armazenamento local
+    const storedUser = localStorage.getItem('user');
+    if (storedUser) {
+      const { nome } = JSON.parse(storedUser);
+      setUserName(nome);
+    }
+  }, []);
+
+  const [userName, setUserName] = useState('');
+
   return (
     <div className={styles.container}>
       <div className={styles.menuOpenSizeBar} onClick={handleOpenSizeBar}>
         <img className={styles.iconMenuBar} src={iconMenuBar} alt="iconMenuBar" />
       </div>
       <div className={styles.descriptionContainer}>
-        {/* <div className={styles.forceCenter}>
-      <h1 className={styles.description} style={{ textAlign: 'center', marginTop: '50px' }}>
-        Sejam Bem-vindos ao pocketTrainer, o site que chegou para auxiliar os esportistas nas execuções dos treinos, fazendo com que não sofram lesões.
-      </h1>
-    </div> */}
+        <div className={styles.userNameContainer}>
+          <img className={styles.iconUser} src={iconUser} alt="iconUser" />
+          <span className={styles.userName}>{userName}</span>
+        </div>
       </div>
       <div className={styles.contentContainer}>
-        <div className={styles.itemContainer}>
-          <h2 className={styles.executionName}>Treino de Perna</h2>
-          <div className={`${styles.squareIcon} ${styles.whiteBackground}`}>
-            <img className={`${styles.gifIcon} ${styles.enlargedGif}`} src={gifBumbum} alt="gifBumbum" />
-          </div>
-        </div>
-        <div className={styles.itemContainer}>
-          <h2 className={styles.executionName}>Treino de Bíceps</h2>
-          <div className={`${styles.squareIcon} ${styles.whiteBackground}`}>
-            <img className={`${styles.gifIcon} ${styles.enlargedGif}`} src={gifBiceps} alt="gifBiceps" />
-          </div>
-        </div>
-        <div className={styles.itemContainer}>
-          <h2 className={styles.executionName}>Treino de Costas</h2>
-          <div className={`${styles.squareIcon} ${styles.whiteBackground}`}>
-            <img className={`${styles.gifIcon} ${styles.enlargedGif}`} src={gifCostas} alt="gifCostas" />
-          </div>
-        </div>
-        <div className={styles.itemContainer}>
-          <h2 className={styles.executionName}>Treino de Peito</h2>
-          <div className={`${styles.squareIcon} ${styles.whiteBackground}`}>
-            <img className={`${styles.gifIcon} ${styles.enlargedGif}`} src={gifPeito} alt="gifPeito" />
-          </div>
-        </div>
+        {/* Conteúdo da página */}
       </div>
       <div className={`${sizeBarStyles.sizeBar} ${isSizeBarOpen ? sizeBarStyles.open : ''}`}>
         <div className={sizeBarStyles.iconSizeBarContainer} onClick={() => handleRedirect('/home')}>

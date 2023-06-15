@@ -5,6 +5,7 @@ import iconCadastro from '../../assets/icons/IconesCadastro.png';
 import iconUser from '../../assets/icons/IconesUsuario.png';
 
 function CadastroListaHTML() {
+  const [nome, setNome] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [users, setUsers] = useState([]);
@@ -22,6 +23,10 @@ function CadastroListaHTML() {
     localStorage.setItem('users', JSON.stringify(users));
   }, [users]);
 
+  const handleNomeChange = (event) => {
+    setNome(event.target.value);
+  };
+
   const handleEmailChange = (event) => {
     setEmail(event.target.value);
   };
@@ -37,19 +42,21 @@ function CadastroListaHTML() {
       return;
     }
 
-    const newUser = { email, password };
+    const newUser = { nome, email, password };
     setUsers([...users, newUser]);
     alert('Usuário cadastrado com sucesso');
+    setNome('');
     setEmail('');
     setPassword('');
   };
 
   const handleUpdate = () => {
     const updatedUsers = [...users];
-    updatedUsers[selectedUser.index] = { email, password };
+    updatedUsers[selectedUser.index] = { nome, email, password };
     setUsers(updatedUsers);
     alert('Usuário atualizado com sucesso');
     setSelectedUser(null);
+    setNome('');
     setEmail('');
     setPassword('');
   };
@@ -64,6 +71,7 @@ function CadastroListaHTML() {
   const handleEdit = (index) => {
     const selectedUser = users[index];
     setSelectedUser({ index, ...selectedUser });
+    setNome(selectedUser.nome);
     setEmail(selectedUser.email);
     setPassword(selectedUser.password);
   };
@@ -73,6 +81,15 @@ function CadastroListaHTML() {
       <div className={styles.crudContainer}>
         <h2 className={styles.crudTitle}>Adicionar Usuário</h2>
         <div className={styles.crudInputsContainer}>
+          <div className={styles.crudInputContainer}>
+            <input
+              type="text"
+              placeholder="Nome"
+              value={nome}
+              onChange={handleNomeChange}
+              className={styles.crudInput}
+            />
+          </div>
           <div className={styles.crudInputContainer}>
             <input
               type="text"
@@ -107,6 +124,7 @@ function CadastroListaHTML() {
       <ul className={styles.crudList}>
         {users.map((user, index) => (
           <li key={index} className={styles.crudListItem}>
+            <span>Nome: {user.nome}</span>
             <span>Email: {user.email}</span>
             <span>Senha: {user.password}</span>
             <div>

@@ -1,4 +1,3 @@
-// CadastroHTML
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import styles from './styles.module.css';
@@ -6,9 +5,14 @@ import iconCadastro from '../../assets/icons/IconesCadastro.png';
 import iconUser from '../../assets/icons/IconesUsuario.png';
 
 function CadastroHTML() {
+  const [nome, setNome] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const navigate = useNavigate();
+
+  const handleNomeChange = (event) => {
+    setNome(event.target.value);
+  };
 
   const handleEmailChange = (event) => {
     setEmail(event.target.value);
@@ -28,7 +32,7 @@ function CadastroHTML() {
       return;
     }
 
-    const newUser = { email, password };
+    const newUser = { nome, email, password };
     users.push(newUser);
     localStorage.setItem('users', JSON.stringify(users));
     alert('Usuário cadastrado com sucesso');
@@ -71,6 +75,15 @@ function CadastroHTML() {
               <img className={styles.iconUser} src={iconUser} alt="iconUser" />
             </div>
             <div className={styles.inputsContainer}>
+              <div className={styles.inputContainer}>
+                <input
+                  className={styles.input}
+                  type="text"
+                  placeholder="Nome"
+                  value={nome}
+                  onChange={handleNomeChange}
+                />
+              </div>
               <div className={styles.inputContainer}>
                 <input
                   className={styles.input}
