@@ -1,9 +1,10 @@
+// CadastroHTML
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import styles from './styles.module.css';
 import iconCadastro from '../../assets/icons/IconesCadastro.png';
 import iconUser from '../../assets/icons/IconesUsuario.png';
- 
+
 function CadastroHTML() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -18,11 +19,21 @@ function CadastroHTML() {
   };
 
   const handleCadastro = () => {
-    localStorage.setItem('cadastroEmail', email);
-    localStorage.setItem('cadastroPassword', password);
+    const storedUsers = localStorage.getItem('users');
+    const users = storedUsers ? JSON.parse(storedUsers) : [];
+
+    const userExists = users.some((user) => user.email === email);
+    if (userExists) {
+      alert('E-mail já cadastrado');
+      return;
+    }
+
+    const newUser = { email, password };
+    users.push(newUser);
+    localStorage.setItem('users', JSON.stringify(users));
+    alert('Usuário cadastrado com sucesso');
     navigate('/login');
   };
-
 
   return (
     <>
@@ -51,7 +62,7 @@ function CadastroHTML() {
               <div className={styles.spaceLink}></div>
               <Link
                 to="/cadastro"
-                className={`${styles.cadastrarText} ${location.pathname === '/*' ? styles.activeLink : ''}`}
+                className={`${styles.cadastrarText} ${location.pathname === '/cadastro' ? styles.activeLink : ''}`}
               >
                 Cadastro
               </Link>
@@ -85,7 +96,7 @@ function CadastroHTML() {
             <div className={styles.bottomLeftSection}>
               <div className={styles.cadastrarContainer}>
                 <Link to="/login" className={styles.cadastrarText}>
-                  Já tem uma conta? Faça login
+                  Já tem uma conta? Faça login!
                 </Link>
               </div>
             </div>

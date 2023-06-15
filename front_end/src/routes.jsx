@@ -7,6 +7,7 @@ import Dias_de_treinoHTML from './pages/dias_de_treino/dias_de_treino';
 import Ficha_pessoalHTML from './pages/ficha_pessoal/ficha_pessoal';
 import Treino_de_hojeHTML from './pages/treino_de_hoje/treino_de_hoje';
 import ExecucaoHTML from './pages/execucao/execucao';
+import CadastroListaHTML from './pages/cadastro_lista/cadastro_lista';
 
 function RoutesComponents() {
   return (<>
@@ -20,6 +21,7 @@ function RoutesComponents() {
       <Route path="/ficha_pessoal" element={<Ficha_pessoalHTML />} />
       <Route path="/treino_de_hoje" element={<Treino_de_hojeHTML />} />
       <Route path="/execucao" element={<ExecucaoHTML />} />
+      <Route path="/cadastro_lista" element={<CadastroListaHTML />} />
     </Routes>
   </>);
 }

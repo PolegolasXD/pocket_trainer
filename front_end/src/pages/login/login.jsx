@@ -19,16 +19,17 @@ function LoginHTML() {
   };
 
   const handleLogin = () => {
-    const cadastroEmail = localStorage.getItem('cadastroEmail');
-    const cadastroPassword = localStorage.getItem('cadastroPassword');
+    const storedUsers = JSON.parse(localStorage.getItem('users')) || [];
+    const user = storedUsers.find((user) => user.email === email && user.password === password);
 
-    if (email === cadastroEmail && password === cadastroPassword) {
+    if (user) {
       navigate('/home');
     } else {
       alert('Credenciais inválidas');
     }
   };
 
+  
   return (
     <>
       <div className={styles.container}>
@@ -56,7 +57,7 @@ function LoginHTML() {
               <div className={styles.spaceLink}></div>
               <Link
                 to="/cadastro"
-                className={`${styles.cadastrarText} ${location.pathname === '/*' ? styles.activeLink : ''}`}
+                className={`${styles.cadastrarText} ${location.pathname === '/cadastro' ? styles.activeLink : ''}`}
               >
                 Cadastro
               </Link>
