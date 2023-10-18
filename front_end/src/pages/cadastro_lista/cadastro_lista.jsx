@@ -45,11 +45,12 @@ function CadastroListaHTML() {
     const newUser = { nome, email, password };
     setUsers([...users, newUser]);
     alert('Usuário cadastrado com sucesso');
+    console.log("teste save branch")
     setNome('');
     setEmail('');
     setPassword('');
   };
-
+  
   const handleUpdate = () => {
     const updatedUsers = [...users];
     updatedUsers[selectedUser.index] = { nome, email, password };
