@@ -1,0 +1,16 @@
+# node_modules (sempre ignorar)
+node_modules/
+
+# arquivos de ambiente
+.env
+
+# banco local SQLite
+*.db
+
+# logs e arquivos temporários
+*.log
+*.sqlite
+.DS_Store
+
+# arquivos de backup ou editor
+*.swp
