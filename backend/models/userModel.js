@@ -23,6 +23,10 @@ async function deleteUserById(id) {
 async function getUserByEmail(email) {
   return await db('users').where({ email }).first();
 }
+async function countUsers() {
+  const [{ count }] = await db('users').count();
+  return parseInt(count);
+}
 
 module.exports = {
   createUser,
@@ -30,5 +34,6 @@ module.exports = {
   getUserById,
   updateUser,
   deleteUserById,
-  getUserByEmail
+  getUserByEmail,
+  countUsers
 };
