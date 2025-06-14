@@ -6,6 +6,7 @@ const OpenAI = require("openai");
 const userRoutes = require("./routes/userRoutes");
 const treinoRoutes = require("./routes/treinoRoutes");
 const adminRoutes = require("./routes/adminRoutes");
+const feedbackRoutes = require("./routes/feedbackRoutes");
 
 const openai = new OpenAI({
   apiKey: process.env.OPENAI_API_KEY,
@@ -19,6 +20,7 @@ app.use(express.json());
 app.use("/api/users", userRoutes);
 app.use("/api/treinos", treinoRoutes);
 app.use("/api/admin", adminRoutes);
+app.use("/api/feedbacks", feedbackRoutes);
 
 app.post("/chat", async (req, res) => {
   const { message } = req.body;
