@@ -2,13 +2,13 @@
 const Feedback = require('../models/feedbackModel');
 
 /**
- * Cria um feedback gerado pela IA
- * (aluno_id é extraído do token; não vem no corpo)
+ * Cria um feedback
+ * (aluno_id vem do token JWT)
  */
 exports.createFeedback = async (req, res) => {
   try {
-    const { treino_id, texto_feedback, nota } = req.body;
-    const aluno_id = req.user.id; // usuário autenticado
+    const { treino_id, texto_feedback, nota, carga, repeticoes, duracao } = req.body;
+    const aluno_id = req.user.id;
 
     if (!treino_id || !texto_feedback) {
       return res.status(400).json({ error: 'treino_id e texto_feedback são obrigatórios' });
@@ -17,8 +17,11 @@ exports.createFeedback = async (req, res) => {
     const [novoFeedback] = await Feedback.createFeedback({
       aluno_id,
       treino_id,
-      texto_feedback,
-      nota
+      resposta: texto_feedback, // mapa para coluna 'resposta'
+      nota,
+      carga,
+      repeticoes,
+      duracao
     });
 
     res.status(201).json(novoFeedback);
@@ -28,22 +31,17 @@ exports.createFeedback = async (req, res) => {
   }
 };
 
-/**
- * Lista feedbacks do aluno autenticado
- */
+/** Lista feedbacks do aluno autenticado */
 exports.getFeedbacksDoAluno = async (req, res) => {
   try {
-    const aluno_id = req.user.id;
-    const feedbacks = await Feedback.getFeedbacksByAlunoId(aluno_id);
+    const feedbacks = await Feedback.getFeedbacksByAlunoId(req.user.id);
     res.json(feedbacks);
   } catch {
     res.status(500).json({ error: 'Erro ao buscar feedbacks do aluno' });
   }
 };
 
-/**
- * Lista feedbacks de um treino específico
- */
+/** Lista feedbacks de um treino específico */
 exports.getFeedbacksDoTreino = async (req, res) => {
   try {
     const { treino_id } = req.params;
@@ -54,43 +52,31 @@ exports.getFeedbacksDoTreino = async (req, res) => {
   }
 };
 
-/**
- * Atualiza feedback (caso necessário)
- */
+/** Atualiza feedback */
 exports.updateFeedback = async (req, res) => {
   try {
     const { id } = req.params;
     const [updated] = await Feedback.updateFeedback(id, req.body);
-
-    if (!updated) {
-      return res.status(404).json({ error: 'Feedback não encontrado' });
-    }
+    if (!updated) return res.status(404).json({ error: 'Feedback não encontrado' });
     res.json(updated);
   } catch {
     res.status(500).json({ error: 'Erro ao atualizar feedback' });
   }
 };
 
-/**
- * Deleta feedback
- */
+/** Deleta feedback */
 exports.deleteFeedback = async (req, res) => {
   try {
     const { id } = req.params;
     const deleted = await Feedback.deleteFeedback(id);
-
-    if (!deleted) {
-      return res.status(404).json({ error: 'Feedback não encontrado' });
-    }
+    if (!deleted) return res.status(404).json({ error: 'Feedback não encontrado' });
     res.status(204).send();
   } catch {
     res.status(500).json({ error: 'Erro ao deletar feedback' });
   }
 };
 
-/**
- * (Admin) Lista todos os feedbacks do sistema
- */
+/** (Admin) Lista todos os feedbacks */
 exports.getTodosFeedbacks = async (_req, res) => {
   try {
     const feedbacks = await Feedback.getAllFeedbacks();
