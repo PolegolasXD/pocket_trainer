@@ -7,16 +7,18 @@
   align-items: center;
   height: 100vh;
   font-family: 'Roboto', sans-serif;
+  padding: 1rem;
 }
 
 .centerModal {
   display: flex;
   justify-content: center;
-  width: 900px;
+  width: 950px;
   background-color: #fff;
-  padding: 20px;
+  padding: 30px;
   border-radius: 30px;
   position: relative;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
 }
 
 .leftSection {
@@ -26,7 +28,8 @@
   justify-content: center;
   margin-right: 20px;
   text-align: center;
-  max-width: 50%; 
+  max-width: 50%;
+  padding: 1rem;
 }
 
 .iconCadastroWrapper {
@@ -35,7 +38,7 @@
 }
 
 .iconCadastro {
-  width: 200px;
+  width: 220px;
   height: auto;
 }
 
@@ -43,7 +46,8 @@
 .iconCadastroTextBottom {
   margin-bottom: 10px;
   color: #B89130;
-  text-align: center;
+  font-size: 16px;
+  line-height: 1.4;
 }
 
 .line {
@@ -55,16 +59,14 @@
   width: 2px;
   background-color: black;
 }
-.spaceLink {
-  margin-left: 20px;
-}
+
 .rightSection {
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   flex: 1;
-  flex-basis: 50%;
+  padding: 1rem;
   max-width: 50%;
 }
 
@@ -72,12 +74,13 @@
   display: flex;
   align-items: center;
   justify-content: space-around;
-  margin-bottom: 10px;
+  margin-bottom: 20px;
+  gap: 1rem;
 }
 
 .loginText,
 .cadastrarText {
-  font-size: 14px;
+  font-size: 16px;
   color: #000;
   background-color: transparent;
   text-decoration: none;
@@ -85,88 +88,81 @@
   outline: none;
   cursor: pointer;
   transition: color 0.3s;
+  font-weight: 500;
 }
 
-.loginText:hover {
-  color: #B89130;
-}
-
+.loginText:hover,
 .cadastrarText:hover {
   color: #b89130;
 }
 
-
 .activeLink {
   color: #B89130;
-}
-
-.loginButton {
-  width: 100%;
-  max-width: 200px;
-  height: 40px;
-  background-color: #111111;
-  color: #fff;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
-}
-
-.loginButton:hover {
-  background-color: #B89130;
 }
 
 .iconUserContainer {
   display: flex;
   justify-content: center;
   align-items: center;
-  margin-bottom: 50px;
+  margin-bottom: 40px;
 }
 
 .iconUser {
-  width: 50px;
-  height: 50px;
+  width: 60px;
+  height: 60px;
 }
 
 .inputsContainer {
   display: flex;
   flex-direction: column;
   align-items: center;
+  gap: 16px;
+  width: 100%;
   margin-bottom: 20px;
-}
-
-.inputContainer {
-  margin-bottom: 10px;
 }
 
 .input {
   width: 100%;
   max-width: 300px;
-  height: 30px;
+  height: 40px;
   padding: 10px;
   border: none;
   border-bottom: 1px solid #888;
+  font-size: 15px;
 }
 
 .loginButton {
+  align-self: center;
   width: 100%;
-  max-width: 200px;
-  height: 40px;
+  max-width: 220px;
+  height: 46px;
   background-color: #111111;
   color: #fff;
+  font-size: 16px;
+  font-weight: 500;
+  letter-spacing: 0.5px;
   border: none;
-  border-radius: 4px;
+  border-radius: 6px;
   cursor: pointer;
+  transition: background-color 0.3s ease;
+  margin-top: 10px;
+}
+
+.loginButton:hover {
+  background-color: #B89130;
 }
 
 .bottomLeftSection {
   display: flex;
-  justify-content: flex-start;
-  margin-top: 10px;
+  justify-content: center;
+  margin-top: 20px;
+  width: 100%;
+  font-size: 14px;
+  color: #000;
 }
 
-.esqueciSenhaContainer,
-.cadastrarContainer {
-  flex: 1;
+.spaceLink {
+  margin-left: 20px;
 }
 
 .esqueciSenhaText,
@@ -179,4 +175,31 @@
   cursor: pointer;
 }
 
+@media (max-width: 768px) {
+  .centerModal {
+    flex-direction: column;
+    width: 100%;
+    max-width: 95%;
+    padding: 1rem;
+  }
 
+  .leftSection,
+  .rightSection {
+    max-width: 100%;
+    width: 100%;
+  }
+
+  .line {
+    display: none;
+  }
+
+  .topRightSection {
+    flex-direction: row;
+    justify-content: center;
+    gap: 20px;
+  }
+
+  .inputsContainer {
+    width: 100%;
+  }
+}

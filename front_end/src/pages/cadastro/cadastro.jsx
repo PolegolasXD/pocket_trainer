@@ -1,122 +1,121 @@
-import React, { useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
-import styles from './styles.module.css';
-import iconCadastro from '../../assets/icons/IconesCadastro.png';
-import iconUser from '../../assets/icons/IconesUsuario.png';
+import React, { useState } from "react";
+import { Link, useNavigate, useLocation } from "react-router-dom";
+import axios from "axios";
+import styles from "./styles.module.css";
+import iconCadastro from "../../assets/icons/IconesCadastro.png";
+import iconUser from "../../assets/icons/IconesUsuario.png";
 
 function CadastroHTML() {
-  const [nome, setNome] = useState('');
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
   const navigate = useNavigate();
+  const location = useLocation();
 
-  const handleNomeChange = (event) => {
-    setNome(event.target.value);
-  };
+  const handleSubmit = async (e) => {
+    e.preventDefault();
 
-  const handleEmailChange = (event) => {
-    setEmail(event.target.value);
-  };
-
-  const handlePasswordChange = (event) => {
-    setPassword(event.target.value);
-  };
-
-  const handleCadastro = () => {
-    const storedUsers = localStorage.getItem('users');
-    const users = storedUsers ? JSON.parse(storedUsers) : [];
-
-    const userExists = users.some((user) => user.email === email);
-    if (userExists) {
-      alert('E-mail já cadastrado');
+    if (!name || !email || !password) {
+      alert("Preencha todos os campos");
       return;
     }
 
-    const newUser = { nome, email, password };
-    users.push(newUser);
-    localStorage.setItem('users', JSON.stringify(users));
-    alert('Usuário cadastrado com sucesso');
-    navigate('/login');
+    try {
+      await axios.post("http://localhost:5000/api/users", {
+        name,
+        email,
+        password,
+        role: "aluno"
+      });
+
+      alert("Usuário cadastrado com sucesso");
+      navigate("/login");
+    } catch (err) {
+      console.error("Erro ao cadastrar:", err.response?.data || err.message);
+      alert(err.response?.data?.error || "Erro ao cadastrar");
+    }
   };
 
   return (
-    <>
-      <div className={styles.container}>
-        <div className={styles.centerModal}>
-          <div className={styles.leftSection}>
-            <div className={styles.iconCadastroWrapper}>
-              <p className={styles.iconCadastroTextTop}>
-                Conheça o pocket Trainer, o seu treinador de bolso, auxiliando no seu treino.
-              </p>
-              <img className={styles.iconCadastro} src={iconCadastro} alt="iconCadastro" />
-              <p className={styles.iconCadastroTextBottom}>
-                E melhorando exponencialmente a sua experiência com musculação.
-              </p>
-            </div>
+    <div className={styles.container}>
+      <div className={styles.centerModal}>
+        <div className={styles.leftSection}>
+          <div className={styles.iconCadastroWrapper}>
+            <p className={styles.iconCadastroTextTop}>
+              Conheça o pocket Trainer, o seu treinador de bolso, auxiliando no seu treino.
+            </p>
+            <img src={iconCadastro} alt="Logo Pocket Trainer" className={styles.iconCadastro} />
+            <p className={styles.iconCadastroTextBottom}>
+              E melhorando exponencialmente a sua experiência com musculação.
+            </p>
           </div>
-          <div className={styles.line}></div>
-          <div className={styles.rightSection}>
-            <div className={styles.topRightSection}>
-              <Link
-                to="/login"
-                className={`${styles.loginText} ${location.pathname === '/login' ? styles.activeLink : ''}`}
-              >
-                Login
-              </Link>
-              <div className={styles.spaceLink}></div>
-              <Link
-                to="/cadastro"
-                className={`${styles.cadastrarText} ${location.pathname === '/cadastro' ? styles.activeLink : ''}`}
-              >
-                Cadastro
-              </Link>
-            </div>
-            <div className={styles.iconUserContainer}>
-              <img className={styles.iconUser} src={iconUser} alt="iconUser" />
-            </div>
-            <div className={styles.inputsContainer}>
-              <div className={styles.inputContainer}>
-                <input
-                  className={styles.input}
-                  type="text"
-                  placeholder="Nome"
-                  value={nome}
-                  onChange={handleNomeChange}
-                />
-              </div>
-              <div className={styles.inputContainer}>
-                <input
-                  className={styles.input}
-                  type="text"
-                  placeholder="Email"
-                  value={email}
-                  onChange={handleEmailChange}
-                />
-              </div>
-              <div className={styles.inputContainer}>
-                <input
-                  className={styles.input}
-                  type="password"
-                  placeholder="Senha"
-                  value={password}
-                  onChange={handlePasswordChange}
-                />
-              </div>
-            </div>
-            <button className={styles.loginButton} onClick={handleCadastro}>
+        </div>
+
+        <div className={styles.line} />
+
+        <div className={styles.rightSection}>
+          <div className={styles.topRightSection}>
+            <Link
+              to="/login"
+              className={`${styles.loginText} ${location.pathname === "/login" ? styles.activeLink : ""}`}
+            >
+              Login
+            </Link>
+            <div className={styles.spaceLink} />
+            <Link
+              to="/cadastro"
+              className={`${styles.cadastrarText} ${location.pathname === "/cadastro" ? styles.activeLink : ""}`}
+            >
+              Cadastro
+            </Link>
+          </div>
+
+          <div className={styles.iconUserContainer}>
+            <img src={iconUser} alt="Ícone de usuário" className={styles.iconUser} />
+          </div>
+
+          <form className={styles.inputsContainer} onSubmit={handleSubmit}>
+            <input
+              className={styles.input}
+              type="text"
+              placeholder="Nome"
+              autoComplete="name"
+              value={name}
+              onChange={(e) => setName(e.target.value)}
+              required
+            />
+            <input
+              className={styles.input}
+              type="email"
+              placeholder="Email"
+              autoComplete="email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              required
+            />
+            <input
+              className={styles.input}
+              type="password"
+              placeholder="Senha"
+              autoComplete="new-password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              required
+            />
+
+            <button type="submit" className={styles.loginButton}>
               Cadastrar
             </button>
-            <div className={styles.bottomLeftSection}>
-              <div className={styles.cadastrarContainer}>
-                <Link to="/login" className={styles.cadastrarText}>
-                  Já tem uma conta? Faça login!
-                </Link>
-              </div>
-            </div>
+          </form>
+
+          <div className={styles.bottomLeftSection}>
+            <Link to="/login" className={styles.cadastrarText}>
+              Já tem uma conta? Faça login!
+            </Link>
           </div>
         </div>
       </div>
-    </>
+    </div>
   );
 }
 
