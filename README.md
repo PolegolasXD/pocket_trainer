@@ -31,7 +31,9 @@ Plataforma para acompanhamento de treinos que oferece:
 Link: <https://www.figma.com/file/j0cOacTYhlA3kuqLLu6IiZ/Pocket-Trainer-team-library?node-id=0%3A1&t=iFdN9FNMog5dAz31-1>
 
 ![protótipo 1](https://user-images.githubusercontent.com/85709318/227787666-b63ccd14-c653-4eb6-9f8d-05fa44bb515a.png)  
+
 ![protótipo 2](https://user-images.githubusercontent.com/85709318/227787684-d2c582a2-92cf-4e97-847f-37d29a39bad6.png)  
+
 ![protótipo 3](https://user-images.githubusercontent.com/85709318/227787703-65b5df1e-4d7e-415e-bad9-12fd9f0d7933.png)
 
 ## Como rodar o projeto
