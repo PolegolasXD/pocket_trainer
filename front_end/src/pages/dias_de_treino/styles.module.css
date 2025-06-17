@@ -189,31 +189,25 @@
   color: gold;
 }
 
-
-/* Classe para estilizar o número do dia */
 .dayNumber {
   color: gold;
 }
 
-/* Classe para estilizar os dias da semana */
 .weekday {
   color: gold;
 }
 
-/* Classe para estilizar os dias do mês */
 .dayTile {
   background-color: transparent;
   border: none;
   color: gold;
 }
 
-/* Classe para estilizar o dia selecionado */
 .selectedDay {
   background-color: gold;
   color: #111111;
 }
 
-/* Classe para estilizar o dia atual */
 .today {
   background-color: transparent;
   border: 2px solid gold;
