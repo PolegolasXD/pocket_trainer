@@ -3,6 +3,8 @@ import { useNavigate } from 'react-router-dom';
 import styles from './styles.module.css';
 import iconMenuBar from '../../assets/icons/Menu.png';
 import iconSizeBar from '../../assets/icons/iconSizeBar.png';
+import iconChat from '../../assets/icons/iconChat.png';
+import iconDashboard from '../../assets/icons/iconDashboard.png';
 import iconCalendarioDiasDeTreino from '../../assets/icons/iconCalendarioDiasDeTreino.png';
 import iconCalendarioTreinoDeHoje from '../../assets/icons/iconCalendarioTreinoDeHoje.png';
 import iconFichaPessoal from '../../assets/icons/iconFichaPessoal.png';
@@ -88,8 +90,24 @@ function HomeHTML() {
           <img className={`${sizeBarStyles.icon} ${sizeBarStyles.goldIcon}`} src={iconExecucao} alt="iconExecucao" />
           <span className={sizeBarStyles.itemDescriptionSizeBar}>Execução</span>
         </div>
-        <div className={sizeBarStyles.closeIconContainer} onClick={handleCloseSizeBar}>
-          <img className={`${sizeBarStyles.iconClose}`} src={iconClose} alt="iconClose" />
+        <div className={sizeBarStyles.iconContainer} onClick={() => handleRedirect('/dashboard')}>
+          <img className={`${sizeBarStyles.icon} ${sizeBarStyles.goldIcon}`} src={iconDashboard} alt="Dashboard" />
+          <span className={sizeBarStyles.itemDescriptionSizeBar}>Dashboard</span>
+        </div>
+
+        <div className={sizeBarStyles.iconContainer} onClick={() => handleRedirect('/chat_bot')}>
+          <img className={`${sizeBarStyles.icon} ${sizeBarStyles.goldIcon}`} src={iconChat} alt="Chat" />
+          <span className={sizeBarStyles.itemDescriptionSizeBar}>Chat</span>
+        </div>
+        <div
+          className={sizeBarStyles.closeIconContainer}
+          onClick={() => {
+            localStorage.removeItem("token");
+            localStorage.removeItem("user");
+            navigate("/login");
+          }}
+        >
+          <img className={`${sizeBarStyles.iconClose}`} src={iconClose} alt="Sair" title="Sair" />
         </div>
       </div>
     </div>

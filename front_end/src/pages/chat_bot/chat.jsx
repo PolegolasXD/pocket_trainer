@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import Sidebar from "../../components/sidebar/sidebar";
 import styles from "./chatStyles.module.css";
 
 const ChatHTML = () => {
@@ -38,31 +39,34 @@ const ChatHTML = () => {
   };
 
   return (
-    <div className={styles.chatContainer}>
-      <div className={styles.chatHeader}>🤖 Pocket Trainer</div>
+    <div className={styles.chatPage}>
+      <Sidebar />
+      <div className={styles.chatContainer}>
+        <div className={styles.chatHeader}>🤖 Pocket Trainer</div>
 
-      <div className={styles.chatBody}>
-        {messages.map((msg, index) => (
-          <div
-            key={index}
-            className={
-              msg.sender === "ai" ? styles.messageAI : styles.messageUser
-            }
-          >
-            {msg.text}
-          </div>
-        ))}
-      </div>
+        <div className={styles.chatBody}>
+          {messages.map((msg, index) => (
+            <div
+              key={index}
+              className={
+                msg.sender === "ai" ? styles.messageAI : styles.messageUser
+              }
+            >
+              {msg.text}
+            </div>
+          ))}
+        </div>
 
-      <div className={styles.chatFooter}>
-        <input
-          type="text"
-          placeholder="Digite sua mensagem..."
-          value={input}
-          onChange={(e) => setInput(e.target.value)}
-          onKeyDown={handleKeyPress}
-        />
-        <button onClick={handleSend}>Enviar</button>
+        <div className={styles.chatFooter}>
+          <input
+            type="text"
+            placeholder="Digite sua mensagem..."
+            value={input}
+            onChange={(e) => setInput(e.target.value)}
+            onKeyDown={handleKeyPress}
+          />
+          <button onClick={handleSend}>Enviar</button>
+        </div>
       </div>
     </div>
   );
