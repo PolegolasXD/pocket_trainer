@@ -1,5 +1,6 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import Sidebar from '../../components/sidebar/sidebar';
+import Header from '../../components/header/header';
 import styles from './Dashboard.module.css';
 import {
   BarChart, Bar, XAxis, YAxis, Tooltip,
@@ -118,98 +119,100 @@ export default function Dashboard() {
   return (
     <div style={{ display: 'flex' }}>
       <Sidebar />
-
-      <div className={styles.container}>
-        {/* KPIs -------------------------------------------------------- */}
-        <section className={styles.kpiSection}>
-          <h2>Indicadores do Aluno</h2>
-          <div className={styles.kpiCards}>
-            <div className={styles.card}><span className={styles.label}>Carga Média</span> {kpis.carga} kg</div>
-            <div className={styles.card}><span className={styles.label}>Repetições Média</span> {kpis.repeticoes}</div>
-            <div className={styles.card}><span className={styles.label}>Duração Média</span> {kpis.duracao} min</div>
-          </div>
-        </section>
-
-        {/* Gráficos ---------------------------------------------------- */}
-        <section className={styles.chartSection}>
-          <div className={styles.chartHeader}>
-            <h2 className={styles.chartTitle}>Histórico dos Treinos</h2>
-            <div className={styles.toggleButtons}>
-              {allMetrics.map(m => (
-                <button key={m}
-                  onClick={() => setMetric(m)}
-                  className={metric === m ? styles.active : ''}>
-                  {m === 'carga' ? 'Carga' : m === 'repeticoes' ? 'Repetições' : 'Duração'}
-                </button>
-              ))}
-              <button onClick={() => setMetric('todos')}
-                className={metric === 'todos' ? styles.active : ''}>
-                Todos
-              </button>
+      <div className={styles.mainContent}>
+        <Header />
+        <div className={styles.container}>
+          {/* KPIs -------------------------------------------------------- */}
+          <section className={styles.kpiSection}>
+            <h2>Indicadores do Aluno</h2>
+            <div className={styles.kpiCards}>
+              <div className={styles.card}><span className={styles.label}>Carga Média</span> {kpis.carga} kg</div>
+              <div className={styles.card}><span className={styles.label}>Repetições Média</span> {kpis.repeticoes}</div>
+              <div className={styles.card}><span className={styles.label}>Duração Média</span> {kpis.duracao} min</div>
             </div>
-          </div>
-
-          <div className={styles.chartsWrapper}>
-            {/* Barras */}
-            <ResponsiveContainer width="50%" height={280}>
-              <BarChart data={dataset}>
-                <CartesianGrid strokeDasharray="3 3" />
-                <XAxis dataKey="dia" />
-                <YAxis />
-                <Tooltip />
-                <Legend />
-                {metric === 'todos'
-                  ? allMetrics.map(m => (
-                    <Bar key={m} dataKey={m}
-                      fill={METRIC_COLORS[m]}
-                      name={m.charAt(0).toUpperCase() + m.slice(1)} />
-                  ))
-                  : <Bar dataKey={metric}
-                    fill={METRIC_COLORS[metric]}
-                    name={metric.charAt(0).toUpperCase() + metric.slice(1)} />}
-              </BarChart>
-            </ResponsiveContainer>
-
-            {/* Pizza */}
-            <ResponsiveContainer width="50%" height={280}>
-              <PieChart>
-                <Pie data={pizzaData} dataKey="value" nameKey="name"
-                  cx="50%" cy="50%" outerRadius={90} label>
-                  {pizzaData.map((_, i) => (
-                    <Cell key={i} fill={COLORS[i % COLORS.length]} />
-                  ))}
-                </Pie>
-                <Tooltip />
-                <Legend />
-              </PieChart>
-            </ResponsiveContainer>
-          </div>
-
-          {/* Insights ------------------------------------------------ */}
-          <section className={styles.insightSection}>
-            <h2>Insights Rápidos</h2>
-            <ul>
-              <li>📅 <strong>Dia mais pesado:</strong> {stats.diaMaisPesado}</li>
-              <li>🏋🏻 <strong>Exercício mais frequente:</strong> {stats.exercicioTop}</li>
-              <li>🔢 <strong>Total de sessões registradas:</strong> {stats.totalSes}</li>
-            </ul>
-
-            <h3>Top Exercícios por {metric === 'todos'
-              ? 'Métrica Combinada'
-              : metric.charAt(0).toUpperCase() + metric.slice(1)}</h3>
-            <ul>
-              {topExercicios.map((ex, i) => (
-                <li key={i}>
-                  <strong>{ex.name}</strong> — {ex.value}{' '}
-                  {metric === 'carga' ? ' kg'
-                    : metric === 'duracao' ? ' min'
-                      : metric === 'repeticoes' ? ' reps'
-                        : ''}
-                </li>
-              ))}
-            </ul>
           </section>
-        </section>
+
+          {/* Gráficos ---------------------------------------------------- */}
+          <section className={styles.chartSection}>
+            <div className={styles.chartHeader}>
+              <h2 className={styles.chartTitle}>Histórico dos Treinos</h2>
+              <div className={styles.toggleButtons}>
+                {allMetrics.map(m => (
+                  <button key={m}
+                    onClick={() => setMetric(m)}
+                    className={metric === m ? styles.active : ''}>
+                    {m === 'carga' ? 'Carga' : m === 'repeticoes' ? 'Repetições' : 'Duração'}
+                  </button>
+                ))}
+                <button onClick={() => setMetric('todos')}
+                  className={metric === 'todos' ? styles.active : ''}>
+                  Todos
+                </button>
+              </div>
+            </div>
+
+            <div className={styles.chartsWrapper}>
+              {/* Barras */}
+              <ResponsiveContainer width="50%" height={280}>
+                <BarChart data={dataset}>
+                  <CartesianGrid strokeDasharray="3 3" />
+                  <XAxis dataKey="dia" />
+                  <YAxis />
+                  <Tooltip />
+                  <Legend />
+                  {metric === 'todos'
+                    ? allMetrics.map(m => (
+                      <Bar key={m} dataKey={m}
+                        fill={METRIC_COLORS[m]}
+                        name={m.charAt(0).toUpperCase() + m.slice(1)} />
+                    ))
+                    : <Bar dataKey={metric}
+                      fill={METRIC_COLORS[metric]}
+                      name={metric.charAt(0).toUpperCase() + metric.slice(1)} />}
+                </BarChart>
+              </ResponsiveContainer>
+
+              {/* Pizza */}
+              <ResponsiveContainer width="50%" height={280}>
+                <PieChart>
+                  <Pie data={pizzaData} dataKey="value" nameKey="name"
+                    cx="50%" cy="50%" outerRadius={90} label>
+                    {pizzaData.map((_, i) => (
+                      <Cell key={i} fill={COLORS[i % COLORS.length]} />
+                    ))}
+                  </Pie>
+                  <Tooltip />
+                  <Legend />
+                </PieChart>
+              </ResponsiveContainer>
+            </div>
+
+            {/* Insights ------------------------------------------------ */}
+            <section className={styles.insightSection}>
+              <h2>Insights Rápidos</h2>
+              <ul>
+                <li>📅 <strong>Dia mais pesado:</strong> {stats.diaMaisPesado}</li>
+                <li>🏋🏻 <strong>Exercício mais frequente:</strong> {stats.exercicioTop}</li>
+                <li>🔢 <strong>Total de sessões registradas:</strong> {stats.totalSes}</li>
+              </ul>
+
+              <h3>Top Exercícios por {metric === 'todos'
+                ? 'Métrica Combinada'
+                : metric.charAt(0).toUpperCase() + metric.slice(1)}</h3>
+              <ul>
+                {topExercicios.map((ex, i) => (
+                  <li key={i}>
+                    <strong>{ex.name}</strong> — {ex.value}{' '}
+                    {metric === 'carga' ? ' kg'
+                      : metric === 'duracao' ? ' min'
+                        : metric === 'repeticoes' ? ' reps'
+                          : ''}
+                  </li>
+                ))}
+              </ul>
+            </section>
+          </section>
+        </div>
       </div>
     </div>
   );

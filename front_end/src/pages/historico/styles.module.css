@@ -1,0 +1,51 @@
+.historicoPage {
+  display: flex;
+  background-color: #1e1e1e;
+  min-height: 100vh;
+}
+
+.historicoContainer {
+  flex: 1;
+  padding: 2rem;
+  color: #fff;
+}
+
+.listaFeedbacks {
+  list-style: none;
+  padding: 0;
+  margin-top: 1.5rem;
+}
+
+.feedbackItem {
+  background: #2c2c2c;
+  border-left: 4px solid #f0c000;
+  margin-bottom: 1rem;
+  padding: 1rem;
+  border-radius: 8px;
+  animation: fadeIn 0.3s ease-in-out;
+}
+
+.data {
+  display: block;
+  font-size: 0.9rem;
+  color: #ccc;
+  margin-bottom: 0.5rem;
+}
+
+.loading,
+.semFeedbacks {
+  font-style: italic;
+  color: #aaa;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}

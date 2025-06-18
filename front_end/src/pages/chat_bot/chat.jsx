@@ -1,37 +1,100 @@
-import React, { useState } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import Sidebar from "../../components/sidebar/sidebar";
 import styles from "./chatStyles.module.css";
+import { v4 as uuid } from "uuid";
+import { useChat } from "../../context/ChatContext";
+import iconBot from "../../assets/icons/iconChat.png";
+import iconUser from "../../assets/icons/IconesUsuario.png";
 
 const ChatHTML = () => {
-  const [messages, setMessages] = useState([
-    { sender: "ai", text: "Olá! Pronto para treinar hoje?" }
-  ]);
+  const { conversaSelecionada, setConversaSelecionada } = useChat();
+
+  const [messages, setMessages] = useState([]);
   const [input, setInput] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [showTyping, setShowTyping] = useState(false);
+  const bottomRef = useRef(null);
+  const inputRef = useRef(null);
+
+  useEffect(() => {
+    async function fetchMensagens() {
+      if (!conversaSelecionada) {
+        setMessages([{ id: uuid(), sender: "ai", text: "Olá! Pronto para treinar hoje?" }]);
+        return;
+      }
+      try {
+        const res = await fetch(`${import.meta.env.VITE_API_URL}/api/mensagens/feedback/${conversaSelecionada.id}`, {
+          headers: { Authorization: `Bearer ${localStorage.getItem("token")}` }
+        });
+        const data = await res.json();
+        setMessages(data.map(msg => ({ ...msg, text: msg.texto })));
+      } catch (error) {
+        console.error("Erro ao buscar mensagens:", error);
+        setMessages([{ id: uuid(), sender: "ai", text: "Erro ao carregar histórico." }]);
+      }
+    }
+    fetchMensagens();
+    inputRef.current?.focus();
+  }, [conversaSelecionada]);
+
+  const scrollToBottom = () => {
+    bottomRef.current?.scrollIntoView({ behavior: "smooth" });
+  };
+
+  useEffect(scrollToBottom, [messages, showTyping]);
+
+  const alunoId = JSON.parse(localStorage.getItem("usuario"))?.id;
 
   const handleSend = async () => {
-    if (!input.trim()) return;
+    if (!input.trim() || loading) return;
 
-    const userMessage = { sender: "user", text: input };
+    const userMessage = { id: uuid(), sender: "user", text: input };
     setMessages((prev) => [...prev, userMessage]);
+    setInput("");
+    setLoading(true);
+    setShowTyping(true);
 
     try {
-      const response = await fetch("http://localhost:5000/chat", {
+      const body = {
+        message: userMessage.text,
+        aluno_id: alunoId,
+      };
+      if (conversaSelecionada) {
+        body.feedback_id = conversaSelecionada.id;
+      }
+
+      const response = await fetch(`${import.meta.env.VITE_API_URL}/api/chat`, {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ message: input })
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${localStorage.getItem("token")}`
+        },
+        body: JSON.stringify(body),
       });
 
+      // Simula um pequeno delay para UX
+      await new Promise((resolve) => setTimeout(resolve, 600));
+
       const data = await response.json();
-      setMessages((prev) => [...prev, { sender: "ai", text: data.reply }]);
+      setMessages((prev) => [
+        ...prev,
+        { id: uuid(), sender: "ai", text: data.reply ?? "Desculpe, resposta vazia." }
+      ]);
     } catch (error) {
       console.error("Erro ao enviar mensagem:", error);
       setMessages((prev) => [
         ...prev,
-        { sender: "ai", text: "⚠️ Erro ao conectar com a IA. Tente novamente." }
+        {
+          id: uuid(),
+          sender: "ai",
+          text: "⚠️ Erro ao conectar com a IA. Tente novamente."
+        }
       ]);
+    } finally {
+      setLoading(false);
+      setShowTyping(false);
+      inputRef.current?.focus();
     }
-
-    setInput("");
   };
 
   const handleKeyPress = (e) => {
@@ -42,30 +105,51 @@ const ChatHTML = () => {
     <div className={styles.chatPage}>
       <Sidebar />
       <div className={styles.chatContainer}>
-        <div className={styles.chatHeader}>🤖 Pocket Trainer</div>
+        <div className={styles.chatHeader}>
+          🤖 Pocket Trainer
+          <button className={styles.novaConversaBtn} onClick={() => setConversaSelecionada(null)}>
+            Nova conversa
+          </button>
+        </div>
 
         <div className={styles.chatBody}>
-          {messages.map((msg, index) => (
+          {messages.map((msg) => (
             <div
-              key={index}
-              className={
-                msg.sender === "ai" ? styles.messageAI : styles.messageUser
-              }
+              key={msg.id}
+              className={`${msg.sender === "ai" ? styles.messageAI : styles.messageUser} ${styles.fadeIn}`}
+              style={{ display: 'flex', alignItems: 'flex-end', gap: 8 }}
             >
-              {msg.text}
+              {msg.sender === "ai" && (
+                <img src={iconBot} alt="Bot" style={{ width: 32, height: 32, marginRight: 8, borderRadius: '50%' }} />
+              )}
+              <span>{msg.text}</span>
+              {msg.sender === "user" && (
+                <img src={iconUser} alt="Você" style={{ width: 32, height: 32, marginLeft: 8, borderRadius: '50%' }} />
+              )}
             </div>
           ))}
+          {showTyping && (
+            <div className={`${styles.messageAI} ${styles.fadeIn}`} style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+              <img src={iconBot} alt="Bot" style={{ width: 32, height: 32, marginRight: 8, borderRadius: '50%' }} />
+              <span><em>Digitando...</em></span>
+            </div>
+          )}
+          <div ref={bottomRef} />
         </div>
 
         <div className={styles.chatFooter}>
           <input
+            ref={inputRef}
             type="text"
             placeholder="Digite sua mensagem..."
             value={input}
             onChange={(e) => setInput(e.target.value)}
             onKeyDown={handleKeyPress}
+            disabled={loading}
           />
-          <button onClick={handleSend}>Enviar</button>
+          <button onClick={handleSend} disabled={loading}>
+            {loading ? "Enviando..." : "Enviar"}
+          </button>
         </div>
       </div>
     </div>

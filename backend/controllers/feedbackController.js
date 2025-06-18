@@ -1,5 +1,6 @@
 // backend/controllers/feedbackController.js
 const Feedback = require('../models/feedbackModel');
+const db = require('../db');
 
 /**
  * Cria um feedback
@@ -76,7 +77,6 @@ exports.deleteFeedback = async (req, res) => {
   }
 };
 
-/** (Admin) Lista todos os feedbacks */
 exports.getTodosFeedbacks = async (_req, res) => {
   try {
     const feedbacks = await Feedback.getAllFeedbacks();
@@ -85,3 +85,22 @@ exports.getTodosFeedbacks = async (_req, res) => {
     res.status(500).json({ error: 'Erro ao buscar feedbacks' });
   }
 };
+
+
+exports.getHistoricoDoAluno = async (req, res) => {
+  const { aluno_id } = req.params;
+
+
+  try {
+    const historico = await db("feedbacks")
+      .where({ aluno_id })
+      .orderBy("created_at", "desc");
+
+
+    res.json(historico);
+  } catch (error) {
+    console.error("Erro ao buscar histórico:", error.message);
+    res.status(500).json({ error: "Erro ao buscar histórico do aluno." });
+  }
+};
+

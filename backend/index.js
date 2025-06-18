@@ -2,15 +2,14 @@ const express = require("express");
 const cors = require("cors");
 require("dotenv").config();
 
-const OpenAI = require("openai");
 const userRoutes = require("./routes/userRoutes");
 const treinoRoutes = require("./routes/treinoRoutes");
 const adminRoutes = require("./routes/adminRoutes");
 const feedbackRoutes = require("./routes/feedbackRoutes");
+const mensagemRoutes = require("./routes/mensagemRoutes");
 
-const openai = new OpenAI({
-  apiKey: process.env.OPENAI_API_KEY,
-});
+const chatController = require("./controllers/chatController");
+const verifyToken = require("./middlewares/verifyToken");
 
 const app = express();
 
@@ -21,25 +20,11 @@ app.use("/api/users", userRoutes);
 app.use("/api/treinos", treinoRoutes);
 app.use("/api/admin", adminRoutes);
 app.use("/api/feedbacks", feedbackRoutes);
+app.use("/api/mensagens", mensagemRoutes);
 
-app.post("/chat", async (req, res) => {
-  const { message } = req.body;
-
-  try {
-    const response = await openai.chat.completions.create({
-      model: "gpt-3.5-turbo",
-      messages: [{ role: "user", content: message }],
-    });
-
-    const reply = response.choices[0].message.content;
-    res.json({ reply });
-  } catch (error) {
-    console.error("Erro ao acessar OpenAI:", error.message);
-    res.status(500).json({ reply: "Erro ao gerar resposta." });
-  }
-});
+app.post("/api/chat", verifyToken, chatController.gerarFeedbackIA);
 
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {
-  console.log(`Backend rodando em http://localhost:${PORT}`);
+  console.log(`✅ Backend rodando em http://localhost:${PORT}`);
 });

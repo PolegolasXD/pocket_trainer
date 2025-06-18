@@ -10,6 +10,7 @@ router.post('/', feedbackController.createFeedback);
 router.get('/', feedbackController.getFeedbacksDoAluno);
 router.get('/treino/:treino_id', feedbackController.getFeedbacksDoTreino);
 router.put('/:id', feedbackController.updateFeedback);
+router.get('/:aluno_id/historico', feedbackController.getHistoricoDoAluno);
 
 router.get('/todos', verifyAdmin, feedbackController.getTodosFeedbacks);
 router.delete('/:id', verifyAdmin, feedbackController.deleteFeedback);
