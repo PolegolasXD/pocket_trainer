@@ -10,6 +10,8 @@ import Treino_de_hojeHTML from './pages/treino_de_hoje/treino_de_hoje';
 import ExecucaoHTML from './pages/execucao/execucao';
 import ChatHTML from './pages/chat_bot/chat';
 import DashboardHTML from './pages/dashboard/Dashboard';
+import Historico from './pages/historico/historico';
+import TreinoForm from './pages/treino_form/treino_form';
 
 function RoutesComponents() {
   return (
@@ -26,6 +28,8 @@ function RoutesComponents() {
         <Route path="/chat" element={<ChatHTML />} />
         <Route path="/chat_bot" element={<ChatHTML />} />
         <Route path="/dashboard" element={<DashboardHTML />} />
+        <Route path="/historico" element={<Historico />} />
+        <Route path="/registrar_treino" element={<TreinoForm />} />
       </Routes>
     </>
   );
