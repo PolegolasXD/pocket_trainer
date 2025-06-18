@@ -9,6 +9,8 @@ import iconExecucao from '../../assets/icons/iconExecucao.png';
 import iconDashboard from '../../assets/icons/iconDashboard.png';
 import iconChat from '../../assets/icons/iconChat.png';
 import iconClose from '../../assets/icons/iconClose.png';
+import iconHistorico from '../../assets/icons/iconHistorico.png';
+
 
 const Sidebar = ({ onClose }) => {
   const navigate = useNavigate();
@@ -47,6 +49,15 @@ const Sidebar = ({ onClose }) => {
         <img className={`${styles.icon} ${styles.goldIcon}`} src={iconChat} alt="Chat" />
         <span className={styles.itemDescriptionSizeBar}>Chat</span>
       </div>
+      <div className={styles.iconContainer} onClick={() => handleRedirect('/historico')}>
+        <img className={`${styles.icon} ${styles.goldIcon}`} src={iconHistorico} alt="Histórico" />
+        <span className={styles.itemDescriptionSizeBar}>Histórico</span>
+      </div>
+      <div className={styles.iconContainer} onClick={() => handleRedirect('/registrar_treino')}>
+        <img className={`${styles.icon} ${styles.goldIcon}`} src={iconExecucao} alt="Registrar Treino" />
+        <span className={styles.itemDescriptionSizeBar}>Registrar Treino</span>
+      </div>
+
       <div
         className={styles.closeIconContainer}
         onClick={() => {
