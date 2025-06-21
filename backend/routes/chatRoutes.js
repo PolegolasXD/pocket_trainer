@@ -1,8 +1,8 @@
-import express from "express";
-import { gerarFeedbackIA } from "../controllers/chatController.js";
-import verifyToken from "../middlewares/verifyToken.js";
-
+const express = require('express');
 const router = express.Router();
+const verifyToken = require('../middlewares/verifyToken');
+const chatController = require('../controllers/chatController');
 
-router.post("/", verifyToken, gerarFeedbackIA);
-export default router;
+router.post('/', verifyToken, chatController.gerarFeedbackIA);
+
+module.exports = router;

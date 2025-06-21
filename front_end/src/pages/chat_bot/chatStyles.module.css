@@ -45,6 +45,40 @@
   justify-content: space-between;
 }
 
+/* Botão "Voltar" */
+.voltarBtn {
+  background-color: transparent;
+  border: 1.5px solid var(--gold);
+  color: var(--gold);
+  padding: 0.6rem 1.2rem;
+  border-radius: 10px;
+  cursor: pointer;
+  font-weight: bold;
+  font-size: 0.95rem;
+  transition: all 0.2s ease-in-out;
+  user-select: none;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+}
+
+.voltarBtn:hover {
+  background-color: var(--gold);
+  color: var(--black);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+}
+
+.voltarBtn:active {
+  transform: translateY(0);
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+}
+
+/* Título do chat */
+.chatTitle {
+  color: var(--gold);
+  font-weight: bold;
+  font-size: 1.6rem;
+}
+
 /* Botão "Nova conversa" */
 .novaConversaBtn {
   background-color: var(--gold);
@@ -164,6 +198,18 @@
   .chatHeader {
     font-size: 1.2rem;
     text-align: center;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  .voltarBtn,
+  .novaConversaBtn {
+    font-size: 0.85rem;
+    padding: 0.5rem 1rem;
+  }
+
+  .chatTitle {
+    font-size: 1.2rem;
   }
 
   .chatFooter {

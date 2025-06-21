@@ -3,34 +3,39 @@ import ReactMarkdown from 'react-markdown';
 import styles from "./chatStyles.module.css";
 import { v4 as uuid } from "uuid";
 import { useChat } from "../../context/ChatContext";
+import { useNavigate } from "react-router-dom";
 import iconUser from "../../assets/icons/IconesUsuario.png";
 import iconBot from "../../assets/icons/iconChatBot.png";
 
 const Chat = () => {
   const { selectedConversation, setSelectedConversation } = useChat();
+  const navigate = useNavigate();
 
   const [messages, setMessages] = useState([]);
   const [input, setInput] = useState("");
   const [loading, setLoading] = useState(false);
   const [showTyping, setShowTyping] = useState(false);
+  const [currentFeedbackId, setCurrentFeedbackId] = useState(null);
   const bottomRef = useRef(null);
   const inputRef = useRef(null);
 
   useEffect(() => {
     async function fetchMessages() {
-      if (!selectedConversation) {
-        setMessages([{ id: uuid(), sender: "ai", text: "Olá! Pronto para treinar hoje?" }]);
-        return;
-      }
-      try {
-        const res = await fetch(`${import.meta.env.VITE_API_URL}/api/mensagens/feedback/${selectedConversation.id}`, {
-          headers: { Authorization: `Bearer ${localStorage.getItem("token")}` }
-        });
-        const data = await res.json();
-        setMessages(data.map(msg => ({ ...msg, text: msg.texto })));
-      } catch (error) {
-        console.error("Erro ao buscar mensagens:", error);
-        setMessages([{ id: uuid(), sender: "ai", text: "Erro ao carregar o histórico." }]);
+      if (selectedConversation) {
+        setCurrentFeedbackId(selectedConversation.id);
+        try {
+          const res = await fetch(`${import.meta.env.VITE_API_URL}/api/mensagens/feedback/${selectedConversation.id}`, {
+            headers: { Authorization: `Bearer ${localStorage.getItem("token")}` }
+          });
+          const data = await res.json();
+          setMessages(data.map(msg => ({ ...msg, text: msg.texto })));
+        } catch (error) {
+          console.error("Erro ao buscar mensagens:", error);
+          setMessages([{ id: uuid(), sender: "ai", text: "Erro ao carregar o histórico." }]);
+        }
+      } else {
+        setMessages([{ id: uuid(), sender: "ai", text: "Olá! Como posso ajudar hoje?" }]);
+        setCurrentFeedbackId(null);
       }
     }
     fetchMessages();
@@ -57,11 +62,8 @@ const Chat = () => {
     try {
       const body = {
         message: userMessage.text,
-        userId: userId,
+        feedbackId: currentFeedbackId
       };
-      if (selectedConversation) {
-        body.feedbackId = selectedConversation.id;
-      }
 
       const response = await fetch(`${import.meta.env.VITE_API_URL}/api/chat`, {
         method: "POST",
@@ -75,6 +77,11 @@ const Chat = () => {
       await new Promise((resolve) => setTimeout(resolve, 600));
 
       const data = await response.json();
+
+      if (data.feedbackId && !currentFeedbackId) {
+        setCurrentFeedbackId(data.feedbackId);
+      }
+
       setMessages((prev) => [
         ...prev,
         { id: uuid(), sender: "ai", text: data.reply ?? "Desculpe, resposta vazia." }
@@ -100,11 +107,30 @@ const Chat = () => {
     if (e.key === "Enter") handleSend();
   };
 
+  const handleVoltar = () => {
+    if (selectedConversation) {
+      navigate("/historico");
+    } else {
+      navigate("/home");
+    }
+  };
+
+  const handleNovaConversa = () => {
+    setSelectedConversation(null);
+    setCurrentFeedbackId(null);
+    setMessages([{ id: uuid(), sender: "ai", text: "Olá! Como posso ajudar hoje?" }]);
+  };
+
   return (
     <div className={styles.chatContainer}>
       <div className={styles.chatHeader}>
-        Pocket Trainer
-        <button className={styles.novaConversaBtn} onClick={() => setSelectedConversation(null)}>
+        <button className={styles.voltarBtn} onClick={handleVoltar}>
+          ← Voltar
+        </button>
+        <span className={styles.chatTitle}>
+          {selectedConversation ? "Conversa Anterior" : "Pocket Trainer"}
+        </span>
+        <button className={styles.novaConversaBtn} onClick={handleNovaConversa}>
           Nova Conversa
         </button>
       </div>
