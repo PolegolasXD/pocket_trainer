@@ -4,7 +4,7 @@ const userController = require('../controllers/userController');
 const verifyToken = require('../middlewares/verifyToken');
 const verifyAdmin = require('../middlewares/verifyAdmin');
 
-router.post('/', userController.createUser);
+router.post('/register', userController.createUser);
 router.post('/login', userController.login);
 
 router.get('/me', verifyToken, userController.getMe);

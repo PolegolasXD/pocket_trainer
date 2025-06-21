@@ -91,3 +91,34 @@ exports.getTreinosByStudentId = async (req, res) => {
     res.status(500).json({ error: 'Erro ao buscar treinos do aluno' });
   }
 };
+
+exports.createBulkTreinos = async (req, res) => {
+  const { treinos } = req.body;
+  const aluno_id = req.user.id;
+  const data = dayjs().format('YYYY-MM-DD');
+
+  if (!treinos || !Array.isArray(treinos) || treinos.length === 0) {
+    return res.status(400).json({ error: 'Formato de treinos inválido.' });
+  }
+
+  try {
+    const treinosParaInserir = treinos.map(treino => {
+      if (!treino.exercicio || !treino.repeticoes) {
+        throw new Error('Cada treino deve ter exercício e repetições.');
+      }
+      return {
+        aluno_id,
+        data,
+        exercicio: treino.exercicio,
+        repeticoes: treino.repeticoes,
+        carga: treino.peso || 0, // Mapeia 'peso' do plano para 'carga'
+      };
+    });
+
+    const novosTreinos = await Treino.createTreinos(treinosParaInserir);
+    res.status(201).json(novosTreinos);
+  } catch (err) {
+    console.error('Erro ao cadastrar treinos em massa:', err.message);
+    res.status(500).json({ error: 'Erro interno ao cadastrar treinos.' });
+  }
+};

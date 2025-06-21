@@ -5,6 +5,10 @@ const Treino = {
     return db('treinos').insert(data).returning('*');
   },
 
+  createTreinos(data) {
+    return db('treinos').insert(data).returning('*');
+  },
+
   getAllTreinos() {
     return db('treinos').select('*').orderBy('data', 'desc');
   },

@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useAdmin } from '../../context/AdminContext';
 import styles from './styles.module.css';
 import axios from 'axios';
+import { useTreinos } from '../../context/TreinoContext';
 
 const dayTranslations = {
   monday: 'Segunda-feira',
@@ -36,6 +37,9 @@ const WeeklyWorkout = () => {
   const [reps, setReps] = useState('');
   const [peso, setPeso] = useState('');
   const [editingExercise, setEditingExercise] = useState(null);
+  const [isRegistering, setIsRegistering] = useState(null);
+
+  const { buscarTreinos } = useTreinos();
 
   const currentUser = JSON.parse(localStorage.getItem('usuario'));
   let targetId = null;
@@ -150,6 +154,36 @@ const WeeklyWorkout = () => {
     }
   };
 
+  const handleRegisterDay = async (day) => {
+    setIsRegistering(day);
+    const exercisesToRegister = weeklyWorkout[day];
+
+    if (!exercisesToRegister || exercisesToRegister.length === 0) {
+      alert("Não há exercícios para registrar neste dia.");
+      setIsRegistering(null);
+      return;
+    }
+
+    try {
+      const token = localStorage.getItem('token');
+      const apiUrl = import.meta.env.VITE_API_URL || 'http://localhost:5000';
+
+      const body = { treinos: exercisesToRegister };
+      await axios.post(`${apiUrl}/api/treinos/bulk`, body, {
+        headers: { Authorization: `Bearer ${token}` }
+      });
+
+      await buscarTreinos();
+      alert('Treino do dia registrado com sucesso!');
+
+    } catch (error) {
+      console.error("Erro ao registrar treino do dia:", error);
+      alert('Falha ao registrar o treino.');
+    } finally {
+      setIsRegistering(null);
+    }
+  };
+
   const daysOfWeek = ['monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday'];
 
   const exerciseOptions = [...defaultExercises];
@@ -199,6 +233,20 @@ const WeeklyWorkout = () => {
                 </div>
               )}
             </div>
+            {currentUser.role !== 'admin' && weeklyWorkout[day] && weeklyWorkout[day].length > 0 && (
+              <div className={styles.dayActions}>
+                <button
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    handleRegisterDay(day);
+                  }}
+                  className={styles.registerButton}
+                  disabled={isRegistering === day}
+                >
+                  {isRegistering === day ? 'Registrando...' : 'Registrar Treino de Hoje'}
+                </button>
+              </div>
+            )}
           </div>
         ))}
       </div>
