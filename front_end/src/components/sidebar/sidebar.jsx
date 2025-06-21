@@ -24,6 +24,15 @@ const Sidebar = ({ isOpen, onClose }) => {
     navigate(route);
   };
 
+  const handleDashboardClick = () => {
+    const usuario = JSON.parse(localStorage.getItem('usuario') || '{}');
+    if (usuario.role === 'admin') {
+      navigate('/admin-dashboard');
+    } else {
+      navigate('/dashboard');
+    }
+  };
+
   return (
     <div className={`${styles.sizeBar} ${isOpen ? styles.open : styles.closed}`}>
       <div className={styles.iconSizeBarContainer} onClick={() => handleRedirect('/home')}>
@@ -45,7 +54,7 @@ const Sidebar = ({ isOpen, onClose }) => {
         <img className={styles.icon} src={iconExecucao} alt="Execução" />
         <span className={styles.itemDescriptionSizeBar}>Execução</span>
       </div>
-      <div className={styles.iconContainer} onClick={() => handleRedirect('/dashboard')}>
+      <div className={styles.iconContainer} onClick={handleDashboardClick}>
         <img className={styles.icon} src={iconDashboard} alt="Painel" />
         <span className={styles.itemDescriptionSizeBar}>Painel</span>
       </div>

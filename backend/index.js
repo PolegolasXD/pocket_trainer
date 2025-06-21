@@ -7,6 +7,8 @@ const treinoRoutes = require("./routes/treinoRoutes");
 const adminRoutes = require("./routes/adminRoutes");
 const feedbackRoutes = require("./routes/feedbackRoutes");
 const mensagemRoutes = require("./routes/mensagemRoutes");
+const chatRoutes = require("./routes/chatRoutes");
+const treinoSemanalRoutes = require("./routes/treinoSemanalRoutes");
 
 const chatController = require("./controllers/chatController");
 const verifyToken = require("./middlewares/verifyToken");
@@ -21,6 +23,8 @@ app.use("/api/treinos", treinoRoutes);
 app.use("/api/admin", adminRoutes);
 app.use("/api/feedbacks", feedbackRoutes);
 app.use("/api/mensagens", mensagemRoutes);
+app.use("/api/chat", chatRoutes);
+app.use("/api/treino-semanal", treinoSemanalRoutes);
 
 app.post("/api/chat", verifyToken, chatController.gerarFeedbackIA);
 

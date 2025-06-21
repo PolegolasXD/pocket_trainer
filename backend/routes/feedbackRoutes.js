@@ -13,6 +13,7 @@ router.put('/:id', feedbackController.updateFeedback);
 router.get('/:aluno_id/historico', feedbackController.getHistoricoDoAluno);
 
 router.get('/todos', verifyAdmin, feedbackController.getTodosFeedbacks);
+router.get('/student/:studentId', verifyAdmin, feedbackController.getFeedbacksByStudentId);
 router.delete('/:id', verifyAdmin, feedbackController.deleteFeedback);
 
 module.exports = router;

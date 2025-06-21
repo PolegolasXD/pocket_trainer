@@ -2,11 +2,12 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import styles from './styles.module.css';
 import { useAdmin } from '../../context/AdminContext';
+import AdminStudentDashboard from './AdminStudentDashboard';
 
 const AdminDashboard = () => {
   const [students, setStudents] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
-  const { selectStudent } = useAdmin();
+  const { selectStudent, selectedStudent } = useAdmin();
 
   useEffect(() => {
     const fetchStudents = async () => {
@@ -27,9 +28,14 @@ const AdminDashboard = () => {
     student.id.toString().includes(searchTerm)
   );
 
+  // Se um aluno foi selecionado, mostrar o dashboard do aluno
+  if (selectedStudent) {
+    return <AdminStudentDashboard />;
+  }
+
   return (
     <div className={styles.container}>
-      <div className={styles.main}>
+      <div className={styles.content}>
         <header className={styles.header}>
           <h1>Admin Dashboard</h1>
           <p>Select a student to view their data or manage their workout plan.</p>

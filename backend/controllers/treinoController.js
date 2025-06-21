@@ -80,3 +80,14 @@ exports.getUniqueExercises = async (_req, res) => {
     res.status(500).json({ error: 'Erro ao buscar exercícios' });
   }
 };
+
+exports.getTreinosByStudentId = async (req, res) => {
+  try {
+    const { studentId } = req.params;
+    const treinos = await Treino.getTreinosByAlunoId(studentId);
+    res.json(treinos);
+  } catch (err) {
+    console.error('Erro ao buscar treinos do aluno:', err.message);
+    res.status(500).json({ error: 'Erro ao buscar treinos do aluno' });
+  }
+};

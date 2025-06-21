@@ -96,13 +96,13 @@ const Dashboard = () => {
     }
   };
 
-  const { pizzaData, stats, topExercicios, tendenciasData, aggregatedDataset } = useMemo(() => {
+  const { pizzaData, stats, topExercicios, aggregatedDataset, volumeData } = useMemo(() => {
     if (!dataset.length || !treinos.length) return {
       pizzaData: [],
       stats: null,
       topExercicios: [],
-      tendenciasData: [],
-      aggregatedDataset: []
+      aggregatedDataset: [],
+      volumeData: []
     };
 
     const aggregated = dataset.reduce((acc, cur) => {
@@ -120,6 +120,18 @@ const Dashboard = () => {
       ...d,
       carga: d.carga,
     }));
+
+    const dailyVolume = dataset.reduce((acc, cur) => {
+      const day = cur.dia;
+      const volume = (cur.carga || 0) * (cur.repeticoes || 0);
+      if (!acc[day]) {
+        acc[day] = { dia: day, volume: 0 };
+      }
+      acc[day].volume += volume;
+      return acc;
+    }, {});
+
+    const volumeData = Object.values(dailyVolume).sort((a, b) => new Date(a.dia) - new Date(b.dia));
 
     const soma = dataset.reduce((acc, cur) => ({
       carga: acc.carga + cur.carga,
@@ -208,8 +220,8 @@ const Dashboard = () => {
         tendenciaCarga: Math.round(tendenciaCarga * 10) / 10
       },
       topExercicios,
-      tendenciasData,
-      aggregatedDataset
+      aggregatedDataset,
+      volumeData
     };
   }, [dataset, treinos, metric]);
 
@@ -320,18 +332,19 @@ const Dashboard = () => {
 
             {/* Gráfico de Tendências */}
             <div className={styles.chartContainer}>
-              <h3>Tendências Semanais</h3>
+              <h3>Volume de Treino (Carga x Reps)</h3>
               <ResponsiveContainer width="100%" height={280}>
-                <AreaChart data={tendenciasData}>
+                <LineChart data={volumeData}>
                   <CartesianGrid strokeDasharray="3 3" />
-                  <XAxis dataKey="semana" />
+                  <XAxis dataKey="dia" />
                   <YAxis />
-                  <Tooltip />
+                  <Tooltip
+                    contentStyle={{ backgroundColor: '#2c2c2e', border: '1px solid #f5c518' }}
+                    labelStyle={{ color: '#f5f5f5' }}
+                  />
                   <Legend />
-                  <Area type="monotone" dataKey="carga" stroke="#f5c518" fill="#f5c51833" />
-                  <Area type="monotone" dataKey="repeticoes" stroke="#a07df0" fill="#a07df033" />
-                  <Area type="monotone" dataKey="duracao" stroke="#36b37e" fill="#36b37e33" />
-                </AreaChart>
+                  <Line type="monotone" dataKey="volume" stroke="#f5c518" name="Volume Total" />
+                </LineChart>
               </ResponsiveContainer>
             </div>
           </div>

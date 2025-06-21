@@ -8,6 +8,10 @@ async function getAllUsers() {
   return await db('users').select('*');
 }
 
+async function getStudents() {
+  return await db('users').where({ role: 'aluno' }).select('id', 'name', 'email', 'role');
+}
+
 async function getUserById(id) {
   return await db('users').where({ id }).first();
 }
@@ -23,6 +27,7 @@ async function deleteUserById(id) {
 async function getUserByEmail(email) {
   return await db('users').where({ email }).first();
 }
+
 async function countUsers() {
   const [{ count }] = await db('users').count();
   return parseInt(count);
@@ -31,6 +36,7 @@ async function countUsers() {
 module.exports = {
   createUser,
   getAllUsers,
+  getStudents,
   getUserById,
   updateUser,
   deleteUserById,

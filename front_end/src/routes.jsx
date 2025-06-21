@@ -10,6 +10,7 @@ import TreinoDaSemana from './pages/treino_da_semana/treino_da_semana';
 import Execucao from './pages/execucao/execucao';
 import Chat from './pages/chat_bot/chat';
 import Dashboard from './pages/dashboard/Dashboard';
+import AdminDashboard from './pages/admin/AdminDashboard';
 import Historico from './pages/historico/historico';
 import TreinoForm from './pages/treino_form/treino_form';
 import Layout from './components/Layout/Layout';
@@ -29,6 +30,7 @@ function RoutesComponents() {
         <Route path="/execucao" element={<Execucao />} />
         <Route path="/chat" element={<Chat />} />
         <Route path="/dashboard" element={<Dashboard />} />
+        <Route path="/admin-dashboard" element={<AdminDashboard />} />
         <Route path="/historico" element={<Historico />} />
         <Route path="/registrar_treino" element={<TreinoForm />} />
       </Route>

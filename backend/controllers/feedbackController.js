@@ -97,3 +97,14 @@ exports.getHistoricoDoAluno = async (req, res) => {
   }
 };
 
+exports.getFeedbacksByStudentId = async (req, res) => {
+  try {
+    const { studentId } = req.params;
+    const feedbacks = await Feedback.getFeedbacksByAlunoId(studentId);
+    res.json(feedbacks);
+  } catch (error) {
+    console.error("Erro ao buscar feedbacks do aluno:", error.message);
+    res.status(500).json({ error: "Erro ao buscar feedbacks do aluno." });
+  }
+};
+
