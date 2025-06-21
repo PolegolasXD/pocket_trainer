@@ -1,5 +1,6 @@
-// backend/controllers/adminController.js
 const Treino = require('../models/treinoModel');
+const Feedback = require('../models/feedbackModel');
+const db = require('../db');
 
 exports.getAllTreinos = async (_req, res) => {
   try {
@@ -85,6 +86,40 @@ exports.getEvolucaoDoExercicio = async (req, res) => {
     res.json(evolucao);
   } catch {
     res.status(500).json({ error: 'Erro ao buscar evolução do exercício' });
+  }
+};
+
+exports.getChatFeedbackStats = async (_req, res) => {
+  try {
+    const userMessages = await db('mensagens').where({ sender: 'user' }).select('texto');
+
+    const keywords = {
+      dor: ['dor', 'doendo', 'desconforto', 'lesão', 'machuquei'],
+      progresso: ['progresso', 'evolução', 'melhor', 'aumentei', 'evoluindo'],
+      duvida: ['dúvida', 'como', 'porque', 'ajuda', 'quando'],
+      motivacao: ['motivação', 'foco', 'disciplina', 'animado', 'consistência'],
+    };
+
+    const stats = {
+      dor: 0,
+      progresso: 0,
+      duvida: 0,
+      motivacao: 0,
+      total: userMessages.length
+    };
+
+    for (const msg of userMessages) {
+      const texto = msg.texto.toLowerCase();
+      for (const category in keywords) {
+        if (keywords[category].some(kw => texto.includes(kw))) {
+          stats[category]++;
+        }
+      }
+    }
+
+    res.json(stats);
+  } catch (error) {
+    res.status(500).json({ error: 'Erro ao buscar estatísticas de feedback do chat' });
   }
 };
 

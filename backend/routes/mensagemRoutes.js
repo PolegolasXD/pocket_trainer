@@ -1,8 +1,8 @@
 const express = require('express');
 const router = express.Router();
-const mensagemController = require('../controllers/mensagemController');
+const chatController = require('../controllers/chatController');
 const verifyToken = require('../middlewares/verifyToken');
 
-router.get('/feedback/:feedbackId', verifyToken, mensagemController.getMensagensPorFeedback);
+router.get('/feedback/:feedbackId', verifyToken, chatController.getMensagensPorFeedback);
 
 module.exports = router;

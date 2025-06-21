@@ -11,5 +11,6 @@ router.get('/treinos/:aluno_id', adminController.getTreinosPorAluno);
 router.get('/estatisticas', adminController.getEstatisticas);
 router.get('/estatisticas/exercicio/:nome', adminController.getEstatisticasPorExercicio);
 router.get('/evolucao/:aluno_id/:exercicio', adminController.getEvolucaoDoExercicio);
+router.get('/estatisticas/chat', adminController.getChatFeedbackStats);
 
 module.exports = router;

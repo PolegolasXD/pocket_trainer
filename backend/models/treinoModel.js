@@ -1,69 +1,57 @@
 const db = require('../db');
 
-async function createTreino(data) {
-  return await db('treinos').insert(data).returning('*');
-}
+const Treino = {
+  createTreino(data) {
+    return db('treinos').insert(data).returning('*');
+  },
 
-async function getTreinosByAlunoId(aluno_id) {
-  return await db('treinos').where({ aluno_id }).orderBy('created_at', 'desc');
-}
+  getAllTreinos() {
+    return db('treinos').select('*').orderBy('data', 'desc');
+  },
 
-async function updateTreino(id, updates) {
-  return await db('treinos').where({ id }).update(updates).returning('*');
-}
+  getTreinosByAlunoId(aluno_id) {
+    return db('treinos').where({ aluno_id }).orderBy('data', 'desc');
+  },
 
-async function deleteTreinoById(id) {
-  return await db('treinos').where({ id }).del();
-}
+  getTreinosPorExercicio(exercicio) {
+    return db('treinos').where({ exercicio }).orderBy('data', 'desc');
+  },
 
-async function getAllTreinos() {
-  return await db('treinos').select('*').orderBy('created_at', 'desc');
-}
+  getEvolucaoPorExercicio(aluno_id, exercicio) {
+    return db('treinos')
+      .where({ aluno_id, exercicio })
+      .orderBy('data', 'asc')
+      .select('data', 'carga');
+  },
 
-async function countTreinos() {
-  const result = await db('treinos').count('id as total');
-  return result[0].total;
-}
+  updateTreino(id, updates) {
+    return db('treinos').where({ id }).update(updates).returning('*');
+  },
 
-async function avgCarga() {
-  const result = await db('treinos').avg('carga as media');
-  return Number(result[0].media);
-}
+  deleteTreinoById(id) {
+    return db('treinos').where({ id }).del();
+  },
 
-async function avgRepeticoes() {
-  const result = await db('treinos').avg('repeticoes as media');
-  return Number(result[0].media);
-}
+  countTreinos() {
+    return db('treinos').count('id as total').first();
+  },
 
-async function avgDuracao() {
-  const result = await db('treinos').avg('duracao_min as media');
-  return Number(result[0].media);
-}
+  avgCarga() {
+    return db('treinos').avg('carga as media').first();
+  },
 
-async function getTreinosPorExercicio(nome) {
-  return await db('treinos')
-    .whereRaw('LOWER(exercicio) = LOWER(?)', [nome])
-    .orderBy('created_at', 'asc');
-}
+  avgRepeticoes() {
+    return db('treinos').avg('repeticoes as media').first();
+  },
 
-async function getEvolucaoPorExercicio(aluno_id, exercicio) {
-  return await db('treinos')
-    .where({ aluno_id, exercicio })
-    .orderBy('data', 'asc')
-    .select('data', 'carga');
-}
+  avgDuracao() {
+    return db('treinos').avg('duracao_min as media').first();
+  },
 
-module.exports = {
-  createTreino,
-  getTreinosByAlunoId,
-  updateTreino,
-  deleteTreinoById,
-  getAllTreinos,
-  countTreinos,
-  avgCarga,
-  avgRepeticoes,
-  avgDuracao,
-  getTreinosPorExercicio,
-  getEvolucaoPorExercicio,
+  getUniqueExercises() {
+    return db('treinos').distinct('exercicio').select('exercicio');
+  }
 };
+
+module.exports = Treino;
 

@@ -5,7 +5,6 @@ exports.getMensagensPorFeedback = async (req, res) => {
   const { feedbackId } = req.params;
 
   try {
-    // Verificar se o feedback existe
     const feedback = await db('feedbacks').where({ id: feedbackId }).first();
     if (!feedback) {
       console.log("Feedback não encontrado:", feedbackId);

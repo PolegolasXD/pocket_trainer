@@ -4,6 +4,7 @@ const router = express.Router();
 const treinoController = require('../controllers/treinoController');
 const verifyToken = require('../middlewares/verifyToken');
 
+router.get('/exercises', verifyToken, treinoController.getUniqueExercises);
 router.post('/', verifyToken, treinoController.createTreino);
 router.get('/', verifyToken, treinoController.getTreinosDoAluno);
 router.put('/:id', verifyToken, treinoController.updateTreino);

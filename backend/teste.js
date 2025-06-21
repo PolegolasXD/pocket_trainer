@@ -1,4 +1,3 @@
-// backend/teste.js
 const db = require('./db');
 
 db.raw('SELECT 1+1 AS resultado')

@@ -1,4 +1,3 @@
-// backend/controllers/feedbackController.js
 const Feedback = require('../models/feedbackModel');
 const db = require('../db');
 
@@ -18,7 +17,7 @@ exports.createFeedback = async (req, res) => {
     const [novoFeedback] = await Feedback.createFeedback({
       aluno_id,
       treino_id,
-      resposta: texto_feedback, // mapa para coluna 'resposta'
+      resposta: texto_feedback,
       nota,
       carga,
       repeticoes,
@@ -86,18 +85,12 @@ exports.getTodosFeedbacks = async (_req, res) => {
   }
 };
 
-
 exports.getHistoricoDoAluno = async (req, res) => {
-  const { aluno_id } = req.params;
-
+  const aluno_id = req.user.id;
 
   try {
-    const historico = await db("feedbacks")
-      .where({ aluno_id })
-      .orderBy("created_at", "desc");
-
-
-    res.json(historico);
+    const historico = await Feedback.getFeedbacksByAlunoId(aluno_id);
+    res.json(historico.filter(fb => fb.origem === 'ia'));
   } catch (error) {
     console.error("Erro ao buscar histórico:", error.message);
     res.status(500).json({ error: "Erro ao buscar histórico do aluno." });

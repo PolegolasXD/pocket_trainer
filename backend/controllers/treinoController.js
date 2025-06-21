@@ -70,3 +70,13 @@ exports.deleteTreino = async (req, res) => {
     res.status(500).json({ error: 'Erro ao deletar treino' });
   }
 };
+
+exports.getUniqueExercises = async (_req, res) => {
+  try {
+    const exercicios = await Treino.getUniqueExercises();
+    res.json(exercicios.map(e => e.exercicio));
+  } catch (err) {
+    console.error('Erro ao buscar exercícios únicos:', err.message);
+    res.status(500).json({ error: 'Erro ao buscar exercícios' });
+  }
+};

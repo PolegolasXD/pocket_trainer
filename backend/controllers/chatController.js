@@ -1,6 +1,7 @@
 const OpenAI = require("openai");
 const dotenv = require("dotenv");
 const db = require("../db");
+const Mensagem = require("../models/mensagemModel");
 
 dotenv.config();
 
@@ -9,7 +10,7 @@ const openai = new OpenAI({
 });
 
 const gerarFeedbackIA = async (req, res) => {
-  const { message, feedback_id } = req.body;
+  const { message, feedbackId } = req.body;
   const userId = req.user?.id;
 
   if (!message?.trim()) {
@@ -20,59 +21,68 @@ const gerarFeedbackIA = async (req, res) => {
   }
 
   try {
-    // Buscar os 5 treinos recentes
-    const treinos = await db("treinos")
-      .where({ aluno_id: userId })
-      .orderBy("data", "desc")
-      .limit(5);
+    const [treinos, usuario] = await Promise.all([
+      db("treinos").where({ aluno_id: userId }).orderBy("data", "desc").limit(5),
+      db("users").where({ id: userId }).first(),
+    ]);
 
-    // Caso não tenha treinos
-    let promptBase;
-    if (treinos.length === 0) {
-      promptBase = [
-        {
-          role: "system",
-          content: "Você é um personal trainer virtual que motiva e orienta o usuário.",
-        },
-        { role: "user", content: message },
-      ];
-    } else {
-      const treinoTexto = treinos
-        .map(
-          (t) =>
-            `• ${t.exercicio} – ${t.repeticoes} reps de ${t.carga} kg em ${new Date(t.data).toLocaleDateString()}`
-        )
-        .join("\n");
-
-      const prompt = `
-Você é o Pocket Trainer, um personal trainer virtual super empático, direto e motivador.
-
-O aluno tem os seguintes treinos recentes:
-${treinoTexto}
-
-Instruções importantes:
-- Sempre varie as aberturas e saudações, evitando frases repetitivas como "Que ótimo ver seu desempenho nos treinos!".
-- Responda de forma natural, fluida e personalizada, como um amigo experiente conversando, e não como um robô.
-- Adapte o tom e o conteúdo conforme a pergunta do aluno, trazendo contexto e criatividade.
-- Dê dicas práticas e diferentes, sem repetir conselhos genéricos.
-- Use uma linguagem leve, positiva e humana, com emojis moderados (💪, 🔥, ✅, etc).
-- Nunca sugira exercícios que o aluno não fez.
-- Mantenha o tom profissional, porém acolhedor e próximo.
-- Evite frases prontas e respostas genéricas.
-
-Aqui está a pergunta do aluno: ${message}
-      `;
-
-      promptBase = [
-        {
-          role: "system",
-          content: "Você é um assistente inteligente e motivacional, que conversa com alunos de academia.",
-        },
-        { role: "user", content: prompt },
-      ];
+    let historico = [];
+    if (feedbackId) {
+      historico = await Mensagem.getMessagesByFeedbackId(feedbackId);
     }
 
-    // Chamar OpenAI
+    const historicoFormatado =
+      historico.length > 0
+        ? historico
+          .map((msg) => `${msg.sender === "ai" ? "IA" : "Aluno"}: ${msg.texto}`)
+          .join("\n")
+        : "Esta é uma nova conversa.";
+
+    let promptBase;
+    const treinoTexto =
+      treinos.length > 0
+        ? treinos
+          .map(
+            (t) =>
+              `• ${t.exercicio} – ${t.repeticoes} reps de ${t.carga} kg em ${new Date(
+                t.data
+              ).toLocaleDateString()}`
+          )
+          .join("\n")
+        : "O aluno ainda não registrou treinos.";
+
+    const prompt = `
+### Persona
+Você é o "Pocket Trainer", um personal trainer virtual gente boa, motivador e divertido. Seu objetivo é ser um coach parceiro para o usuário.
+- Use uma linguagem informal e descontraída.
+- Use emojis para deixar a conversa mais leve e amigável (ex: 💪, 🎉, 🚀).
+- Faça perguntas para entender melhor a necessidade do aluno e manter o diálogo fluindo.
+- Responda sempre em português do Brasil (pt-BR).
+- Use Markdown para formatar suas respostas (listas com '-', **negrito** para ênfase, etc.) para melhorar a clareza.
+- Mantenha o foco em treino, dieta, saúde e bem-estar. Se o assunto desviar, redirecione a conversa educadamente.
+
+### Contexto do Aluno
+- Nome do Aluno: ${usuario.name}
+- Histórico de Treinos Recentes:
+${treinoTexto}
+
+### Histórico da Conversa Atual
+${historicoFormatado}
+
+### Tarefa
+Responda a seguinte mensagem do aluno, levando em conta todo o contexto fornecido:
+"${message}"
+`;
+
+    promptBase = [
+      {
+        role: "system",
+        content:
+          "Você é o Pocket Trainer, um personal trainer virtual especialista em musculação e bem-estar. Você é motivador, amigável e usa os dados do usuário para dar conselhos personalizados e inteligentes.",
+      },
+      { role: "user", content: prompt },
+    ];
+
     const completion = await openai.chat.completions.create({
       model: "gpt-3.5-turbo",
       messages: promptBase,
@@ -81,52 +91,45 @@ Aqui está a pergunta do aluno: ${message}
 
     const reply = completion.choices[0].message.content.trim();
 
-    if (!feedback_id) {
-      // Criar novo feedback + salvar mensagens
+    if (!feedbackId) {
       const [novoFeedback] = await db("feedbacks")
         .insert({
           aluno_id: userId,
           resposta: reply,
           origem: "ia",
           treino_id: treinos[0]?.id,
-          created_at: new Date(),
         })
         .returning("*");
 
-      await db("mensagens").insert([
-        {
-          feedback_id: novoFeedback.id,
-          sender: "user",
-          texto: message,
-          created_at: new Date(),
-        },
-        {
-          feedback_id: novoFeedback.id,
-          sender: "ai",
-          texto: reply,
-          created_at: new Date(),
-        },
-      ]);
+      await Mensagem.createMessage({
+        feedback_id: novoFeedback.id,
+        sender: "user",
+        texto: message,
+      });
+      await Mensagem.createMessage({
+        feedback_id: novoFeedback.id,
+        sender: "ai",
+        texto: reply,
+      });
 
       return res.json({ reply, feedback_id: novoFeedback.id });
     } else {
-      // Continuar conversa existente: salvar novas mensagens
-      await db("mensagens").insert([
-        {
-          feedback_id,
-          sender: "user",
-          texto: message,
-          created_at: new Date(),
-        },
-        {
-          feedback_id,
-          sender: "ai",
-          texto: reply,
-          created_at: new Date(),
-        },
-      ]);
+      await db('feedbacks')
+        .where({ id: feedbackId })
+        .update({ resposta: reply, updated_at: new Date() });
 
-      return res.json({ reply, feedback_id });
+      await Mensagem.createMessage({
+        feedback_id: feedbackId,
+        sender: "user",
+        texto: message,
+      });
+      await Mensagem.createMessage({
+        feedback_id: feedbackId,
+        sender: "ai",
+        texto: reply,
+      });
+
+      return res.json({ reply, feedback_id: feedbackId });
     }
   } catch (error) {
     console.error("❌ Erro no gerarFeedbackIA:", error);
@@ -134,6 +137,18 @@ Aqui está a pergunta do aluno: ${message}
   }
 };
 
+const getMensagensPorFeedback = async (req, res) => {
+  try {
+    const { feedbackId } = req.params;
+    const mensagens = await Mensagem.getMessagesByFeedbackId(feedbackId);
+    res.json(mensagens);
+  } catch (error) {
+    console.error(`Erro ao buscar mensagens para o feedback ${req.params.feedbackId}:`, error);
+    res.status(500).json({ error: "Erro ao buscar mensagens." });
+  }
+};
+
 module.exports = {
   gerarFeedbackIA,
+  getMensagensPorFeedback
 };
