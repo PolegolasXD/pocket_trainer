@@ -5,55 +5,57 @@ import styles from "./styles.module.css";
 import iconCadastro from "../../assets/icons/IconesCadastro.png";
 import iconUser from "../../assets/icons/IconesUsuario.png";
 
-function CadastroHTML() {
+function SignUp() {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
   const navigate = useNavigate();
   const location = useLocation();
 
-  const handleSubmit = async (e) => {
+  const handleSignUp = async (e) => {
     e.preventDefault();
-
-    if (!name || !email || !password) {
-      alert("Preencha todos os campos");
+    if (password !== confirmPassword) {
+      alert("Passwords don't match.");
       return;
     }
 
     try {
-      await axios.post("http://localhost:5000/api/users", {
-        name,
-        email,
-        password,
-        role: "aluno"
+      const response = await fetch("http://localhost:5000/api/users/register", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ name, email, password }),
       });
-
-      alert("Usuário cadastrado com sucesso");
-      navigate("/login");
-    } catch (err) {
-      console.error("Erro ao cadastrar:", err.response?.data || err.message);
-      alert(err.response?.data?.error || "Erro ao cadastrar");
+      const data = await response.json();
+      if (response.ok) {
+        alert("User registered successfully!");
+        navigate("/login");
+      } else {
+        alert(data.error || "Failed to register.");
+      }
+    } catch (error) {
+      alert("Error connecting to the server.");
     }
   };
 
   return (
     <div className={styles.container}>
       <div className={styles.centerModal}>
-        <div className={styles.leftSection}>
+        <section className={styles.leftSection}>
           <div className={styles.iconCadastroWrapper}>
             <p className={styles.iconCadastroTextTop}>
-              Conheça o pocket Trainer, o seu treinador de bolso, auxiliando no seu treino.
+              Meet Pocket Trainer, your pocket coach, helping you with your workout.
             </p>
-            <img src={iconCadastro} alt="Logo Pocket Trainer" className={styles.iconCadastro} />
+            <img src={iconCadastro} alt="Pocket Trainer Logo" className={styles.iconCadastro} />
             <p className={styles.iconCadastroTextBottom}>
-              E melhorando exponencialmente a sua experiência com musculação.
+              And exponentially improving your experience with weight training.
             </p>
           </div>
-        </div>
+        </section>
 
         <div className={styles.line} />
 
-        <div className={styles.rightSection}>
+        <section className={styles.rightSection}>
           <div className={styles.topRightSection}>
             <Link
               to="/login"
@@ -66,57 +68,65 @@ function CadastroHTML() {
               to="/cadastro"
               className={`${styles.cadastrarText} ${location.pathname === "/cadastro" ? styles.activeLink : ""}`}
             >
-              Cadastro
+              Sign Up
             </Link>
           </div>
 
           <div className={styles.iconUserContainer}>
-            <img src={iconUser} alt="Ícone de usuário" className={styles.iconUser} />
+            <img src={iconUser} alt="User" className={styles.iconUser} />
           </div>
 
-          <form className={styles.inputsContainer} onSubmit={handleSubmit}>
-            <input
-              className={styles.input}
-              type="text"
-              placeholder="Nome"
-              autoComplete="name"
-              value={name}
-              onChange={(e) => setName(e.target.value)}
-              required
-            />
-            <input
-              className={styles.input}
-              type="email"
-              placeholder="Email"
-              autoComplete="email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              required
-            />
-            <input
-              className={styles.input}
-              type="password"
-              placeholder="Senha"
-              autoComplete="new-password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              required
-            />
-
-            <button type="submit" className={styles.loginButton}>
-              Cadastrar
-            </button>
+          <form className={styles.inputsContainer} onSubmit={handleSignUp}>
+            <div className={styles.inputContainer}>
+              <input
+                className={styles.input}
+                type="text"
+                placeholder="Name"
+                value={name}
+                onChange={(e) => setName(e.target.value)}
+                required
+              />
+            </div>
+            <div className={styles.inputContainer}>
+              <input
+                className={styles.input}
+                type="email"
+                placeholder="Email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                required
+              />
+            </div>
+            <div className={styles.inputContainer}>
+              <input
+                className={styles.input}
+                type="password"
+                placeholder="Password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                required
+              />
+            </div>
+            <div className={styles.inputContainer}>
+              <input
+                className={styles.input}
+                type="password"
+                placeholder="Confirm Password"
+                value={confirmPassword}
+                onChange={(e) => setConfirmPassword(e.target.value)}
+                required
+              />
+            </div>
+            <div style={{ display: "flex", justifyContent: "center", width: "100%" }}>
+              <button type="submit" className={styles.loginButton}>
+                Sign Up
+              </button>
+            </div>
           </form>
-
-          <div className={styles.bottomLeftSection}>
-            <Link to="/login" className={styles.cadastrarText}>
-              Já tem uma conta? Faça login!
-            </Link>
-          </div>
-        </div>
+        </section>
       </div>
     </div>
   );
 }
 
-export default CadastroHTML;
+export default SignUp;

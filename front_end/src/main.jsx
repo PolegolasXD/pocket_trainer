@@ -4,13 +4,16 @@ import './index.css';
 import RoutesComponents from './routes';
 import { BrowserRouter } from 'react-router-dom';
 import { ChatProvider } from './context/ChatContext';
+import { AdminProvider } from './context/AdminContext';
 
 ReactDOM.render(
   <React.StrictMode>
     <BrowserRouter>
-      <ChatProvider>
-        <RoutesComponents />
-      </ChatProvider>
+      <AdminProvider>
+        <ChatProvider>
+          <RoutesComponents />
+        </ChatProvider>
+      </AdminProvider>
     </BrowserRouter>
   </React.StrictMode>,
 

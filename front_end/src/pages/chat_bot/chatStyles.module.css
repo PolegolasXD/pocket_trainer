@@ -5,10 +5,10 @@
   --gray-light: #3b3b3b;
   --gray-medium: #2c2c2c;
   --white: #fff;
-  --black: #0d0d0d;
+  --black: #232323;
   --user-bubble: #232323;
-  --ai-bubble: var(--gold);
-  --ai-text: var(--black);
+  --ai-bubble: var(--gold-dark);
+  --ai-text: var(--white);
   --user-text: var(--white);
   --border-radius: 16px;
   --shadow: 0 2px 16px 0 #00000022;
@@ -18,16 +18,20 @@
   display: flex;
   height: 100vh;
   width: 100%;
-  background-color: var(--gray-bg);
+  background-color: var(--black);
 }
 
 .chatContainer {
   flex: 1;
   display: flex;
   flex-direction: column;
+  background-color: var(--gray-bg);
   color: var(--gold);
   padding: 1.5rem;
   box-sizing: border-box;
+  height: 100%;
+  max-height: calc(100vh - 60px);
+  overflow: hidden;
 }
 
 .chatHeader {
@@ -43,27 +47,28 @@
 
 /* Botão "Nova conversa" */
 .novaConversaBtn {
-  background-color: transparent;
-  border: 2px solid var(--gold);
-  color: var(--gold);
-  padding: 0.3rem 0.8rem;
-  border-radius: var(--border-radius);
+  background-color: var(--gold);
+  border: none;
+  color: var(--black);
+  padding: 0.6rem 1.2rem;
+  border-radius: 10px;
   cursor: pointer;
-  font-weight: 600;
-  font-size: 1rem;
-  transition: all 0.3s ease;
+  font-weight: bold;
+  font-size: 0.95rem;
+  transition: all 0.2s ease-in-out;
   user-select: none;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
 }
 
 .novaConversaBtn:hover {
-  background-color: var(--gold);
-  color: var(--gray-bg);
-  box-shadow: 0 0 8px var(--gold-dark);
+  background-color: #ffde7a;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
 }
 
 .novaConversaBtn:active {
-  transform: scale(0.95);
-  box-shadow: none;
+  transform: translateY(0);
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
 }
 
 .chatBody {
@@ -72,7 +77,7 @@
   display: flex;
   flex-direction: column;
   gap: 1.2rem;
-  padding: 0.5rem;
+  padding: 1rem 0.5rem;
   scrollbar-width: thin;
   scrollbar-color: var(--gold) transparent;
 }
@@ -102,7 +107,7 @@
 .messageUser {
   background-color: var(--user-bubble);
   color: var(--user-text);
-  border: 1.5px solid var(--gold);
+  border: 1px solid var(--gold);
   align-self: flex-end;
   border-bottom-right-radius: 4px;
   border-top-left-radius: var(--border-radius);
@@ -191,4 +196,22 @@
     opacity: 1;
     transform: translateY(0);
   }
+}
+
+.messageAI div {
+  max-width: 100%;
+}
+
+.messageAI p {
+  margin: 0 0 0.5rem 0;
+}
+
+.messageAI ul,
+.messageAI ol {
+  margin: 0.5rem 0;
+  padding-left: 1.5rem;
+}
+
+.messageAI li {
+  margin-bottom: 0.25rem;
 }

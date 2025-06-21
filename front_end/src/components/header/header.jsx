@@ -1,23 +1,24 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import styles from './header.module.css';
+import menuIcon from '../../assets/icons/Menu.png';
 
-const Header = () => {
+const Header = ({ onMenuClick, sidebarOpen }) => {
   const navigate = useNavigate();
 
   const handleLogout = () => {
     localStorage.removeItem('token');
-    localStorage.removeItem('user');
+    localStorage.removeItem('usuario');
     navigate('/login');
   };
 
   return (
-    <header className={styles.header}>
-      <div className={styles.logoContainer}>
-        <h1 className={styles.logo}>Pocket Trainer</h1>
-      </div>
-      <div className={styles.userSection}>
-        <button className={styles.logoutButton} onClick={handleLogout}>
+    <header className={`${styles.header} ${!sidebarOpen ? styles.sidebarClosed : ''}`}>
+      <button onClick={onMenuClick} className={styles.menuButton}>
+        <img src={menuIcon} alt="Menu" className={styles.menuIcon} />
+      </button>
+      <div className={styles.headerRight}>
+        <button onClick={handleLogout} className={styles.logoutButton}>
           Sair
         </button>
       </div>

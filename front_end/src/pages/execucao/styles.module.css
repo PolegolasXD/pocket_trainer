@@ -1,12 +1,54 @@
 .container {
-  position: relative;
   display: flex;
-  justify-content: center;
+  background-color: #1e1e1e;
+  color: #f5f5f5;
+  min-height: 100vh;
+}
+
+.contentContainer {
+  flex: 1;
+  padding: 40px;
+  display: flex;
+  flex-direction: column;
   align-items: center;
-  background-color: #111111;
-  height: 100vh;
+}
+
+.searchInput {
   width: 100%;
-  overflow: hidden;
+  max-width: 600px;
+  padding: 12px;
+  margin-bottom: 30px;
+  border-radius: 5px;
+  border: 1px solid #555;
+  background-color: #2c2c2e;
+  color: #f5f5f5;
+  font-size: 1rem;
+}
+
+.exerciseGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 20px;
+  width: 100%;
+}
+
+.exerciseCard {
+  background: #2c2c2e;
+  padding: 15px;
+  border-radius: 10px;
+  text-align: center;
+}
+
+.exerciseGif {
+  width: 100%;
+  height: 180px;
+  object-fit: cover;
+  border-radius: 5px;
+  margin-bottom: 15px;
+}
+
+.exerciseCard h3 {
+  font-size: 1.1rem;
 }
 
 .forceCenter {
@@ -15,8 +57,6 @@
   align-items: center !important;
   text-align: center !important;
 }
-
-
 
 .contentContainer {
   flex: 1;
@@ -201,7 +241,7 @@
   display: none;
 }
 
-.executionName{
+.executionName {
   margin-top: 15px;
   margin-bottom: 15px;
   color: white;

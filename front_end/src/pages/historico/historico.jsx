@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import styles from "./styles.module.css";
-import Sidebar from "../../components/sidebar/sidebar";
 import { useChat } from "../../context/ChatContext";
 import { useNavigate } from "react-router-dom";
 
@@ -9,7 +8,7 @@ const Historico = () => {
   const [loading, setLoading] = useState(true);
   const usuario = JSON.parse(localStorage.getItem("usuario"));
 
-  const { setConversaSelecionada } = useChat();
+  const { setSelectedConversation } = useChat();
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -35,7 +34,7 @@ const Historico = () => {
     if (usuario?.id) {
       fetchHistorico();
     }
-  }, []);
+  }, [usuario?.id]);
 
   const formatarData = (dataStr) => {
     const data = new Date(dataStr);
@@ -46,42 +45,38 @@ const Historico = () => {
   };
 
   const abrirConversa = (feedback) => {
-    setConversaSelecionada(feedback);
-    navigate("/chat_bot");
+    setSelectedConversation(feedback);
+    navigate("/chat");
   };
 
   return (
-    <div className={styles.historicoPage}>
-      <Sidebar />
-      <div className={styles.historicoContainer}>
-        <h2>📜 Histórico de Feedbacks</h2>
+    <div className={styles.historicoContainer}>
+      <h2>📜 Histórico de Feedbacks</h2>
 
-        {loading ? (
-          <p className={styles.loading}>Carregando feedbacks...</p>
-        ) : feedbacks.length === 0 ? (
-          <p className={styles.semFeedbacks}>Nenhum feedback encontrado ainda.</p>
-        ) : (
-          <ul className={styles.listaFeedbacks}>
-            {[...feedbacks]
-              .sort((a, b) => new Date(b.created_at) - new Date(a.created_at))
-              .map((fb) => (
-                <li
-                  key={fb.id}
-                  className={styles.feedbackItem}
-                  onClick={() => abrirConversa(fb)}
-                  style={{ cursor: "pointer" }}
-                >
-                  <span className={styles.data}>{formatarData(fb.created_at)}</span>
-                  <p>
-                    {fb.resposta.length > 100
-                      ? fb.resposta.slice(0, 100) + "..."
-                      : fb.resposta}
-                  </p>
-                </li>
-              ))}
-          </ul>
-        )}
-      </div>
+      {loading ? (
+        <p className={styles.loading}>Carregando feedbacks...</p>
+      ) : feedbacks.length === 0 ? (
+        <p className={styles.semFeedbacks}>Nenhum feedback encontrado ainda.</p>
+      ) : (
+        <ul className={styles.listaFeedbacks}>
+          {[...feedbacks]
+            .sort((a, b) => new Date(b.created_at) - new Date(a.created_at))
+            .map((fb) => (
+              <li
+                key={fb.id}
+                className={styles.feedbackItem}
+                onClick={() => abrirConversa(fb)}
+              >
+                <span className={styles.data}>{formatarData(fb.created_at)}</span>
+                <p>
+                  {fb.resposta.length > 100
+                    ? fb.resposta.slice(0, 100) + "..."
+                    : fb.resposta}
+                </p>
+              </li>
+            ))}
+        </ul>
+      )}
     </div>
   );
 };

@@ -1,6 +1,6 @@
 .sizeBar {
   width: 240px;
-  height: 100vh;
+  min-height: 100vh;
   background-color: #272626;
   display: flex;
   flex-direction: column;
@@ -8,19 +8,27 @@
   align-items: flex-start;
   padding-top: 20px;
   box-sizing: border-box;
+  position: fixed;
+  left: 0;
+  top: 0;
+  transform: translateX(0);
+  transition: transform 0.3s ease-in-out;
+  z-index: 1000;
+  box-shadow: 5px 0px 15px rgba(0, 0, 0, 0.2);
 }
 
-.sizeBar.open {
-  left: 0;
+.sizeBar.closed {
+  transform: translateX(-100%);
 }
 
 .iconSizeBarContainer {
   display: flex;
-  align-items: flex-start;
+  align-items: center;
   justify-content: center;
   height: 120px;
   cursor: pointer;
   padding-top: 20px;
+  width: 100%;
 }
 
 .iconSizeBar {
@@ -40,7 +48,9 @@
   padding: 12px;
   transition: background-color 0.3s ease;
   cursor: pointer;
-  margin-top: 20px;
+  width: 100%;
+  box-sizing: border-box;
+  margin: 10px 0;
 }
 
 .iconContainer:hover {
@@ -50,9 +60,8 @@
 .icon {
   width: 35px;
   height: 35px;
-  filter: brightness(1);
   margin-right: 8px;
-  color: #b89130;
+  filter: brightness(0) saturate(100%) invert(64%) sepia(26%) saturate(1067%) hue-rotate(1deg) brightness(91%) contrast(91%);
 }
 
 .itemDescriptionSizeBar {
@@ -96,26 +105,13 @@
 
 .closeIconContainer {
   margin-top: auto;
-  padding: 8px 12px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
+  padding: 10px;
   cursor: pointer;
-  transition: background-color 0.3s ease;
-  width: calc(100% - 1px);
-}
-
-
-.closeIconContainer:hover {
-  background-color: #333;
+  align-self: center;
 }
 
 .iconClose {
-  width: 24px;
-  height: 24px;
-  filter: brightness(1);
-}
-
-.closeIconContainer:hover .iconClose {
-  color: #ffd700;
+  width: 30px;
+  height: 30px;
+  filter: brightness(0) saturate(100%) invert(64%) sepia(26%) saturate(1067%) hue-rotate(1deg) brightness(91%) contrast(91%);
 }

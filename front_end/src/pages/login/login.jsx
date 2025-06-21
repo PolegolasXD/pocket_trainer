@@ -25,6 +25,7 @@ function LoginHTML() {
 
       if (response.ok) {
         localStorage.setItem('token', data.token);
+        localStorage.setItem('usuario', JSON.stringify(data.user));
         navigate('/home');
       } else {
         alert(data.error || 'Credenciais inválidas');
@@ -41,11 +42,11 @@ function LoginHTML() {
         <section className={styles.leftSection}>
           <div className={styles.iconCadastroWrapper}>
             <p className={styles.iconCadastroTextTop}>
-              Conheça o pocket Trainer, o seu treinador de bolso, auxiliando no seu treino.
+              Meet Pocket Trainer, your pocket coach, helping you with your workout.
             </p>
-            <img src={iconCadastro} alt="Logo Pocket Trainer" className={styles.iconCadastro} />
+            <img src={iconCadastro} alt="Pocket Trainer Logo" className={styles.iconCadastro} />
             <p className={styles.iconCadastroTextBottom}>
-              E melhorando exponencialmente a sua experiência com musculação.
+              And exponentially improving your experience with weight training.
             </p>
           </div>
         </section>
@@ -69,7 +70,7 @@ function LoginHTML() {
               to="/cadastro"
               className={`${styles.cadastrarText} ${location.pathname === '/cadastro' ? styles.activeLink : ''}`}
             >
-              Cadastro
+              Sign Up
             </Link>
           </div>
 
@@ -94,7 +95,7 @@ function LoginHTML() {
               <input
                 className={styles.input}
                 type="password"
-                placeholder="Senha"
+                placeholder="Password"
                 autoComplete="current-password"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
@@ -104,7 +105,7 @@ function LoginHTML() {
 
             <div style={{ display: 'flex', justifyContent: 'center', width: '100%' }}>
               <button type="submit" className={styles.loginButton}>
-                Logar
+                Login
               </button>
             </div>
           </form>

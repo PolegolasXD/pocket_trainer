@@ -1,11 +1,11 @@
 @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500&display=swap');
 
 .container {
-  background-color: #111111;
+  background-color: #1e1e1e;
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 100vh;
+  min-height: 100vh;
   font-family: 'Roboto', sans-serif;
   padding: 1rem;
 }
@@ -14,11 +14,12 @@
   display: flex;
   justify-content: center;
   width: 950px;
-  background-color: #fff;
+  background-color: #2c2c2e;
   padding: 30px;
   border-radius: 30px;
   position: relative;
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+  color: #f5f5f5;
 }
 
 .leftSection {
@@ -45,7 +46,7 @@
 .iconCadastroTextTop,
 .iconCadastroTextBottom {
   margin-bottom: 10px;
-  color: #B89130;
+  color: #f5c518;
   font-size: 16px;
   line-height: 1.4;
 }
@@ -81,7 +82,7 @@
 .loginText,
 .cadastrarText {
   font-size: 16px;
-  color: #000;
+  color: #f5f5f5;
   background-color: transparent;
   text-decoration: none;
   border: none;
@@ -93,11 +94,11 @@
 
 .loginText:hover,
 .cadastrarText:hover {
-  color: #b89130;
+  color: #f5c518;
 }
 
 .activeLink {
-  color: #B89130;
+  color: #f5c518;
 }
 
 .iconUserContainer {
@@ -124,11 +125,19 @@
 .input {
   width: 100%;
   max-width: 300px;
-  height: 40px;
-  padding: 10px;
-  border: none;
-  border-bottom: 1px solid #888;
-  font-size: 15px;
+  padding: 0.8rem 1rem;
+  border-radius: 8px;
+  border: 1.5px solid #4a4a4a;
+  background: #1e1e1e;
+  color: #f5f5f5;
+  font-size: 1rem;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.input:focus {
+  outline: none;
+  border-color: #f5c518;
+  box-shadow: 0 0 0 3px rgba(245, 197, 24, 0.3);
 }
 
 .loginButton {
@@ -136,20 +145,21 @@
   width: 100%;
   max-width: 220px;
   height: 46px;
-  background-color: #111111;
-  color: #fff;
-  font-size: 16px;
-  font-weight: 500;
+  background-color: #f5c518;
+  color: #111;
+  font-size: 1rem;
+  font-weight: bold;
   letter-spacing: 0.5px;
   border: none;
-  border-radius: 6px;
+  border-radius: 8px;
   cursor: pointer;
-  transition: background-color 0.3s ease;
+  transition: background-color 0.2s, transform 0.2s;
   margin-top: 10px;
 }
 
 .loginButton:hover {
-  background-color: #B89130;
+  background-color: #ffde7a;
+  transform: translateY(-2px);
 }
 
 .bottomLeftSection {
@@ -168,7 +178,7 @@
 .esqueciSenhaText,
 .cadastrarText {
   font-size: 14px;
-  color: #000;
+  color: #f5f5f5;
   background-color: transparent;
   border: none;
   outline: none;

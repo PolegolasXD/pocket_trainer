@@ -1,47 +1,76 @@
 .historicoPage {
   display: flex;
-  background-color: #1e1e1e;
-  min-height: 100vh;
+  background-color: transparent;
+  height: 100vh;
 }
 
 .historicoContainer {
   flex: 1;
-  padding: 2rem;
-  color: #fff;
+  padding: 2.5rem;
+  color: #f5f5f5;
+  background-color: #1e1e1e;
+  display: flex;
+  flex-direction: column;
+}
+
+.historicoContainer h2 {
+  border-bottom: 2px solid #f5c518;
+  padding-bottom: 0.8rem;
+  margin-bottom: 1.5rem;
+  color: #f5c518;
+  font-size: 1.8rem;
 }
 
 .listaFeedbacks {
   list-style: none;
   padding: 0;
-  margin-top: 1.5rem;
+  padding-right: 1rem;
+  margin: 0;
+  flex-grow: 1;
 }
 
 .feedbackItem {
   background: #2c2c2c;
-  border-left: 4px solid #f0c000;
+  border-left: 5px solid #f5c518;
   margin-bottom: 1rem;
-  padding: 1rem;
+  padding: 1.2rem 1.5rem;
   border-radius: 8px;
-  animation: fadeIn 0.3s ease-in-out;
+  transition: background-color 0.2s, transform 0.2s;
+  animation: fadeIn 0.4s ease-in-out;
+}
+
+.feedbackItem:hover {
+  background-color: #3a3a3c;
+  transform: translateY(-2px);
+  cursor: pointer;
 }
 
 .data {
   display: block;
   font-size: 0.9rem;
-  color: #ccc;
-  margin-bottom: 0.5rem;
+  color: #b0b0b0;
+  margin-bottom: 0.7rem;
+  font-weight: 500;
+}
+
+.feedbackItem p {
+  margin: 0;
+  color: #e0e0e0;
+  line-height: 1.5;
 }
 
 .loading,
 .semFeedbacks {
   font-style: italic;
   color: #aaa;
+  text-align: center;
+  padding: 2rem;
 }
 
 @keyframes fadeIn {
   from {
     opacity: 0;
-    transform: translateY(8px);
+    transform: translateY(10px);
   }
 
   to {

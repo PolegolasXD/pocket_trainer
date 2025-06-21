@@ -1,13 +1,13 @@
 import React, { useState, useRef, useEffect } from "react";
-import Sidebar from "../../components/sidebar/sidebar";
+import ReactMarkdown from 'react-markdown';
 import styles from "./chatStyles.module.css";
 import { v4 as uuid } from "uuid";
 import { useChat } from "../../context/ChatContext";
-import iconBot from "../../assets/icons/iconChat.png";
 import iconUser from "../../assets/icons/IconesUsuario.png";
+import iconBot from "../../assets/icons/iconChatBot.png";
 
-const ChatHTML = () => {
-  const { conversaSelecionada, setConversaSelecionada } = useChat();
+const Chat = () => {
+  const { selectedConversation, setSelectedConversation } = useChat();
 
   const [messages, setMessages] = useState([]);
   const [input, setInput] = useState("");
@@ -17,25 +17,25 @@ const ChatHTML = () => {
   const inputRef = useRef(null);
 
   useEffect(() => {
-    async function fetchMensagens() {
-      if (!conversaSelecionada) {
+    async function fetchMessages() {
+      if (!selectedConversation) {
         setMessages([{ id: uuid(), sender: "ai", text: "Olá! Pronto para treinar hoje?" }]);
         return;
       }
       try {
-        const res = await fetch(`${import.meta.env.VITE_API_URL}/api/mensagens/feedback/${conversaSelecionada.id}`, {
+        const res = await fetch(`${import.meta.env.VITE_API_URL}/api/mensagens/feedback/${selectedConversation.id}`, {
           headers: { Authorization: `Bearer ${localStorage.getItem("token")}` }
         });
         const data = await res.json();
         setMessages(data.map(msg => ({ ...msg, text: msg.texto })));
       } catch (error) {
         console.error("Erro ao buscar mensagens:", error);
-        setMessages([{ id: uuid(), sender: "ai", text: "Erro ao carregar histórico." }]);
+        setMessages([{ id: uuid(), sender: "ai", text: "Erro ao carregar o histórico." }]);
       }
     }
-    fetchMensagens();
+    fetchMessages();
     inputRef.current?.focus();
-  }, [conversaSelecionada]);
+  }, [selectedConversation]);
 
   const scrollToBottom = () => {
     bottomRef.current?.scrollIntoView({ behavior: "smooth" });
@@ -43,7 +43,7 @@ const ChatHTML = () => {
 
   useEffect(scrollToBottom, [messages, showTyping]);
 
-  const alunoId = JSON.parse(localStorage.getItem("usuario"))?.id;
+  const userId = JSON.parse(localStorage.getItem("usuario"))?.id;
 
   const handleSend = async () => {
     if (!input.trim() || loading) return;
@@ -57,10 +57,10 @@ const ChatHTML = () => {
     try {
       const body = {
         message: userMessage.text,
-        aluno_id: alunoId,
+        userId: userId,
       };
-      if (conversaSelecionada) {
-        body.feedback_id = conversaSelecionada.id;
+      if (selectedConversation) {
+        body.feedbackId = selectedConversation.id;
       }
 
       const response = await fetch(`${import.meta.env.VITE_API_URL}/api/chat`, {
@@ -72,7 +72,6 @@ const ChatHTML = () => {
         body: JSON.stringify(body),
       });
 
-      // Simula um pequeno delay para UX
       await new Promise((resolve) => setTimeout(resolve, 600));
 
       const data = await response.json();
@@ -87,7 +86,7 @@ const ChatHTML = () => {
         {
           id: uuid(),
           sender: "ai",
-          text: "⚠️ Erro ao conectar com a IA. Tente novamente."
+          text: "⚠️ Erro ao conectar com a IA. Por favor, tente novamente."
         }
       ]);
     } finally {
@@ -102,58 +101,57 @@ const ChatHTML = () => {
   };
 
   return (
-    <div className={styles.chatPage}>
-      <Sidebar />
-      <div className={styles.chatContainer}>
-        <div className={styles.chatHeader}>
-          🤖 Pocket Trainer
-          <button className={styles.novaConversaBtn} onClick={() => setConversaSelecionada(null)}>
-            Nova conversa
-          </button>
-        </div>
+    <div className={styles.chatContainer}>
+      <div className={styles.chatHeader}>
+        Pocket Trainer
+        <button className={styles.novaConversaBtn} onClick={() => setSelectedConversation(null)}>
+          Nova Conversa
+        </button>
+      </div>
 
-        <div className={styles.chatBody}>
-          {messages.map((msg) => (
-            <div
-              key={msg.id}
-              className={`${msg.sender === "ai" ? styles.messageAI : styles.messageUser} ${styles.fadeIn}`}
-              style={{ display: 'flex', alignItems: 'flex-end', gap: 8 }}
-            >
-              {msg.sender === "ai" && (
-                <img src={iconBot} alt="Bot" style={{ width: 32, height: 32, marginRight: 8, borderRadius: '50%' }} />
-              )}
-              <span>{msg.text}</span>
-              {msg.sender === "user" && (
-                <img src={iconUser} alt="Você" style={{ width: 32, height: 32, marginLeft: 8, borderRadius: '50%' }} />
-              )}
-            </div>
-          ))}
-          {showTyping && (
-            <div className={`${styles.messageAI} ${styles.fadeIn}`} style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+      <div className={styles.chatBody}>
+        {messages.map((msg) => (
+          <div
+            key={msg.id}
+            className={`${msg.sender === "ai" ? styles.messageAI : styles.messageUser} ${styles.fadeIn}`}
+            style={{ display: 'flex', alignItems: 'flex-start', gap: 8 }}
+          >
+            {msg.sender === "ai" && (
               <img src={iconBot} alt="Bot" style={{ width: 32, height: 32, marginRight: 8, borderRadius: '50%' }} />
-              <span><em>Digitando...</em></span>
+            )}
+            <div className={styles.markdownContainer}>
+              <ReactMarkdown>{msg.text}</ReactMarkdown>
             </div>
-          )}
-          <div ref={bottomRef} />
-        </div>
+            {msg.sender === "user" && (
+              <img src={iconUser} alt="Você" style={{ width: 32, height: 32, marginLeft: 8, borderRadius: '50%' }} />
+            )}
+          </div>
+        ))}
+        {showTyping && (
+          <div className={`${styles.messageAI} ${styles.fadeIn}`} style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+            <img src={iconBot} alt="Bot" style={{ width: 32, height: 32, marginRight: 8, borderRadius: '50%' }} />
+            <span><em>Digitando...</em></span>
+          </div>
+        )}
+        <div ref={bottomRef} />
+      </div>
 
-        <div className={styles.chatFooter}>
-          <input
-            ref={inputRef}
-            type="text"
-            placeholder="Digite sua mensagem..."
-            value={input}
-            onChange={(e) => setInput(e.target.value)}
-            onKeyDown={handleKeyPress}
-            disabled={loading}
-          />
-          <button onClick={handleSend} disabled={loading}>
-            {loading ? "Enviando..." : "Enviar"}
-          </button>
-        </div>
+      <div className={styles.chatFooter}>
+        <input
+          ref={inputRef}
+          type="text"
+          placeholder="Digite sua mensagem..."
+          value={input}
+          onChange={(e) => setInput(e.target.value)}
+          onKeyDown={handleKeyPress}
+          disabled={loading}
+        />
+        <button onClick={handleSend} disabled={loading}>
+          {loading ? "Enviando..." : "Enviar"}
+        </button>
       </div>
     </div>
   );
 };
 
-export default ChatHTML;
+export default Chat;

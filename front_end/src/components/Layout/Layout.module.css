@@ -1,0 +1,16 @@
+.appContainer {
+  display: flex;
+  background-color: #1e1e1e;
+}
+
+.mainContent {
+  flex-grow: 1;
+  transition: margin-left 0.3s ease-in-out;
+  margin-left: 240px;
+  min-height: 100vh;
+  padding: 60px 2rem 2rem 2rem;
+}
+
+.mainContent.sidebarClosed {
+  margin-left: 0;
+}

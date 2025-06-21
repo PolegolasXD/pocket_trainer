@@ -1,50 +1,54 @@
-import React from 'react';
+import React from "react";
 import { useNavigate } from 'react-router-dom';
-import styles from './styles.module.css';
+import styles from "./styles.module.css";
 import Sidebar from "../../components/sidebar/sidebar";
-import gifBumbum from '../../assets/img/gifBumbum.gif';
-import gifBiceps from '../../assets/img/gifBiceps.gif';
-import gifCostas from '../../assets/img/gifCostas.gif';
-import gifPeito from '../../assets/img/gifPeito.gif';
 
-function HomeHTML() {
+// Importing icons we'll use
+import iconDashboard from '../../assets/icons/iconDashboard.png';
+import iconChat from '../../assets/icons/iconChat.png';
+import iconExecucao from '../../assets/icons/iconExecucao.png';
+import iconFicha from '../../assets/icons/iconFichaPessoal.png';
+
+function Home() {
   const navigate = useNavigate();
 
   return (
     <div className={styles.container}>
       <Sidebar />
+      <div className={styles.content}>
+        <header className={styles.header}>
+          <h1>Welcome to Pocket Trainer!</h1>
+          <p className={styles.subtitle}>
+            Your journey to a healthier life and smarter training starts here.
+            Track your progress, analyze your results, and reach your goals with the help of our AI.
+          </p>
+        </header>
 
-      <div className={styles.descriptionContainer}>
-      </div>
-
-      <div className={styles.contentContainer}>
-        <div className={styles.itemContainer}>
-          <h2 className={styles.executionName}>Treino de Perna</h2>
-          <div className={`${styles.squareIcon} ${styles.whiteBackground}`}>
-            <img className={`${styles.gifIcon} ${styles.enlargedGif}`} src={gifBumbum} alt="gifBumbum" />
+        <main className={styles.quickAccessGrid}>
+          <div className={styles.card} onClick={() => navigate('/registrar_treino')}>
+            <img src={iconExecucao} alt="Register Workout" className={styles.cardIcon} />
+            <h2>Register a Workout</h2>
+            <p>Add the details of today's workout to keep your history updated.</p>
           </div>
-        </div>
-        <div className={styles.itemContainer}>
-          <h2 className={styles.executionName}>Treino de Bíceps</h2>
-          <div className={`${styles.squareIcon} ${styles.whiteBackground}`}>
-            <img className={`${styles.gifIcon} ${styles.enlargedGif}`} src={gifBiceps} alt="gifBiceps" />
+          <div className={styles.card} onClick={() => navigate('/dashboard')}>
+            <img src={iconDashboard} alt="My Dashboard" className={styles.cardIcon} />
+            <h2>My Dashboard</h2>
+            <p>View your performance indicators, progress charts, and insights.</p>
           </div>
-        </div>
-        <div className={styles.itemContainer}>
-          <h2 className={styles.executionName}>Treino de Costas</h2>
-          <div className={`${styles.squareIcon} ${styles.whiteBackground}`}>
-            <img className={`${styles.gifIcon} ${styles.enlargedGif}`} src={gifCostas} alt="gifCostas" />
+          <div className={styles.card} onClick={() => navigate('/chat')}>
+            <img src={iconChat} alt="Chat with AI" className={styles.cardIcon} />
+            <h2>Chat with AI</h2>
+            <p>Ask questions, get tips, and receive motivation from your virtual personal trainer.</p>
           </div>
-        </div>
-        <div className={styles.itemContainer}>
-          <h2 className={styles.executionName}>Treino de Peito</h2>
-          <div className={`${styles.squareIcon} ${styles.whiteBackground}`}>
-            <img className={`${styles.gifIcon} ${styles.enlargedGif}`} src={gifPeito} alt="gifPeito" />
+          <div className={styles.card} onClick={() => navigate('/ficha-pessoal')}>
+            <img src={iconFicha} alt="Personal Sheet" className={styles.cardIcon} />
+            <h2>Personal Sheet</h2>
+            <p>Keep your data, goals, and body measurements always up to date.</p>
           </div>
-        </div>
+        </main>
       </div>
     </div>
   );
 }
 
-export default HomeHTML;
+export default Home;

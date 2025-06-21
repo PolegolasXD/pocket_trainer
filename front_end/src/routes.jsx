@@ -1,37 +1,40 @@
 import React from 'react';
 import { Route, Routes } from 'react-router-dom';
 
-import CadastroHTML from './pages/cadastro/cadastro';
-import LoginHTML from './pages/login/login';
-import HomeHTML from './pages/home/home';
-import Dias_de_treinoHTML from './pages/dias_de_treino/dias_de_treino';
-import Ficha_pessoalHTML from './pages/ficha_pessoal/ficha_pessoal';
-import Treino_de_hojeHTML from './pages/treino_de_hoje/treino_de_hoje';
-import ExecucaoHTML from './pages/execucao/execucao';
-import ChatHTML from './pages/chat_bot/chat';
-import DashboardHTML from './pages/dashboard/Dashboard';
+import Cadastro from './pages/cadastro/cadastro';
+import Login from './pages/login/login';
+import Home from './pages/home/home';
+import DiasDeTreino from './pages/dias_de_treino/dias_de_treino';
+import FichaPessoal from './pages/ficha_pessoal/ficha_pessoal';
+import TreinoDaSemana from './pages/treino_da_semana/treino_da_semana';
+import Execucao from './pages/execucao/execucao';
+import Chat from './pages/chat_bot/chat';
+import Dashboard from './pages/dashboard/Dashboard';
 import Historico from './pages/historico/historico';
 import TreinoForm from './pages/treino_form/treino_form';
+import Layout from './components/Layout/Layout';
 
 function RoutesComponents() {
   return (
-    <>
-      <Routes>
-        <Route path="/login" element={<LoginHTML />} />
-        <Route path="/*" element={<CadastroHTML />} />
-        <Route path="/cadastro" element={<CadastroHTML />} />
-        <Route path="/home" element={<HomeHTML />} />
-        <Route path="/dias_de_treino" element={<Dias_de_treinoHTML />} />
-        <Route path="/ficha_pessoal" element={<Ficha_pessoalHTML />} />
-        <Route path="/treino_de_hoje" element={<Treino_de_hojeHTML />} />
-        <Route path="/execucao" element={<ExecucaoHTML />} />
-        <Route path="/chat" element={<ChatHTML />} />
-        <Route path="/chat_bot" element={<ChatHTML />} />
-        <Route path="/dashboard" element={<DashboardHTML />} />
+    <Routes>
+      <Route path="/" element={<Login />} />
+      <Route path="/login" element={<Login />} />
+      <Route path="/cadastro" element={<Cadastro />} />
+
+      <Route element={<Layout />}>
+        <Route path="/home" element={<Home />} />
+        <Route path="/dias-de-treino" element={<DiasDeTreino />} />
+        <Route path="/ficha-pessoal" element={<FichaPessoal />} />
+        <Route path="/treino-da-semana" element={<TreinoDaSemana />} />
+        <Route path="/execucao" element={<Execucao />} />
+        <Route path="/chat" element={<Chat />} />
+        <Route path="/dashboard" element={<Dashboard />} />
         <Route path="/historico" element={<Historico />} />
         <Route path="/registrar_treino" element={<TreinoForm />} />
-      </Routes>
-    </>
+      </Route>
+
+      <Route path="*" element={<Login />} />
+    </Routes>
   );
 }
 

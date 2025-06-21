@@ -2,43 +2,50 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 1rem 2rem;
-  background-color: #111;
-  color: #fff;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  padding: 10px 20px;
+  background-color: #272626;
+  color: white;
+  position: fixed;
+  top: 0;
+  left: 240px;
+  /* Largura da sidebar */
+  right: 0;
+  z-index: 999;
+  transition: left 0.3s ease-in-out;
 }
 
-.logoContainer {
-  display: flex;
-  align-items: center;
+.header.sidebarClosed {
+  left: 0;
 }
 
-.logo {
-  font-size: 1.5rem;
-  font-weight: 600;
-  color: #b89130;
-  margin: 0;
+.menuButton {
+  background: none;
+  border: none;
+  cursor: pointer;
 }
 
-.userSection {
-  display: flex;
-  align-items: center;
-  gap: 1rem;
+.menuIcon {
+  width: 24px;
+  height: 24px;
+  filter: brightness(0) saturate(100%) invert(100%) sepia(0%) saturate(7500%) hue-rotate(158deg) brightness(114%) contrast(101%);
 }
 
 .logoutButton {
-  padding: 0.5rem 1rem;
-  background-color: transparent;
-  border: 2px solid #b89130;
-  color: #b89130;
-  border-radius: 4px;
+  background-color: #B89130;
+  color: #272626;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 5px;
   cursor: pointer;
-  font-size: 0.9rem;
-  font-weight: 500;
-  transition: all 0.2s ease;
+  font-weight: bold;
+  transition: background-color 0.2s;
 }
 
 .logoutButton:hover {
-  background-color: #b89130;
-  color: #111;
+  background-color: #d4a74e;
+}
+
+.headerRight {
+  display: flex;
+  align-items: center;
 }
