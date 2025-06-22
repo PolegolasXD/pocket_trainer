@@ -5,13 +5,16 @@ import RoutesComponents from './routes';
 import { BrowserRouter } from 'react-router-dom';
 import { ChatProvider } from './context/ChatContext';
 import { AdminProvider } from './context/AdminContext';
+import { TreinoProvider } from './context/TreinoContext';
 
 ReactDOM.render(
   <React.StrictMode>
     <BrowserRouter>
       <AdminProvider>
         <ChatProvider>
-          <RoutesComponents />
+          <TreinoProvider>
+            <RoutesComponents />
+          </TreinoProvider>
         </ChatProvider>
       </AdminProvider>
     </BrowserRouter>

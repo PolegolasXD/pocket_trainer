@@ -37,7 +37,7 @@ const gerarFeedbackIA = async (req, res) => {
     const treinosRecentes = historicoTreinos.filter(t => dayjs().diff(dayjs(t.data), 'day') <= 30);
 
     // Buscar o plano de treino semanal
-    const planoSemanal = await TreinoSemanal.getTreinoSemanalByAlunoId(aluno_id);
+    const planoSemanal = await TreinoSemanal.getTreinoByAlunoId(aluno_id);
 
     if (treinosRecentes.length === 0) {
       return res.json({ resposta: "Não tenho dados de treinos recentes para analisar. Por favor, registre alguns treinos primeiro." });
