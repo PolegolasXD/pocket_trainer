@@ -79,6 +79,7 @@
 .toggleButtons {
   display: flex;
   gap: 10px;
+  flex-wrap: wrap;
 }
 
 .toggleButtons button {
@@ -89,6 +90,7 @@
   color: #f5f5f5;
   cursor: pointer;
   transition: all 0.3s ease;
+  font-size: 14px;
 }
 
 .toggleButtons button:hover {
@@ -112,6 +114,7 @@
   padding: 20px;
   border-radius: 10px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  min-height: 300px;
 }
 
 .chartContainer h3 {
@@ -183,7 +186,63 @@
   color: #a0a0a0;
 }
 
+/* AI Insights */
+.aiInsightCard {
+  background: #2c2c2e;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  margin-bottom: 20px;
+}
+
+.aiInsightCard h4 {
+  color: #f5c518;
+  margin: 0 0 15px 0;
+  font-size: 1.1rem;
+  border-bottom: 1px solid #3e3e40;
+  padding-bottom: 10px;
+}
+
+.analysisButton,
+.regenerateButton {
+  background: #f5c518;
+  color: #272626;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 5px;
+  cursor: pointer;
+  font-weight: bold;
+  margin-top: 10px;
+  transition: background-color 0.2s;
+}
+
+.regenerateButton {
+  background: #36b37e;
+  margin-left: 10px;
+}
+
+.regenerateButton:hover {
+  background: #2d9d6b;
+}
+
+.analysisText {
+  color: #f5f5f5;
+  line-height: 1.6;
+  margin-top: 15px;
+  white-space: pre-wrap;
+}
+
 /* Responsividade */
+@media (max-width: 1200px) {
+  .chartsWrapper {
+    grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+  }
+
+  .insightsGrid {
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  }
+}
+
 @media (max-width: 768px) {
   .container {
     padding: 10px;
@@ -195,64 +254,102 @@
 
   .chartHeader {
     flex-direction: column;
-    gap: 10px;
+    gap: 15px;
+    align-items: flex-start;
   }
 
   .toggleButtons {
     width: 100%;
-    overflow-x: auto;
-    padding-bottom: 10px;
+    justify-content: flex-start;
+  }
+
+  .toggleButtons button {
+    padding: 6px 12px;
+    font-size: 13px;
+  }
+
+  .kpiCards {
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 15px;
+  }
+
+  .card {
+    padding: 15px;
+  }
+
+  .card .value {
+    font-size: 1.5rem;
+  }
+
+  .insightsGrid {
+    grid-template-columns: 1fr;
+  }
+
+  .chartContainer {
+    padding: 15px;
+    min-height: 250px;
+  }
+
+  .insightCard {
+    padding: 15px;
+  }
+
+  .kpiSection h2,
+  .chartTitle,
+  .insightSection h2 {
+    font-size: 1.3rem;
   }
 }
 
-.aiInsightCard {
-  background: linear-gradient(145deg, #3a3a3c, #2a2a2c);
-  padding: 30px;
-  border-radius: 15px;
-  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
-  margin-bottom: 40px;
-  text-align: center;
-  border: 1px solid #444;
-}
+@media (max-width: 480px) {
+  .container {
+    padding: 5px;
+  }
 
-.aiInsightCard h4 {
-  margin-top: 0;
-  margin-bottom: 25px;
-  font-size: 1.6rem;
-  color: #f5c518;
-  font-weight: bold;
-}
+  .kpiCards {
+    grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+    gap: 10px;
+  }
 
-.analysisButton,
-.regenerateButton {
-  padding: 12px 30px;
-  border: 1px solid #f5c518;
-  border-radius: 8px;
-  background-color: #f5c518;
-  color: #1e1e1e;
-  font-weight: bold;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
-}
+  .card {
+    padding: 12px;
+  }
 
-.regenerateButton {
-  margin-top: 20px;
-  background-color: transparent;
-  color: #f5c518;
-}
+  .card .value {
+    font-size: 1.3rem;
+  }
 
-.regenerateButton:hover {
-  background-color: #f5c518;
-  color: #1e1e1e;
-  transform: translateY(-2px);
-}
+  .card .label {
+    font-size: 0.8rem;
+  }
 
-.analysisText {
-  font-size: 1.05rem;
-  line-height: 1.7;
-  text-align: left;
-  white-space: pre-wrap;
-  color: #e0e0e0;
+  .toggleButtons {
+    gap: 8px;
+  }
+
+  .toggleButtons button {
+    padding: 5px 10px;
+    font-size: 12px;
+  }
+
+  .chartContainer {
+    padding: 12px;
+    min-height: 200px;
+  }
+
+  .insightCard {
+    padding: 12px;
+  }
+
+  .kpiSection h2,
+  .chartTitle,
+  .insightSection h2 {
+    font-size: 1.2rem;
+  }
+
+  .analysisButton,
+  .regenerateButton {
+    padding: 8px 16px;
+    font-size: 13px;
+  }
 }

@@ -1,6 +1,6 @@
 .sizeBar {
   width: 240px;
-  min-height: 100vh;
+  height: 100vh;
   background-color: #272626;
   display: flex;
   flex-direction: column;
@@ -15,6 +15,8 @@
   transition: transform 0.3s ease-in-out;
   z-index: 1000;
   box-shadow: 5px 0px 15px rgba(0, 0, 0, 0.2);
+  overflow-y: auto;
+  overflow-x: hidden;
 }
 
 .sizeBar.closed {
@@ -29,6 +31,7 @@
   cursor: pointer;
   padding-top: 20px;
   width: 100%;
+  flex-shrink: 0;
 }
 
 .iconSizeBar {
@@ -51,6 +54,7 @@
   width: 100%;
   box-sizing: border-box;
   margin: 10px 0;
+  flex-shrink: 0;
 }
 
 .iconContainer:hover {
@@ -62,6 +66,7 @@
   height: 35px;
   margin-right: 8px;
   filter: brightness(0) saturate(100%) invert(64%) sepia(26%) saturate(1067%) hue-rotate(1deg) brightness(91%) contrast(91%);
+  flex-shrink: 0;
 }
 
 .itemDescriptionSizeBar {
@@ -69,6 +74,9 @@
   transition: color 0.3s ease;
   margin-left: 8px;
   margin-top: 8px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .iconSizeBarContainer:last-child {
@@ -108,10 +116,79 @@
   padding: 10px;
   cursor: pointer;
   align-self: center;
+  flex-shrink: 0;
 }
 
 .iconClose {
   width: 30px;
   height: 30px;
   filter: brightness(0) saturate(100%) invert(64%) sepia(26%) saturate(1067%) hue-rotate(1deg) brightness(91%) contrast(91%);
+}
+
+/* Responsividade */
+@media (max-width: 768px) {
+  .sizeBar {
+    width: 100%;
+    max-width: 280px;
+  }
+
+  .iconContainer {
+    padding: 15px 12px;
+  }
+
+  .icon {
+    width: 30px;
+    height: 30px;
+  }
+
+  .itemDescriptionSizeBar {
+    font-size: 14px;
+  }
+}
+
+@media (max-width: 480px) {
+  .sizeBar {
+    width: 100%;
+    max-width: 260px;
+  }
+
+  .iconSizeBarContainer {
+    height: 100px;
+  }
+
+  .iconSizeBar {
+    max-width: 100px;
+    max-height: 100px;
+  }
+
+  .iconContainer {
+    padding: 12px 10px;
+  }
+
+  .icon {
+    width: 28px;
+    height: 28px;
+  }
+
+  .itemDescriptionSizeBar {
+    font-size: 13px;
+  }
+}
+
+/* Scrollbar personalizada */
+.sizeBar::-webkit-scrollbar {
+  width: 6px;
+}
+
+.sizeBar::-webkit-scrollbar-track {
+  background: #1e1e1e;
+}
+
+.sizeBar::-webkit-scrollbar-thumb {
+  background: #B89130;
+  border-radius: 3px;
+}
+
+.sizeBar::-webkit-scrollbar-thumb:hover {
+  background: #d4a74e;
 }

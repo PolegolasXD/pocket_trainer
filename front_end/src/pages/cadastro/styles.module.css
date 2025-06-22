@@ -185,31 +185,178 @@
   cursor: pointer;
 }
 
+/* Responsividade */
+@media (max-width: 1024px) {
+  .centerModal {
+    width: 90%;
+    max-width: 900px;
+    padding: 25px;
+  }
+
+  .iconCadastro {
+    width: 200px;
+  }
+
+  .iconCadastroTextTop,
+  .iconCadastroTextBottom {
+    font-size: 15px;
+  }
+}
+
 @media (max-width: 768px) {
+  .container {
+    padding: 0.5rem;
+  }
+
   .centerModal {
     flex-direction: column;
     width: 100%;
     max-width: 95%;
-    padding: 1rem;
+    padding: 20px;
+    border-radius: 20px;
   }
 
   .leftSection,
   .rightSection {
     max-width: 100%;
     width: 100%;
+    margin-right: 0;
   }
 
   .line {
     display: none;
   }
 
+  .iconCadastro {
+    width: 180px;
+  }
+
+  .iconCadastroTextTop,
+  .iconCadastroTextBottom {
+    font-size: 14px;
+  }
+
+  .iconUser {
+    width: 56px;
+    height: 56px;
+  }
+
   .topRightSection {
-    flex-direction: row;
     justify-content: center;
-    gap: 20px;
   }
 
   .inputsContainer {
-    width: 100%;
+    max-width: 320px;
+  }
+}
+
+@media (max-width: 480px) {
+  .container {
+    padding: 0.25rem;
+  }
+
+  .centerModal {
+    padding: 16px;
+    border-radius: 16px;
+  }
+
+  .leftSection,
+  .rightSection {
+    padding: 0.5rem;
+  }
+
+  .iconCadastro {
+    width: 150px;
+  }
+
+  .iconCadastroTextTop,
+  .iconCadastroTextBottom {
+    font-size: 13px;
+  }
+
+  .topRightSection {
+    gap: 0.5rem;
+    margin-bottom: 16px;
+  }
+
+  .loginText,
+  .cadastrarText {
+    font-size: 15px;
+  }
+
+  .iconUserContainer {
+    margin-bottom: 30px;
+  }
+
+  .iconUser {
+    width: 48px;
+    height: 48px;
+  }
+
+  .inputsContainer {
+    max-width: 280px;
+    gap: 14px;
+  }
+
+  .input {
+    padding: 0.7rem 0.9rem;
+    font-size: 0.95rem;
+  }
+
+  .loginButton {
+    max-width: 200px;
+    height: 42px;
+    font-size: 0.95rem;
+  }
+}
+
+@media (max-width: 360px) {
+  .centerModal {
+    padding: 12px;
+    border-radius: 12px;
+  }
+
+  .leftSection,
+  .rightSection {
+    padding: 0.25rem;
+  }
+
+  .iconCadastro {
+    width: 130px;
+  }
+
+  .iconCadastroTextTop,
+  .iconCadastroTextBottom {
+    font-size: 12px;
+  }
+
+  .topRightSection {
+    gap: 0.25rem;
+  }
+
+  .loginText,
+  .cadastrarText {
+    font-size: 14px;
+  }
+
+  .iconUser {
+    width: 44px;
+    height: 44px;
+  }
+
+  .inputsContainer {
+    max-width: 260px;
+    gap: 12px;
+  }
+
+  .input {
+    padding: 0.6rem 0.8rem;
+    font-size: 0.9rem;
+  }
+
+  .loginButton {
+    max-width: 180px;
+    height: 40px;
+    font-size: 0.9rem;
   }
 }

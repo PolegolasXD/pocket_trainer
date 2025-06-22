@@ -1,6 +1,8 @@
 .appContainer {
   display: flex;
   background-color: #1e1e1e;
+  min-height: 100vh;
+  position: relative;
 }
 
 .mainContent {
@@ -8,9 +10,37 @@
   transition: margin-left 0.3s ease-in-out;
   margin-left: 240px;
   min-height: 100vh;
-  padding: 60px 2rem 2rem 2rem;
+  padding: 80px 2rem 2rem 2rem;
+  box-sizing: border-box;
+  width: calc(100% - 240px);
 }
 
 .mainContent.sidebarClosed {
   margin-left: 0;
+  width: 100%;
+}
+
+/* Responsividade */
+@media (max-width: 1024px) {
+  .mainContent {
+    padding: 80px 1.5rem 1.5rem 1.5rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .mainContent {
+    margin-left: 0;
+    width: 100%;
+    padding: 80px 1rem 1rem 1rem;
+  }
+
+  .mainContent.sidebarClosed {
+    margin-left: 0;
+  }
+}
+
+@media (max-width: 480px) {
+  .mainContent {
+    padding: 70px 0.5rem 0.5rem 0.5rem;
+  }
 }

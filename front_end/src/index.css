@@ -133,3 +133,150 @@ table {
 	border-collapse: collapse;
 	border-spacing: 0;
 }
+
+/* Estilos globais para responsividade */
+* {
+	box-sizing: border-box;
+}
+
+html {
+	font-size: 16px;
+	scroll-behavior: smooth;
+}
+
+body {
+	font-family: 'Roboto', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Oxygen',
+		'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+		sans-serif;
+	-webkit-font-smoothing: antialiased;
+	-moz-osx-font-smoothing: grayscale;
+	background-color: #1e1e1e;
+	color: #f5f5f5;
+	overflow-x: hidden;
+}
+
+/* Scrollbar personalizada */
+::-webkit-scrollbar {
+	width: 8px;
+	height: 8px;
+}
+
+::-webkit-scrollbar-track {
+	background: #2c2c2e;
+}
+
+::-webkit-scrollbar-thumb {
+	background: #B89130;
+	border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+	background: #d4a74e;
+}
+
+/* Utilitários responsivos */
+.container {
+	width: 100%;
+	max-width: 1200px;
+	margin: 0 auto;
+	padding: 0 1rem;
+}
+
+/* Breakpoints responsivos */
+@media (max-width: 1200px) {
+	.container {
+		max-width: 960px;
+	}
+}
+
+@media (max-width: 1024px) {
+	.container {
+		max-width: 720px;
+	}
+
+	html {
+		font-size: 15px;
+	}
+}
+
+@media (max-width: 768px) {
+	.container {
+		max-width: 540px;
+		padding: 0 0.75rem;
+	}
+
+	html {
+		font-size: 14px;
+	}
+}
+
+@media (max-width: 480px) {
+	.container {
+		max-width: 100%;
+		padding: 0 0.5rem;
+	}
+
+	html {
+		font-size: 13px;
+	}
+}
+
+/* Melhorias para touch devices */
+@media (hover: none) and (pointer: coarse) {
+
+	/* Aumentar área de toque para botões */
+	button,
+	[role="button"],
+	input[type="button"],
+	input[type="submit"],
+	input[type="reset"] {
+		min-height: 44px;
+		min-width: 44px;
+	}
+
+	/* Melhorar espaçamento para toque */
+	.iconContainer,
+	.menuButton,
+	.voltarBtn,
+	.novaConversaBtn {
+		padding: 12px;
+	}
+}
+
+/* Prevenir zoom em inputs no iOS */
+@media screen and (-webkit-min-device-pixel-ratio: 0) {
+
+	input,
+	select,
+	textarea {
+		font-size: 16px;
+	}
+}
+
+/* Melhorar performance de animações */
+@media (prefers-reduced-motion: reduce) {
+
+	*,
+	*::before,
+	*::after {
+		animation-duration: 0.01ms !important;
+		animation-iteration-count: 1 !important;
+		transition-duration: 0.01ms !important;
+	}
+}
+
+/* Melhorar contraste para acessibilidade */
+@media (prefers-contrast: high) {
+	:root {
+		--gold: #ffd700;
+		--gold-dark: #ffb347;
+	}
+}
+
+/* Suporte para modo escuro do sistema */
+@media (prefers-color-scheme: dark) {
+	body {
+		background-color: #1e1e1e;
+		color: #f5f5f5;
+	}
+}
