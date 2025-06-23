@@ -30,7 +30,7 @@ const CoresGrupos = {
 const ModalTreino = ({ diaSelecionado, aoFechar }) => {
   const [indiceAberto, setIndiceAberto] = useState(null);
 
-  if (!diaSelecionado) return null;
+  if (!diaSelecionado || !diaSelecionado.data) return null;
 
   const toggleItem = (index) => {
     setIndiceAberto(indiceAberto === index ? null : index);
@@ -41,17 +41,17 @@ const ModalTreino = ({ diaSelecionado, aoFechar }) => {
       <div className={styles.modalContent} onClick={e => e.stopPropagation()}>
         <h3>Treinos de {diaSelecionado.data.toLocaleDateString('pt-BR')}</h3>
         <ul className={styles.accordion}>
-          {diaSelecionado.treinos.exercicios.map((treino, i) => (
-            <li key={i} className={styles.accordionItem}>
+          {diaSelecionado.treinos?.exercicios?.map((treino, i) => (
+            <li key={treino.id || i} className={styles.accordionItem}>
               <div className={styles.accordionHeader} onClick={() => toggleItem(i)}>
-                <span>{treino.exercicio}</span>
+                <span>{treino.exercicio || 'Exercício desconhecido'}</span>
                 <span>{indiceAberto === i ? '−' : '+'}</span>
               </div>
               {indiceAberto === i && (
                 <div className={styles.accordionContent}>
-                  <p><strong>Peso:</strong> {treino.carga} kg</p>
-                  <p><strong>Repetições:</strong> {treino.repeticoes}</p>
-                  <p><strong>Duração:</strong> {treino.duracao_min} min</p>
+                  <p><strong>Peso:</strong> {treino.carga || 0} kg</p>
+                  <p><strong>Repetições:</strong> {treino.repeticoes || 0}</p>
+                  <p><strong>Duração:</strong> {treino.duracao_min || 0} min</p>
                 </div>
               )}
             </li>
@@ -67,43 +67,57 @@ function DiasDeTreino() {
   const [dataAtual, setDataAtual] = useState(new Date());
   const [treinosPorData, setTreinosPorData] = useState({});
   const [diaSelecionado, setDiaSelecionado] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
   useEffect(() => {
     const buscarTreinos = async () => {
+      setLoading(true);
+      setError(null);
       try {
         const token = localStorage.getItem('token');
         const config = { headers: { Authorization: `Bearer ${token}` } };
         const res = await axios.get('http://localhost:5000/api/treinos', config);
 
-        const treinosProcessados = res.data.reduce((acc, treino) => {
-          const dataTreino = new Date(treino.data).toDateString();
-          const grupo = MapeamentoGruposMusculares[treino.exercicio.toLowerCase()] || 'Outro';
+        if (res.data && Array.isArray(res.data)) {
+          const treinosProcessados = res.data.reduce((acc, treino) => {
+            if (!treino.data || !treino.exercicio) {
+              return acc; // Ignora treinos com dados essenciais faltando
+            }
 
-          if (!acc[dataTreino]) {
-            acc[dataTreino] = {
-              grupos: new Set(),
-              exercicios: [],
-            };
-          }
-          acc[dataTreino].grupos.add(grupo);
-          acc[dataTreino].exercicios.push(treino);
-          return acc;
-        }, {});
+            // A chave agora é a própria string de data YYYY-MM-DD do backend
+            const dataString = treino.data.slice(0, 10);
+            const grupo = MapeamentoGruposMusculares[treino.exercicio.toLowerCase()] || 'Outro';
 
-        Object.keys(treinosProcessados).forEach(key => {
-          treinosProcessados[key].grupos = Array.from(treinosProcessados[key].grupos);
-        });
+            if (!acc[dataString]) {
+              acc[dataString] = {
+                grupos: new Set(),
+                exercicios: [],
+              };
+            }
+            acc[dataString].grupos.add(grupo);
+            acc[dataString].exercicios.push(treino);
+            return acc;
+          }, {});
 
-        setTreinosPorData(treinosProcessados);
+          Object.keys(treinosProcessados).forEach(key => {
+            treinosProcessados[key].grupos = Array.from(treinosProcessados[key].grupos);
+          });
+
+          setTreinosPorData(treinosProcessados);
+        }
       } catch (error) {
         console.error("Erro ao buscar treinos:", error);
+        setError("Não foi possível carregar os treinos. Tente novamente mais tarde.");
+      } finally {
+        setLoading(false);
       }
     };
     buscarTreinos();
   }, []);
 
   const handleClickDia = (dia) => {
-    if (dia.eMesAtual && dia.treinos && dia.treinos.exercicios.length > 0) {
+    if (dia.eMesAtual && dia.treinos?.exercicios?.length > 0) {
       setDiaSelecionado(dia);
     }
   };
@@ -133,13 +147,20 @@ function DiasDeTreino() {
     }
 
     for (let i = 1; i <= diasNoMes; i++) {
-      const dataString = new Date(ano, mes, i).toDateString();
-      const eHoje = hoje.getFullYear() === ano && hoje.getMonth() === mes && hoje.getDate() === i;
+      const dataObj = new Date(ano, mes, i);
+
+      // Formata a data do calendário para o mesmo formato da chave (YYYY-MM-DD)
+      const mesFormatado = String(mes + 1).padStart(2, '0');
+      const diaFormatado = String(i).padStart(2, '0');
+      const dataString = `${ano}-${mesFormatado}-${diaFormatado}`;
+
+      const eHoje = hoje.toDateString() === dataObj.toDateString();
+
       dias.push({
         dia: i,
         eMesAtual: true,
         treinos: treinosPorData[dataString] || { grupos: [], exercicios: [] },
-        data: new Date(ano, mes, i),
+        data: dataObj,
         eHoje: eHoje,
       });
     }
@@ -152,14 +173,14 @@ function DiasDeTreino() {
     return dias.map((dia, index) => (
       <div
         key={index}
-        className={`${styles.dayCell} ${dia.eMesAtual ? '' : styles.notCurrentMonth} ${dia.eHoje ? styles.today : ''} ${dia.eMesAtual && dia.treinos.exercicios.length > 0 ? styles.clickable : ''}`}
+        className={`${styles.dayCell} ${dia.eMesAtual ? '' : styles.notCurrentMonth} ${dia.eHoje ? styles.today : ''} ${dia.eMesAtual && dia.treinos?.exercicios?.length > 0 ? styles.clickable : ''}`}
         onClick={() => handleClickDia(dia)}
       >
         <span>{dia.dia}</span>
-        {dia.eMesAtual && dia.treinos && dia.treinos.grupos.length > 0 && (
+        {dia.eMesAtual && dia.treinos?.grupos?.length > 0 && (
           <div className={styles.dotsContainer}>
             {dia.treinos.grupos.map((grupo, i) => (
-              <span key={`${grupo}-${i}`} className={styles.dot} style={{ backgroundColor: CoresGrupos[grupo] }}></span>
+              <span key={`${grupo}-${i}`} className={styles.dot} style={{ backgroundColor: CoresGrupos[grupo] || '#ccc' }}></span>
             ))}
           </div>
         )}
@@ -168,6 +189,14 @@ function DiasDeTreino() {
   };
 
   const diasDaSemana = ['seg', 'ter', 'qua', 'qui', 'sex', 'sáb', 'dom'];
+
+  if (loading) {
+    return <div className={styles.container}><p>Carregando calendário...</p></div>;
+  }
+
+  if (error) {
+    return <div className={styles.container}><p>{error}</p></div>;
+  }
 
   return (
     <div className={styles.container}>

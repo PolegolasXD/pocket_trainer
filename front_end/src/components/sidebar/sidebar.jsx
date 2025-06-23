@@ -6,7 +6,6 @@ import iconSizeBar from '../../assets/icons/iconSizeBar.png';
 import iconCalendarioDiasDeTreino from '../../assets/icons/iconCalendarioDiasDeTreino.png';
 import iconCalendarioTreinoDeHoje from '../../assets/icons/iconCalendarioTreinoDeHoje.png';
 import iconFichaPessoal from '../../assets/icons/iconFichaPessoal.png';
-import iconExecucao from '../../assets/icons/iconExecucao.png';
 import iconDashboard from '../../assets/icons/iconDashboard.png';
 import iconChatBot from '../../assets/icons/iconChatBot.png';
 import iconClose from '../../assets/icons/iconClose.png';
@@ -49,10 +48,6 @@ const Sidebar = ({ isOpen, onClose }) => {
       <div className={styles.iconContainer} onClick={() => handleRedirect('/ficha-pessoal')}>
         <img className={styles.icon} src={iconFichaPessoal} alt="Ficha Pessoal" />
         <span className={styles.itemDescriptionSizeBar}>Ficha Pessoal</span>
-      </div>
-      <div className={styles.iconContainer} onClick={() => handleRedirect('/execucao')}>
-        <img className={styles.icon} src={iconExecucao} alt="Execução" />
-        <span className={styles.itemDescriptionSizeBar}>Execução</span>
       </div>
       <div className={styles.iconContainer} onClick={handleDashboardClick}>
         <img className={styles.icon} src={iconDashboard} alt="Painel" />

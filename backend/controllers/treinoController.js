@@ -3,11 +3,10 @@ const dayjs = require('dayjs');
 
 exports.createTreino = async (req, res) => {
   try {
-    const { exercicio, repeticoes, carga, duracao_min } = req.body;
+    const { data, exercicio, repeticoes, carga, duracao_min } = req.body;
     const aluno_id = req.user.id;
-    const data = dayjs().format('YYYY-MM-DD');
 
-    if (!exercicio || !repeticoes || !carga) {
+    if (!data || !exercicio || !repeticoes || !carga) {
       return res.status(400).json({ error: 'Preencha os campos obrigatórios' });
     }
 
@@ -93,9 +92,8 @@ exports.getTreinosByStudentId = async (req, res) => {
 };
 
 exports.createBulkTreinos = async (req, res) => {
-  const { treinos } = req.body;
+  const { treinos, data } = req.body;
   const aluno_id = req.user.id;
-  const data = dayjs().format('YYYY-MM-DD');
 
   if (!treinos || !Array.isArray(treinos) || treinos.length === 0) {
     return res.status(400).json({ error: 'Formato de treinos inválido.' });

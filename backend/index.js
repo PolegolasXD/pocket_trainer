@@ -10,9 +10,6 @@ const mensagemRoutes = require("./routes/mensagemRoutes");
 const chatRoutes = require("./routes/chatRoutes");
 const treinoSemanalRoutes = require("./routes/treinoSemanalRoutes");
 
-const chatController = require("./controllers/chatController");
-const verifyToken = require("./middlewares/verifyToken");
-
 const app = express();
 
 app.use(cors());
@@ -25,8 +22,6 @@ app.use("/api/feedbacks", feedbackRoutes);
 app.use("/api/mensagens", mensagemRoutes);
 app.use("/api/chat", chatRoutes);
 app.use("/api/treino-semanal", treinoSemanalRoutes);
-
-app.post("/api/chat", verifyToken, chatController.gerarFeedbackIA);
 
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {

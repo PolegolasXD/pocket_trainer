@@ -18,14 +18,14 @@ function PersonalSheet() {
     const fetchUserData = async () => {
       try {
         const token = localStorage.getItem('token');
-        const user = JSON.parse(localStorage.getItem('user'));
-        if (!token || !user) {
+        const usuario = JSON.parse(localStorage.getItem('usuario'));
+        if (!token || !usuario) {
           setNotification({ message: 'User not found.', type: 'error' });
           return;
         }
 
         const config = { headers: { Authorization: `Bearer ${token}` } };
-        const res = await axios.get(`http://localhost:5000/api/users/${user.id}`, config);
+        const res = await axios.get(`${import.meta.env.VITE_API_URL}/api/users/${usuario.id}`, config);
         const userData = res.data;
         setUserData({
           ...userData,
@@ -48,7 +48,7 @@ function PersonalSheet() {
     try {
       const token = localStorage.getItem('token');
       const config = { headers: { Authorization: `Bearer ${token}` } };
-      const res = await axios.put(`http://localhost:5000/api/users/${userData.id}`, userData, config);
+      const res = await axios.put(`${import.meta.env.VITE_API_URL}/api/users/${userData.id}`, userData, config);
       const user = res.data;
       setUserData({
         ...user,

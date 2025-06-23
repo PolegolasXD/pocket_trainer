@@ -1,160 +1,165 @@
 @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500&display=swap');
 
-.container {
-  background-color: #1e1e1e;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  min-height: 100vh;
-  font-family: 'Roboto', sans-serif;
-  padding: 1rem;
+/* ---------- layout geral ---------- */
+:root {
+  --gold: #f5c518;
+  --black: #121212;
+  --white: #f5f5f5;
+  --gray-light: #3a3a3a;
+  --card-w: 960px;
+  /* largura do card em desktop */
+  --col-gap: 32px;
+  /* espaçamento entre colunas */
 }
 
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: 'Roboto', sans-serif;
+  background: var(--black);
+  color: var(--white);
+}
+
+/* ---------- wrapper central ---------- */
+.container {
+  min-height: 100vh;
+  display: grid;
+  place-items: center;
+  padding: 24px;
+}
+
+/* ---------- CARD ---------- */
 .centerModal {
   display: flex;
-  justify-content: center;
-  width: 950px;
-  background-color: #2c2c2e;
-  padding: 30px;
-  border-radius: 30px;
-  position: relative;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
-  color: #f5f5f5;
+  width: var(--card-w);
+  background: var(--gray-light);
+  border-radius: 32px;
+  overflow: hidden;
+  box-shadow: 0 12px 24px rgba(0, 0, 0, .25);
 }
 
+/* ---------- coluna esquerda ---------- */
 .leftSection {
+  flex: 1;
+  padding: 40px var(--col-gap);
+  text-align: center;
   display: flex;
   flex-direction: column;
-  align-items: center;
   justify-content: center;
-  margin-right: 20px;
-  text-align: center;
-  max-width: 50%;
-  padding: 1rem;
-}
-
-.iconCadastroWrapper {
-  text-align: center;
-  margin-bottom: 20px;
+  gap: 24px;
 }
 
 .iconCadastro {
   width: 220px;
+  max-width: 100%;
   height: auto;
 }
 
 .iconCadastroTextTop,
 .iconCadastroTextBottom {
-  margin-bottom: 10px;
-  color: #f5c518;
-  font-size: 16px;
+  color: var(--gold);
   line-height: 1.4;
+  font-size: 16px;
 }
 
+/* ---------- linha divisória ---------- */
 .line {
-  position: absolute;
-  left: 50%;
-  transform: translateX(-50%);
-  top: 0;
-  bottom: 0;
   width: 2px;
-  background-color: black;
+  background: var(--white);
+  opacity: .2;
 }
 
+/* ---------- coluna direita ---------- */
 .rightSection {
+  flex: 1;
+  padding: 40px var(--col-gap);
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  flex: 1;
-  padding: 1rem;
-  max-width: 50%;
 }
 
 .topRightSection {
   display: flex;
-  align-items: center;
-  justify-content: space-around;
-  margin-bottom: 20px;
-  gap: 1rem;
+  gap: 24px;
+  margin-bottom: 24px;
 }
 
 .loginText,
 .cadastrarText {
   font-size: 16px;
-  color: #f5f5f5;
-  background-color: transparent;
-  text-decoration: none;
-  border: none;
-  outline: none;
-  cursor: pointer;
-  transition: color 0.3s;
   font-weight: 500;
+  text-decoration: none;
+  color: var(--gold);
+  cursor: pointer;
+  transition: color .25s;
 }
 
 .loginText:hover,
 .cadastrarText:hover {
-  color: #f5c518;
+  color: var(--white);
 }
 
 .activeLink {
-  color: #f5c518;
+  text-decoration: underline;
+  text-underline-offset: 4px;
 }
 
 .iconUserContainer {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  margin-bottom: 40px;
+  margin-bottom: 24px;
 }
 
 .iconUser {
-  width: 60px;
-  height: 60px;
+  width: 64px;
+  height: 64px;
 }
 
 .inputsContainer {
+  width: 100%;
+  max-width: 340px;
   display: flex;
   flex-direction: column;
-  align-items: center;
-  gap: 16px;
-  width: 100%;
-  margin-bottom: 20px;
+  gap: 18px;
 }
 
 .input {
   width: 100%;
-  max-width: 300px;
   padding: 0.8rem 1rem;
   border-radius: 8px;
   border: 1.5px solid #4a4a4a;
-  background: #1e1e1e;
-  color: #f5f5f5;
+  background: var(--white);
+  color: var(--black);
   font-size: 1rem;
   transition: border-color 0.2s, box-shadow 0.2s;
 }
 
 .input:focus {
   outline: none;
-  border-color: #f5c518;
+  border-color: var(--gold);
   box-shadow: 0 0 0 3px rgba(245, 197, 24, 0.3);
 }
 
+.input::placeholder {
+  color: #888;
+}
+
 .loginButton {
-  align-self: center;
+  margin-top: 32px;
   width: 100%;
   max-width: 220px;
   height: 46px;
-  background-color: #f5c518;
+  border: none;
+  border-radius: 8px;
+  background: var(--gold);
   color: #111;
   font-size: 1rem;
   font-weight: bold;
-  letter-spacing: 0.5px;
-  border: none;
-  border-radius: 8px;
   cursor: pointer;
   transition: background-color 0.2s, transform 0.2s;
-  margin-top: 10px;
+  align-self: center;
 }
 
 .loginButton:hover {
@@ -162,35 +167,11 @@
   transform: translateY(-2px);
 }
 
-.bottomLeftSection {
-  display: flex;
-  justify-content: center;
-  margin-top: 20px;
-  width: 100%;
-  font-size: 14px;
-  color: #000;
-}
-
-.spaceLink {
-  margin-left: 20px;
-}
-
-.esqueciSenhaText,
-.cadastrarText {
-  font-size: 14px;
-  color: #f5f5f5;
-  background-color: transparent;
-  border: none;
-  outline: none;
-  cursor: pointer;
-}
-
-/* Responsividade */
+/* ---------- RESPONSIVIDADE ---------- */
 @media (max-width: 1024px) {
-  .centerModal {
-    width: 90%;
-    max-width: 900px;
-    padding: 25px;
+  :root {
+    --card-w: 90vw;
+    --col-gap: 28px;
   }
 
   .iconCadastro {
@@ -203,28 +184,33 @@
   }
 }
 
-@media (max-width: 768px) {
+@media (max-width: 780px) {
+  :root {
+    --card-w: 95vw;
+    --col-gap: 20px;
+  }
+
   .container {
-    padding: 0.5rem;
+    padding: 16px;
   }
 
   .centerModal {
     flex-direction: column;
-    width: 100%;
-    max-width: 95%;
-    padding: 20px;
-    border-radius: 20px;
+    border-radius: 24px;
+  }
+
+  .line {
+    display: none;
   }
 
   .leftSection,
   .rightSection {
     max-width: 100%;
-    width: 100%;
-    margin-right: 0;
+    padding: 30px var(--col-gap);
   }
 
-  .line {
-    display: none;
+  .topRightSection {
+    justify-content: center;
   }
 
   .iconCadastro {
@@ -241,28 +227,29 @@
     height: 56px;
   }
 
-  .topRightSection {
-    justify-content: center;
-  }
-
   .inputsContainer {
-    max-width: 320px;
+    max-width: 300px;
   }
 }
 
 @media (max-width: 480px) {
+  :root {
+    --card-w: 100vw;
+    --col-gap: 16px;
+  }
+
   .container {
-    padding: 0.25rem;
+    padding: 12px;
   }
 
   .centerModal {
-    padding: 16px;
-    border-radius: 16px;
+    border-radius: 20px;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, .2);
   }
 
   .leftSection,
   .rightSection {
-    padding: 0.5rem;
+    padding: 24px var(--col-gap);
   }
 
   .iconCadastro {
@@ -274,51 +261,28 @@
     font-size: 13px;
   }
 
-  .topRightSection {
-    gap: 0.5rem;
-    margin-bottom: 16px;
-  }
-
-  .loginText,
-  .cadastrarText {
-    font-size: 15px;
-  }
-
-  .iconUserContainer {
-    margin-bottom: 30px;
-  }
-
   .iconUser {
-    width: 48px;
-    height: 48px;
+    width: 52px;
+    height: 52px;
   }
 
   .inputsContainer {
     max-width: 280px;
-    gap: 14px;
   }
 
   .input {
     padding: 0.7rem 0.9rem;
-    font-size: 0.95rem;
-  }
-
-  .loginButton {
-    max-width: 200px;
-    height: 42px;
-    font-size: 0.95rem;
   }
 }
 
 @media (max-width: 360px) {
-  .centerModal {
-    padding: 12px;
-    border-radius: 12px;
+  .container {
+    padding: 8px;
   }
 
   .leftSection,
   .rightSection {
-    padding: 0.25rem;
+    padding: 20px var(--col-gap);
   }
 
   .iconCadastro {
@@ -331,32 +295,31 @@
   }
 
   .topRightSection {
-    gap: 0.25rem;
+    gap: 16px;
+    margin-bottom: 24px;
   }
 
   .loginText,
   .cadastrarText {
-    font-size: 14px;
+    font-size: 15px;
   }
 
   .iconUser {
-    width: 44px;
-    height: 44px;
+    width: 48px;
+    height: 48px;
   }
 
   .inputsContainer {
-    max-width: 260px;
-    gap: 12px;
+    gap: 16px;
   }
 
   .input {
-    padding: 0.6rem 0.8rem;
-    font-size: 0.9rem;
+    font-size: 0.95rem;
   }
 
   .loginButton {
-    max-width: 180px;
-    height: 40px;
-    font-size: 0.9rem;
+    height: 44px;
+    font-size: 0.95rem;
+    margin-top: 24px;
   }
 }

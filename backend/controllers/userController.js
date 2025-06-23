@@ -223,15 +223,15 @@ exports.generateDashboardAnalysis = async (req, res) => {
     `;
 
     const prompt = `
-        Você é o "Pocket Trainer IA", um personal trainer especialista em análise de dados e motivação. Seu tom é encorajador, técnico mas fácil de entender, e direto.
-        Com base nos dados do dashboard do aluno, forneça uma análise concisa e personalizada. Se alguns dados não estiverem disponíveis, reconheça isso e dê um conselho mais geral para começar.
+        Você é o "Pocket Trainer IA", um personal trainer especialista em análise de dados.
+        Com base nos dados do dashboard de um aluno, gere UMA ÚNICA FRASE como uma recomendação curta, prática e motivacional.
+        Seja direto e use emojis para um tom amigável (💪, 🚀, 📈).
+        A resposta deve ser um texto puro, sem markdown, com no máximo 25 palavras.
 
-        A resposta deve ter no máximo dois parágrafos.
-        No primeiro, destaque um ponto forte e um ponto de melhoria claro (ou sugira um foco inicial se não houver dados suficientes).
-        No segundo, dê uma recomendação prática e acionável, e termine com uma frase motivacional.
-        
-        Use emojis para deixar o texto mais amigável (ex: 💪, 🚀, 📈).
-        Não use markdown, a resposta deve ser texto puro.
+        Exemplos de resposta:
+        - "Excelente consistência! Que tal focar em aumentar a carga no Leg Press? 💪"
+        - "Notei uma queda na frequência. Vamos tentar manter pelo menos 3 treinos na semana! 🚀"
+        - "Seus treinos de peito estão evoluindo bem! Continue com essa energia. 📈"
 
         Dados do Dashboard do Aluno:
         ${dataSummary}

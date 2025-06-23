@@ -8,12 +8,14 @@ import {
 } from 'recharts';
 import styles from './Dashboard.module.css';
 
-const COLORS = ['#f5c518', '#a07df0', '#36b37e', '#ffb347', '#8e44ad'];
+const COLORS = ['#f5c518', '#81c784', '#7986cb', '#ff8a65', '#a991d4', '#4db6ac', '#90a4ae'];
 const METRIC_COLORS = {
   carga: '#f5c518',
   repeticoes: '#a07df0',
   duracao: '#36b37e'
 };
+
+const allMetrics = ['carga', 'repeticoes', 'duracao'];
 
 const Dashboard = () => {
   /* --- estados --- */
@@ -28,36 +30,39 @@ const Dashboard = () => {
   const [dataset, setDataset] = useState([]);
   const [treinos, setTreinos] = useState([]);
   const [metric, setMetric] = useState('carga');
+  const [timePeriod, setTimePeriod] = useState('all'); // 'all', 'week', 'month'
   const [insights, setInsights] = useState(null);
   const [tendencias, setTendencias] = useState(null);
   const [chatFeedbacks, setChatFeedbacks] = useState([]);
   const [analysis, setAnalysis] = useState('');
   const [loadingAnalysis, setLoadingAnalysis] = useState(false);
+  const [recommendation, setRecommendation] = useState('');
+  const [loadingRecommendation, setLoadingRecommendation] = useState(true);
 
   /* --- fetch inicial --- */
   useEffect(() => {
-    (async () => {
+    const fetchData = async () => {
       try {
         const token = localStorage.getItem('token');
         const config = { headers: { Authorization: `Bearer ${token}` } };
 
         const fbRes = await axios.get('http://localhost:5000/api/feedbacks', config);
         const feedbacks = fbRes.data.map(fb => ({
-          dia: fb.created_at?.slice(0, 10) || 's/ data',
-          carga: fb.carga || 0,
-          repeticoes: fb.repeticoes || 0,
-          duracao: fb.duracao || 0,
-          intensidade: fb.intensidade || 0
+          dia: new Date(fb.created_at).toISOString().slice(0, 10) || 's/ data',
+          carga: parseFloat(fb.carga) || 0,
+          repeticoes: parseInt(fb.repeticoes, 10) || 0,
+          duracao: parseInt(fb.duracao, 10) || 0,
+          intensidade: parseInt(fb.intensidade, 10) || 0
         }));
 
         const trRes = await axios.get('http://localhost:5000/api/treinos', config);
         const treinosNorm = trRes.data.map(t => ({
           exercicio: t.exercicio || 'Outro',
-          carga: t.carga || 0,
-          repeticoes: t.repeticoes || 0,
-          duracao: t.duracao_min || 0,
-          intensidade: t.intensidade || 0,
-          dia: t.data?.slice(0, 10) || 's/ data'
+          carga: parseFloat(t.carga) || 0,
+          repeticoes: parseInt(t.repeticoes, 10) || 0,
+          duracao: parseInt(t.duracao_min, 10) || 0,
+          intensidade: parseInt(t.intensidade, 10) || 0,
+          dia: new Date(t.data).toISOString().slice(0, 10) || 's/ data'
         }));
         setTreinos(treinosNorm);
         setDataset(feedbacks.concat(treinosNorm.map(t => ({ ...t }))));
@@ -67,35 +72,13 @@ const Dashboard = () => {
 
       } catch (e) {
         console.error('Erro ao buscar dados:', e.message);
+        setLoadingRecommendation(false);
       }
-    })();
+    };
+    fetchData();
   }, []);
 
-  const handleAnalysisRequest = async () => {
-    setLoadingAnalysis(true);
-    setAnalysis('');
-    try {
-      const token = localStorage.getItem('token');
-      const config = { headers: { Authorization: `Bearer ${token}` } };
-
-      const payload = {
-        kpis,
-        stats,
-        topExercicios,
-        chatStats: chatFeedbacks
-      };
-
-      const res = await axios.post('http://localhost:5000/api/users/me/dashboard-analysis', payload, config);
-      setAnalysis(res.data.analysis);
-
-    } catch (error) {
-      console.error('Erro ao solicitar análise da IA:', error);
-      setAnalysis('Não foi possível gerar a análise no momento. Tente novamente mais tarde.');
-    } finally {
-      setLoadingAnalysis(false);
-    }
-  };
-
+  // useMemo para calcular todos os dados derivados
   const { pizzaData, stats, topExercicios, aggregatedDataset, volumeData } = useMemo(() => {
     if (!dataset.length || !treinos.length) return {
       pizzaData: [],
@@ -176,6 +159,23 @@ const Dashboard = () => {
       else pizza.push({ name: t.exercicio, value: val });
     });
 
+    const sortedPizza = [...pizza].sort((a, b) => b.value - a.value);
+    const topN = 7; // Mostrar os 7 principais exercícios
+    let finalPizzaData = [];
+
+    if (sortedPizza.length > topN) {
+      const topItems = sortedPizza.slice(0, topN);
+      const otherItems = sortedPizza.slice(topN);
+      const otherSum = otherItems.reduce((acc, cur) => acc + cur.value, 0);
+      if (otherSum > 0) {
+        finalPizzaData = [...topItems, { name: 'Outros', value: otherSum }];
+      } else {
+        finalPizzaData = topItems;
+      }
+    } else {
+      finalPizzaData = sortedPizza;
+    }
+
     const tendencias = dataset.reduce((acc, cur) => {
       const semana = Math.floor((new Date() - new Date(cur.dia)) / (7 * 24 * 60 * 60 * 1000));
       if (!acc[semana]) {
@@ -212,18 +212,72 @@ const Dashboard = () => {
       : 0;
 
     return {
-      pizzaData: pizza,
+      pizzaData: finalPizzaData,
       stats: {
         diaMaisPesado,
         exercicioTop,
         totalSes: dataset.length,
-        tendenciaCarga: Math.round(tendenciaCarga * 10) / 10
+        tendenciaCarga: Math.round(tendenciaCarga * 10) / 10,
+        metaSemanal: {
+          atual: Math.round(frequencia * 10) / 10,
+          meta: 3, // Meta de 3 treinos por semana
+          atingida: (Math.round(frequencia * 10) / 10) >= 3,
+        },
       },
       topExercicios,
       aggregatedDataset,
       volumeData
     };
   }, [dataset, treinos, metric]);
+
+  // Efeito para calcular KPIs
+  useEffect(() => {
+    if (!dataset.length || !stats) return;
+
+    const soma = dataset.reduce((acc, cur) => ({
+      carga: acc.carga + cur.carga,
+      repeticoes: acc.repeticoes + cur.repeticoes,
+      duracao: acc.duracao + cur.duracao,
+      intensidade: acc.intensidade + cur.intensidade
+    }), { carga: 0, repeticoes: 0, duracao: 0, intensidade: 0 });
+
+    const frequencia = stats.totalSes / 4;
+
+    const mesAtual = dataset.filter(d => (new Date() - new Date(d.dia)) <= 15 * 24 * 60 * 60 * 1000);
+    const mesAnterior = dataset.filter(d => (new Date() - new Date(d.dia)) > 15 * 24 * 60 * 60 * 1000 && (new Date() - new Date(d.dia)) <= 30 * 24 * 60 * 60 * 1000);
+
+    const mediaAtual = mesAtual.length ? mesAtual.reduce((acc, cur) => acc + cur.carga, 0) / mesAtual.length : 0;
+    const mediaAnterior = mesAnterior.length ? mesAnterior.reduce((acc, cur) => acc + cur.carga, 0) / mesAnterior.length : 0;
+    const progresso = mediaAnterior > 0 ? ((mediaAtual - mediaAnterior) / mediaAnterior) * 100 : 0;
+
+    setKpis({
+      carga: dataset.length ? Math.round(soma.carga / dataset.length) : 0,
+      repeticoes: dataset.length ? Math.round(soma.repeticoes / dataset.length) : 0,
+      duracao: dataset.length ? Math.round(soma.duracao / dataset.length) : 0,
+      frequencia: Math.round(frequencia * 10) / 10,
+      progresso: Math.round(progresso * 10) / 10,
+      intensidade: dataset.length ? Math.round(soma.intensidade / dataset.length) : 0,
+    });
+  }, [dataset, stats]);
+
+  const handleAnalysisRequest = async () => {
+    setLoadingAnalysis(true);
+    setAnalysis('');
+    try {
+      const token = localStorage.getItem('token');
+      const config = { headers: { Authorization: `Bearer ${token}` } };
+      const payload = { kpis, stats, topExercicios, chatFeedbacks };
+
+      const res = await axios.post('http://localhost:5000/api/users/me/dashboard-analysis', payload, config);
+      setAnalysis(res.data.analysis);
+
+    } catch (error) {
+      console.error('Erro ao solicitar análise da IA:', error);
+      setAnalysis('Não foi possível gerar a análise no momento. Tente novamente mais tarde.');
+    } finally {
+      setLoadingAnalysis(false);
+    }
+  };
 
   const allMetrics = ['carga', 'repeticoes', 'duracao'];
 
@@ -293,22 +347,13 @@ const Dashboard = () => {
             {/* Gráfico de Barras */}
             <div className={styles.chartContainer}>
               <h3>Histórico de Treinos</h3>
-              <ResponsiveContainer width="100%" height={280}>
-                <BarChart data={aggregatedDataset}>
-                  <CartesianGrid strokeDasharray="3 3" />
-                  <XAxis dataKey="dia" />
-                  <YAxis />
-                  <Tooltip />
-                  <Legend />
-                  {metric === 'todos'
-                    ? allMetrics.map(m => (
-                      <Bar key={m} dataKey={m}
-                        fill={METRIC_COLORS[m]}
-                        name={m.charAt(0).toUpperCase() + m.slice(1)} />
-                    ))
-                    : <Bar dataKey={metric}
-                      fill={METRIC_COLORS[metric]}
-                      name={metric.charAt(0).toUpperCase() + metric.slice(1)} />}
+              <ResponsiveContainer width="100%" height={400}>
+                <BarChart data={aggregatedDataset} margin={{ top: 20, right: 30, left: 20, bottom: 5 }}>
+                  <CartesianGrid strokeDasharray="3 3" stroke="#3e3e40" />
+                  <XAxis dataKey="dia" stroke="#c0c0c0" />
+                  <YAxis stroke="#c0c0c0" />
+                  <Tooltip contentStyle={{ backgroundColor: '#2c2c2e', border: '1px solid #3e3e40' }} />
+                  <Bar dataKey="carga" fill="#f5c518" name="Carga Total" />
                 </BarChart>
               </ResponsiveContainer>
             </div>
@@ -316,103 +361,113 @@ const Dashboard = () => {
             {/* Gráfico de Pizza */}
             <div className={styles.chartContainer}>
               <h3>Distribuição por Exercício</h3>
-              <ResponsiveContainer width="100%" height={280}>
+              <ResponsiveContainer width="100%" height={400}>
                 <PieChart>
-                  <Pie data={pizzaData} dataKey="value" nameKey="name"
-                    cx="50%" cy="50%" outerRadius={90} label>
-                    {pizzaData.map((_, i) => (
-                      <Cell key={i} fill={COLORS[i % COLORS.length]} />
+                  <Pie
+                    data={pizzaData}
+                    dataKey="value"
+                    nameKey="name"
+                    cx="50%"
+                    cy="50%"
+                    outerRadius={110}
+                    fill="#8884d8"
+                    labelLine={false}
+                  >
+                    {pizzaData.map((entry, index) => (
+                      <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
                     ))}
                   </Pie>
-                  <Tooltip />
-                  <Legend />
+                  <Tooltip contentStyle={{ backgroundColor: '#2c2c2e', border: '1px solid #3e3e40' }} />
+                  <Legend
+                    layout="horizontal"
+                    verticalAlign="bottom"
+                    align="center"
+                    wrapperStyle={{ paddingTop: '20px' }}
+                  />
                 </PieChart>
               </ResponsiveContainer>
             </div>
 
-            {/* Gráfico de Tendências */}
+            {/* Gráfico de Linha */}
             <div className={styles.chartContainer}>
               <h3>Volume de Treino (Carga x Reps)</h3>
-              <ResponsiveContainer width="100%" height={280}>
-                <LineChart data={volumeData}>
-                  <CartesianGrid strokeDasharray="3 3" />
-                  <XAxis dataKey="dia" />
-                  <YAxis />
-                  <Tooltip
-                    contentStyle={{ backgroundColor: '#2c2c2e', border: '1px solid #f5c518' }}
-                    labelStyle={{ color: '#f5f5f5' }}
-                  />
+              <ResponsiveContainer width="100%" height={400}>
+                <LineChart data={volumeData} margin={{ top: 5, right: 30, left: 20, bottom: 5 }}>
+                  <CartesianGrid strokeDasharray="3 3" stroke="#3e3e40" />
+                  <XAxis dataKey="dia" stroke="#c0c0c0" />
+                  <YAxis stroke="#c0c0c0" />
+                  <Tooltip contentStyle={{ backgroundColor: '#2c2c2e', border: '1px solid #3e3e40' }} />
                   <Legend />
-                  <Line type="monotone" dataKey="volume" stroke="#f5c518" name="Volume Total" />
+                  <Line type="monotone" dataKey="volume" name="Volume Total" stroke="#f5c518" strokeWidth={2} dot={{ r: 4 }} activeDot={{ r: 8 }} />
                 </LineChart>
               </ResponsiveContainer>
             </div>
           </div>
         </section>
 
-        {/* Insights */}
+        {/* Insights e Recomendações */}
         <section className={styles.insightsSection}>
           <h2>Insights e Recomendações</h2>
-
+          {/* Card de Análise da IA */}
           <div className={styles.aiInsightCard}>
             <h4>Análise da IA 🚀</h4>
             {loadingAnalysis ? (
               <p>Analisando seus dados...</p>
             ) : analysis ? (
-              <p className={styles.analysisText}>{analysis.split('\n').map((line, index) => <span key={index}>{line}<br /></span>)}</p>
+              <p className={styles.analysisText}>{analysis.split('\\n').map((line, index) => <span key={index}>{line}<br /></span>)}</p>
             ) : (
               <button onClick={handleAnalysisRequest} className={styles.analysisButton}>
                 Gerar Análise Personalizada
               </button>
             )}
-            {analysis && !loadingAnalysis && (
-              <button onClick={handleAnalysisRequest} className={`${styles.analysisButton} ${styles.regenerateButton}`}>
-                Gerar Nova Análise
-              </button>
-            )}
           </div>
 
           <div className={styles.insightsGrid}>
+            {/* Card de Progresso */}
             <div className={styles.insightCard}>
-              <h4>Progresso</h4>
+              <h3>Progresso</h3>
               <ul>
                 <li>📅 <strong>Dia mais intenso:</strong> {stats.diaMaisPesado}</li>
-                <li>📈 <strong>Tendência de carga:</strong> {stats.tendenciaCarga}%</li>
-                <li>🎯 <strong>Meta semanal:</strong> {kpis.frequencia >= 3 ? '✅' : '⚠️'} {kpis.frequencia}/3 treinos</li>
+                <li>📈 <strong>Tendência de carga:</strong> <span className={stats.tendenciaCarga >= 0 ? styles.positive : styles.negative}>{stats.tendenciaCarga}%</span></li>
+                <li>🎯 <strong>Meta semanal:</strong> {stats.metaSemanal.atingida ? '✅' : '⏳'} {stats.metaSemanal.atual}/{stats.metaSemanal.meta} treinos</li>
               </ul>
             </div>
 
+            {/* Card de Exercícios */}
             <div className={styles.insightCard}>
-              <h4>Exercícios</h4>
+              <h3>Exercícios</h3>
               <ul>
-                <li>⭐ <strong>Exercício mais frequente:</strong> {stats.exercicioTop}</li>
-                <li>📝 <strong>Total de sessões:</strong> {stats.totalSes}</li>
+                <li>⭐ <strong>Exercício mais frequente:</strong> <span>{stats.exercicioTop}</span></li>
+                <li>📋 <strong>Total de sessões:</strong> {stats.totalSes}</li>
                 <li>💪 <strong>Intensidade média:</strong> {kpis.intensidade}/10</li>
               </ul>
             </div>
 
+            {/* Card de Top Exercícios */}
             <div className={styles.insightCard}>
-              <h4>Top Exercícios</h4>
-              <ul>
+              <h3>Top Exercícios ({metric})</h3>
+              <ol>
                 {topExercicios.map((ex, i) => (
-                  <li key={i}>
-                    {i + 1}. <strong>{ex.name}</strong> — {ex.value}
-                  </li>
+                  <li key={i}>{i + 1}. {ex.name} <span>— {Math.round(ex.value)} {metric === 'carga' ? 'kg' : (metric === 'repeticoes' ? 'reps' : 'min')}</span></li>
                 ))}
-              </ul>
+              </ol>
             </div>
 
+            {/* Card de Recomendações (versão estática) */}
             <div className={styles.insightCard}>
-              <h4>Recomendações</h4>
+              <h3>Recomendações</h3>
               <ul>
                 {kpis.frequencia < 3 && (
-                  <li>⚠️ Aumente sua frequência de treinos para atingir a meta semanal</li>
+                  <li>⚠️ Aumente sua frequência para atingir a meta semanal.</li>
                 )}
                 {stats.tendenciaCarga < 0 && (
-                  <li>📈 Considere aumentar gradualmente a carga para manter o progresso</li>
+                  <li>📈 Considere aumentar a carga para manter o progresso.</li>
                 )}
                 {kpis.intensidade < 7 && (
-                  <li>💪 Tente aumentar a intensidade dos seus treinos</li>
+                  <li>💪 Tente aumentar a intensidade dos seus treinos.</li>
+                )}
+                {kpis.frequencia >= 3 && stats.tendenciaCarga >= 0 && kpis.intensidade >= 7 && (
+                  <li>✅ Ótimo trabalho! Continue mantendo a consistência.</li>
                 )}
               </ul>
             </div>

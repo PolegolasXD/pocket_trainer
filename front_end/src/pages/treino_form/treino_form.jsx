@@ -21,6 +21,7 @@ function TreinoForm() {
   const [outroExercicio, setOutroExercicio] = useState('');
   const [repeticoes, setRepeticoes] = useState(10);
   const [carga, setCarga] = useState(20);
+  const [duracao_min, setDuracaoMin] = useState(0);
   const [observacoes, setObservacoes] = useState('');
   const [enviando, setEnviando] = useState(false);
   const [sucesso, setSucesso] = useState(false);
@@ -35,6 +36,7 @@ function TreinoForm() {
       exercicio: exercicio === 'Outro' ? outroExercicio : exercicio,
       repeticoes,
       carga,
+      duracao_min,
       observacoes
     };
     try {
@@ -82,6 +84,9 @@ function TreinoForm() {
               <select value={carga} onChange={e => setCarga(Number(e.target.value))}>
                 {cargasPadrao.map(opt => <option key={opt} value={opt}>{opt}</option>)}
               </select>
+            </label>
+            <label>Duração (min):
+              <input type="number" value={duracao_min} onChange={e => setDuracaoMin(Number(e.target.value))} placeholder="minutos" />
             </label>
             <label>Observações:
               <textarea value={observacoes} onChange={e => setObservacoes(e.target.value)} placeholder="Opcional" />

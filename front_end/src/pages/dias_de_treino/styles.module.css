@@ -399,19 +399,26 @@
 }
 
 .modalContent button:hover {
-  background-color: #ffde7a;
+  background-color: #cca32a;
 }
 
 /* Estilos do Acordeão */
 .accordion {
-  width: 100%;
+  list-style: none;
+  padding: 0;
+  max-height: 400px;
+  /* Limita a altura da lista */
+  overflow-y: auto;
+  /* Adiciona scroll quando necessário */
+  padding-right: 15px;
+  /* Espaço para a barra de rolagem */
 }
 
 .accordionItem {
   background-color: #2c2c2c;
   margin-bottom: 10px;
   border-radius: 5px;
-  border: 1px solid #444;
+  border: 1px solid #555;
 }
 
 .accordionHeader {

@@ -156,3 +156,17 @@ button[type="submit"]:hover {
     max-width: 100%;
   }
 }
+
+.exerciseList {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-top: 20px;
+  max-height: 400px;
+  overflow-y: auto;
+  padding-right: 10px;
+}
+
+.exerciseItem {
+  display: flex;
+}

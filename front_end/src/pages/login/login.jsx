@@ -42,11 +42,11 @@ function LoginHTML() {
         <section className={styles.leftSection}>
           <div className={styles.iconCadastroWrapper}>
             <p className={styles.iconCadastroTextTop}>
-              Meet Pocket Trainer, your pocket coach, helping you with your workout.
+              Conheça o Pocket Trainer, seu coach de bolso, te auxiliando no seu treino.
             </p>
             <img src={iconCadastro} alt="Pocket Trainer Logo" className={styles.iconCadastro} />
             <p className={styles.iconCadastroTextBottom}>
-              And exponentially improving your experience with weight training.
+              E melhorando exponencialmente sua experiência com o treino de musculação.
             </p>
           </div>
         </section>
@@ -61,7 +61,7 @@ function LoginHTML() {
               to="/login"
               className={`${styles.loginText} ${location.pathname === '/login' ? styles.activeLink : ''}`}
             >
-              Login
+              Entrar
             </Link>
 
             <div className={styles.spaceLink}></div>
@@ -70,7 +70,7 @@ function LoginHTML() {
               to="/cadastro"
               className={`${styles.cadastrarText} ${location.pathname === '/cadastro' ? styles.activeLink : ''}`}
             >
-              Sign Up
+              Cadastrar
             </Link>
           </div>
 
@@ -95,7 +95,7 @@ function LoginHTML() {
               <input
                 className={styles.input}
                 type="password"
-                placeholder="Password"
+                placeholder="Senha"
                 autoComplete="current-password"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
@@ -105,7 +105,7 @@ function LoginHTML() {
 
             <div style={{ display: 'flex', justifyContent: 'center', width: '100%' }}>
               <button type="submit" className={styles.loginButton}>
-                Login
+                Entrar
               </button>
             </div>
           </form>

@@ -8,7 +8,7 @@ async function createFeedback(data) {
 async function getFeedbacksByAlunoId(aluno_id) {
   return db('feedbacks')
     .where({ aluno_id })
-    .orderBy('updated_at', 'desc');
+    .orderBy('created_at', 'desc');
 }
 
 async function getFeedbacksByTreinoId(treino_id) {

@@ -86,7 +86,7 @@ exports.getTodosFeedbacks = async (_req, res) => {
 };
 
 exports.getHistoricoDoAluno = async (req, res) => {
-  const aluno_id = req.user.id;
+  const { aluno_id } = req.params;
 
   try {
     const historico = await Feedback.getFeedbacksByAlunoId(aluno_id);

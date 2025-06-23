@@ -33,6 +33,12 @@ async function countUsers() {
   return parseInt(count);
 }
 
+async function findUsersByName(name) {
+  return db('users')
+    .where('name', 'ilike', `%${name}%`)
+    .andWhere('role', 'aluno');
+}
+
 module.exports = {
   createUser,
   getAllUsers,
@@ -41,5 +47,6 @@ module.exports = {
   updateUser,
   deleteUserById,
   getUserByEmail,
-  countUsers
+  countUsers,
+  findUsersByName
 };

@@ -32,14 +32,14 @@ export const ChatProvider = ({ children }) => {
 
   const fetchConversations = async () => {
     const token = localStorage.getItem('token');
-    const user = JSON.parse(localStorage.getItem('user'));
+    const usuario = JSON.parse(localStorage.getItem('usuario'));
 
-    if (!token || !user) return;
+    if (!token || !usuario) return;
 
     setLoading(true);
     try {
       const config = { headers: { Authorization: `Bearer ${token}` } };
-      const response = await axios.get(`http://localhost:5000/api/feedback/${user.id}/historico`, config);
+      const response = await axios.get(`${import.meta.env.VITE_API_URL}/api/feedbacks/${usuario.id}/historico`, config);
       setConversations(response.data);
     } catch (error) {
       console.error('Failed to fetch conversations:', error);

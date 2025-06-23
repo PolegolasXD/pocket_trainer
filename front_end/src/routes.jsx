@@ -7,7 +7,6 @@ import Home from './pages/home/home';
 import DiasDeTreino from './pages/dias_de_treino/dias_de_treino';
 import FichaPessoal from './pages/ficha_pessoal/ficha_pessoal';
 import TreinoDaSemana from './pages/treino_da_semana/treino_da_semana';
-import Execucao from './pages/execucao/execucao';
 import Chat from './pages/chat_bot/chat';
 import Dashboard from './pages/dashboard/Dashboard';
 import AdminDashboard from './pages/admin/AdminDashboard';
@@ -27,7 +26,6 @@ function RoutesComponents() {
         <Route path="/dias-de-treino" element={<DiasDeTreino />} />
         <Route path="/ficha-pessoal" element={<FichaPessoal />} />
         <Route path="/treino-da-semana" element={<TreinoDaSemana />} />
-        <Route path="/execucao" element={<Execucao />} />
         <Route path="/chat" element={<Chat />} />
         <Route path="/dashboard" element={<Dashboard />} />
         <Route path="/admin-dashboard" element={<AdminDashboard />} />

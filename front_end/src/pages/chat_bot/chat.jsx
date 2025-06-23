@@ -128,7 +128,7 @@ const Chat = () => {
           ← Voltar
         </button>
         <span className={styles.chatTitle}>
-          {selectedConversation ? "Conversa Anterior" : "Pocket Trainer"}
+          {selectedConversation ? selectedConversation.titulo : "Pocket Trainer"}
         </span>
         <button className={styles.novaConversaBtn} onClick={handleNovaConversa}>
           Nova Conversa
@@ -139,24 +139,37 @@ const Chat = () => {
         {messages.map((msg) => (
           <div
             key={msg.id}
-            className={`${msg.sender === "ai" ? styles.messageAI : styles.messageUser} ${styles.fadeIn}`}
-            style={{ display: 'flex', alignItems: 'flex-start', gap: 8 }}
+            className={`${styles.messageRow} ${msg.sender === "ai" ? styles.messageRowAI : styles.messageRowUser
+              }`}
           >
             {msg.sender === "ai" && (
-              <img src={iconBot} alt="Bot" style={{ width: 32, height: 32, marginRight: 8, borderRadius: '50%' }} />
+              <img
+                src={iconBot}
+                alt="Bot"
+                className={`${styles.avatar} ${styles.avatarAi}`}
+              />
             )}
-            <div className={styles.markdownContainer}>
-              <ReactMarkdown>{msg.text}</ReactMarkdown>
+            <div
+              className={`${msg.sender === "ai" ? styles.messageAI : styles.messageUser
+                } ${styles.fadeIn}`}
+            >
+              <ReactMarkdown>{msg.text || ""}</ReactMarkdown>
             </div>
             {msg.sender === "user" && (
-              <img src={iconUser} alt="Você" style={{ width: 32, height: 32, marginLeft: 8, borderRadius: '50%' }} />
+              <img src={iconUser} alt="Você" className={styles.avatar} />
             )}
           </div>
         ))}
         {showTyping && (
-          <div className={`${styles.messageAI} ${styles.fadeIn}`} style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-            <img src={iconBot} alt="Bot" style={{ width: 32, height: 32, marginRight: 8, borderRadius: '50%' }} />
-            <span><em>Digitando...</em></span>
+          <div className={`${styles.messageRow} ${styles.messageRowAI}`}>
+            <img
+              src={iconBot}
+              alt="Bot"
+              className={`${styles.avatar} ${styles.avatarAi}`}
+            />
+            <div className={`${styles.messageAI} ${styles.fadeIn}`}>
+              <em>Digitando...</em>
+            </div>
           </div>
         )}
         <div ref={bottomRef} />

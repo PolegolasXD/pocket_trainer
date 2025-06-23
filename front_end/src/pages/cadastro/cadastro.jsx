@@ -16,7 +16,7 @@ function SignUp() {
   const handleSignUp = async (e) => {
     e.preventDefault();
     if (password !== confirmPassword) {
-      alert("Passwords don't match.");
+      alert("As senhas não coincidem.");
       return;
     }
 
@@ -28,13 +28,13 @@ function SignUp() {
       });
       const data = await response.json();
       if (response.ok) {
-        alert("User registered successfully!");
+        alert("Usuário cadastrado com sucesso!");
         navigate("/login");
       } else {
-        alert(data.error || "Failed to register.");
+        alert(data.error || "Falha ao cadastrar.");
       }
     } catch (error) {
-      alert("Error connecting to the server.");
+      alert("Erro ao conectar com o servidor.");
     }
   };
 
@@ -44,11 +44,11 @@ function SignUp() {
         <section className={styles.leftSection}>
           <div className={styles.iconCadastroWrapper}>
             <p className={styles.iconCadastroTextTop}>
-              Meet Pocket Trainer, your pocket coach, helping you with your workout.
+              Conheça o Pocket Trainer, seu coach de bolso, te auxiliando no seu treino.
             </p>
             <img src={iconCadastro} alt="Pocket Trainer Logo" className={styles.iconCadastro} />
             <p className={styles.iconCadastroTextBottom}>
-              And exponentially improving your experience with weight training.
+              E melhorando exponencialmente sua experiência com o treino de musculação.
             </p>
           </div>
         </section>
@@ -61,19 +61,19 @@ function SignUp() {
               to="/login"
               className={`${styles.loginText} ${location.pathname === "/login" ? styles.activeLink : ""}`}
             >
-              Login
+              Entrar
             </Link>
             <div className={styles.spaceLink} />
             <Link
               to="/cadastro"
               className={`${styles.cadastrarText} ${location.pathname === "/cadastro" ? styles.activeLink : ""}`}
             >
-              Sign Up
+              Cadastrar
             </Link>
           </div>
 
           <div className={styles.iconUserContainer}>
-            <img src={iconUser} alt="User" className={styles.iconUser} />
+            <img src={iconUser} alt="Usuário" className={styles.iconUser} />
           </div>
 
           <form className={styles.inputsContainer} onSubmit={handleSignUp}>
@@ -81,7 +81,7 @@ function SignUp() {
               <input
                 className={styles.input}
                 type="text"
-                placeholder="Name"
+                placeholder="Nome"
                 value={name}
                 onChange={(e) => setName(e.target.value)}
                 required
@@ -101,7 +101,7 @@ function SignUp() {
               <input
                 className={styles.input}
                 type="password"
-                placeholder="Password"
+                placeholder="Senha"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 required
@@ -111,7 +111,7 @@ function SignUp() {
               <input
                 className={styles.input}
                 type="password"
-                placeholder="Confirm Password"
+                placeholder="Confirmar Senha"
                 value={confirmPassword}
                 onChange={(e) => setConfirmPassword(e.target.value)}
                 required
@@ -119,7 +119,7 @@ function SignUp() {
             </div>
             <div style={{ display: "flex", justifyContent: "center", width: "100%" }}>
               <button type="submit" className={styles.loginButton}>
-                Sign Up
+                Cadastrar
               </button>
             </div>
           </form>
