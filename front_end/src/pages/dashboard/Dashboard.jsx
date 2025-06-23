@@ -197,13 +197,13 @@ const Dashboard = () => {
       }))
       .sort((a, b) => a.semana.localeCompare(b.semana));
 
-    const diaMaisPesado = dataset.reduce(
+    const diaMaisPesado = dataset.length > 0 ? dataset.reduce(
       (max, cur) => cur.carga > max.carga ? cur : max, dataset[0]
-    ).dia;
+    ).dia : 'Nenhum';
 
-    const exercicioTop = pizza.reduce(
-      (max, cur) => cur.value > max.value ? cur : max, pizza[0]
-    ).name;
+    const exercicioTop = dataset.length > 0 ? dataset.reduce(
+      (max, cur) => cur.carga > max.carga ? cur : max, dataset[0]
+    ).exercicio : 'Nenhum';
 
     const topExercicios = [...pizza].sort((a, b) => b.value - a.value).slice(0, 3);
 
@@ -262,18 +262,25 @@ const Dashboard = () => {
 
   const handleAnalysisRequest = async () => {
     setLoadingAnalysis(true);
-    setAnalysis('');
     try {
       const token = localStorage.getItem('token');
       const config = { headers: { Authorization: `Bearer ${token}` } };
-      const payload = { kpis, stats, topExercicios, chatFeedbacks };
 
-      const res = await axios.post('http://localhost:5000/api/users/me/dashboard-analysis', payload, config);
-      setAnalysis(res.data.analysis);
+      // Corrigido: Enviar para o endpoint de chat para usar o prompt detalhado
+      const res = await axios.post('http://localhost:5000/api/chat',
+        { message: 'Gerar Análise Personalizada' },
+        config
+      );
 
-    } catch (error) {
-      console.error('Erro ao solicitar análise da IA:', error);
-      setAnalysis('Não foi possível gerar a análise no momento. Tente novamente mais tarde.');
+      if (res.data && res.data.reply) {
+        setAnalysis(res.data.reply);
+      } else {
+        setAnalysis('Não foi possível obter uma análise. Tente novamente.');
+      }
+
+    } catch (err) {
+      console.error('Erro ao solicitar análise da IA:', err);
+      setAnalysis('Ocorreu um erro ao conectar com o serviço de análise. Verifique sua conexão e tente novamente.');
     } finally {
       setLoadingAnalysis(false);
     }
@@ -353,7 +360,11 @@ const Dashboard = () => {
                   <XAxis dataKey="dia" stroke="#c0c0c0" />
                   <YAxis stroke="#c0c0c0" />
                   <Tooltip contentStyle={{ backgroundColor: '#2c2c2e', border: '1px solid #3e3e40' }} />
-                  <Bar dataKey="carga" fill="#f5c518" name="Carga Total" />
+                  <Bar dataKey="carga" name="Carga Total" >
+                    {aggregatedDataset.map((entry, index) => (
+                      <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
+                    ))}
+                  </Bar>
                 </BarChart>
               </ResponsiveContainer>
             </div>
@@ -407,19 +418,23 @@ const Dashboard = () => {
 
         {/* Insights e Recomendações */}
         <section className={styles.insightsSection}>
-          <h2>Insights e Recomendações</h2>
-          {/* Card de Análise da IA */}
+          <h2 className={styles.chartTitle}>Insights e Recomendações</h2>
           <div className={styles.aiInsightCard}>
             <h4>Análise da IA 🚀</h4>
+
             {loadingAnalysis ? (
-              <p>Analisando seus dados...</p>
-            ) : analysis ? (
-              <p className={styles.analysisText}>{analysis.split('\\n').map((line, index) => <span key={index}>{line}<br /></span>)}</p>
+              <p>Analisando seus dados, aguarde um momento...</p>
             ) : (
-              <button onClick={handleAnalysisRequest} className={styles.analysisButton}>
-                Gerar Análise Personalizada
-              </button>
+              analysis && <div className={styles.analysisText} dangerouslySetInnerHTML={{ __html: analysis.replace(/\n/g, '<br />') }} />
             )}
+
+            <button
+              onClick={handleAnalysisRequest}
+              disabled={loadingAnalysis}
+              className={styles.analysisButton}
+            >
+              {loadingAnalysis ? 'Gerando...' : (analysis ? 'Gerar Nova Análise' : 'Gerar Análise Personalizada')}
+            </button>
           </div>
 
           <div className={styles.insightsGrid}>
