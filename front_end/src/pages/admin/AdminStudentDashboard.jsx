@@ -50,22 +50,22 @@ const AdminStudentDashboard = () => {
         // Buscar feedbacks do aluno específico
         const fbRes = await axios.get(`http://localhost:5000/api/feedbacks/student/${selectedStudent.id}`, config);
         const feedbacks = fbRes.data.map(fb => ({
-          dia: fb.created_at?.slice(0, 10) || 's/ data',
-          carga: fb.carga || 0,
-          repeticoes: fb.repeticoes || 0,
-          duracao: fb.duracao || 0,
-          intensidade: fb.intensidade || 0
+          dia: new Date(fb.created_at).toISOString().slice(0, 10) || 's/ data',
+          carga: parseFloat(fb.carga) || 0,
+          repeticoes: parseInt(fb.repeticoes, 10) || 0,
+          duracao: parseInt(fb.duracao, 10) || 0,
+          intensidade: parseInt(fb.intensidade, 10) || 0
         }));
 
         // Buscar treinos do aluno específico
         const trRes = await axios.get(`http://localhost:5000/api/treinos/student/${selectedStudent.id}`, config);
         const treinosNorm = trRes.data.map(t => ({
           exercicio: t.exercicio || 'Outro',
-          carga: t.carga || 0,
-          repeticoes: t.repeticoes || 0,
-          duracao: t.duracao_min || 0,
-          intensidade: t.intensidade || 0,
-          dia: t.data?.slice(0, 10) || 's/ data'
+          carga: parseFloat(t.carga) || 0,
+          repeticoes: parseInt(t.repeticoes, 10) || 0,
+          duracao: parseInt(t.duracao_min, 10) || 0,
+          intensidade: parseInt(t.intensidade, 10) || 0,
+          dia: new Date(t.data).toISOString().slice(0, 10) || 's/ data'
         }));
         setTreinos(treinosNorm);
         setDataset(feedbacks.concat(treinosNorm.map(t => ({ ...t }))));
@@ -109,6 +109,44 @@ const AdminStudentDashboard = () => {
     }
   };
 
+  // Efeito para calcular KPIs
+  useEffect(() => {
+    if (!dataset.length) return;
+
+    const soma = dataset.reduce((acc, cur) => ({
+      carga: acc.carga + (cur.carga || 0),
+      repeticoes: acc.repeticoes + (cur.repeticoes || 0),
+      duracao: acc.duracao + (cur.duracao || 0),
+      intensidade: acc.intensidade + (cur.intensidade || 0)
+    }), { carga: 0, repeticoes: 0, duracao: 0, intensidade: 0 });
+
+    const frequencia = dataset.length / 4;
+
+    const mesAtual = dataset.filter(d => {
+      const data = new Date(d.dia);
+      const hoje = new Date();
+      return (hoje - data) <= 15 * 24 * 60 * 60 * 1000;
+    });
+    const mesAnterior = dataset.filter(d => {
+      const data = new Date(d.dia);
+      const hoje = new Date();
+      return (hoje - data) > 15 * 24 * 60 * 60 * 1000 && (hoje - data) <= 30 * 24 * 60 * 60 * 1000;
+    });
+
+    const mediaAtual = mesAtual.length > 0 ? mesAtual.reduce((acc, cur) => acc + cur.carga, 0) / mesAtual.length : 0;
+    const mediaAnterior = mesAnterior.length > 0 ? mesAnterior.reduce((acc, cur) => acc + cur.carga, 0) / mesAnterior.length : 0;
+    const progresso = mediaAnterior > 0 ? ((mediaAtual - mediaAnterior) / mediaAnterior) * 100 : 0;
+
+    setKpis({
+      carga: Math.round(soma.carga / dataset.length) || 0,
+      repeticoes: Math.round(soma.repeticoes / dataset.length) || 0,
+      duracao: Math.round(soma.duracao / dataset.length) || 0,
+      frequencia: Math.round(frequencia * 10) / 10 || 0,
+      progresso: Math.round(progresso * 10) / 10 || 0,
+      intensidade: Math.round(soma.intensidade / dataset.length) || 0
+    });
+  }, [dataset]);
+
   const { pizzaData, stats, topExercicios, aggregatedDataset, volumeData } = useMemo(() => {
     if (!dataset.length || !treinos.length) return {
       pizzaData: [],
@@ -146,39 +184,6 @@ const AdminStudentDashboard = () => {
 
     const volumeData = Object.values(dailyVolume).sort((a, b) => new Date(a.dia) - new Date(b.dia));
 
-    const soma = dataset.reduce((acc, cur) => ({
-      carga: acc.carga + cur.carga,
-      repeticoes: acc.repeticoes + cur.repeticoes,
-      duracao: acc.duracao + cur.duracao,
-      intensidade: acc.intensidade + cur.intensidade
-    }), { carga: 0, repeticoes: 0, duracao: 0, intensidade: 0 });
-
-    const frequencia = dataset.length / 4; // média semanal
-
-    const mesAtual = dataset.filter(d => {
-      const data = new Date(d.dia);
-      const hoje = new Date();
-      return (hoje - data) <= 15 * 24 * 60 * 60 * 1000;
-    });
-    const mesAnterior = dataset.filter(d => {
-      const data = new Date(d.dia);
-      const hoje = new Date();
-      return (hoje - data) > 15 * 24 * 60 * 60 * 1000 && (hoje - data) <= 30 * 24 * 60 * 60 * 1000;
-    });
-
-    const mediaAtual = mesAtual.reduce((acc, cur) => acc + cur.carga, 0) / mesAtual.length;
-    const mediaAnterior = mesAnterior.reduce((acc, cur) => acc + cur.carga, 0) / mesAnterior.length;
-    const progresso = mediaAnterior > 0 ? ((mediaAtual - mediaAnterior) / mediaAnterior) * 100 : 0;
-
-    setKpis({
-      carga: Math.round(soma.carga / dataset.length),
-      repeticoes: Math.round(soma.repeticoes / dataset.length),
-      duracao: Math.round(soma.duracao / dataset.length),
-      frequencia: Math.round(frequencia * 10) / 10,
-      progresso: Math.round(progresso * 10) / 10,
-      intensidade: Math.round(soma.intensidade / dataset.length)
-    });
-
     const pizza = [];
     treinos.forEach(t => {
       const idx = pizza.findIndex(p => p.name === t.exercicio);
@@ -192,19 +197,19 @@ const AdminStudentDashboard = () => {
     const tendenciasData = Object.entries(aggregated)
       .map(([semana, data]) => ({
         semana: `Semana ${semana}`,
-        carga: Math.round(data.carga / data.count),
-        repeticoes: Math.round(data.repeticoes / data.count),
-        duracao: Math.round(data.duracao / data.count)
+        carga: Math.round(data.carga / data.count) || 0,
+        repeticoes: Math.round(data.repeticoes / data.count) || 0,
+        duracao: Math.round(data.duracao / data.count) || 0
       }))
       .sort((a, b) => a.semana.localeCompare(b.semana));
 
-    const diaMaisPesado = dataset.reduce(
-      (max, cur) => cur.carga > max.carga ? cur : max, dataset[0]
-    ).dia;
+    const diaMaisPesado = dataset.length > 0 ? dataset.reduce(
+      (max, cur) => (cur.carga || 0) > (max.carga || 0) ? cur : max, dataset[0]
+    ).dia : 'Nenhum';
 
-    const exercicioTop = pizza.reduce(
-      (max, cur) => cur.value > max.value ? cur : max, pizza[0]
-    ).name;
+    const exercicioTop = treinos.length > 0 ? treinos.reduce(
+      (max, cur) => (cur.carga || 0) > (max.carga || 0) ? cur : max, treinos[0]
+    ).exercicio : 'Nenhum';
 
     const topExercicios = [...pizza].sort((a, b) => b.value - a.value).slice(0, 3);
 
